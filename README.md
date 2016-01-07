@@ -1,8 +1,8 @@
 # Kilza
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/kilza`. To experiment with that code, run `bin/console` for an interactive prompt.
+Ruby gem that can convert JSON strings in Objects.
 
-TODO: Delete this and the text above, and describe your gem
+It supports Objective-C and Java classes. Contribuition would be appreciate.
 
 ## Installation
 
@@ -20,19 +20,151 @@ Or install it yourself as:
 
     $ gem install kilza
 
-## Usage
+## Binary
 
-TODO: Write usage instructions here
+Just call:
 
-## Development
+	kilza
+	
+And the Kilza will guide you.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Usage in code
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Just
+
+	require 'kilza'
+	
+And then
+
+```
+json_string = "..."
+
+java = Kilza::Java.new(json_string)
+java.classes("MyBaseClass").each { |c|
+	c.sources.each{ |s|
+	File.write(File.join("my/target/path", s.file_name), s.source)
+	}
+}
+```
+
+## Example
+
+Let's see in action.
+Suppose our variable **json_string** have the following string:
+
+```
+{
+
+    "Code": ​110,
+    "Message": ""
+
+}
+```
+
+Calling the code above:
+
+```
+java = Kilza::Java.new(json_string)
+java.classes("MyBaseClass").each { |c|
+	c.sources.each{ |s|
+	File.write(File.join("my/target/path", s.file_name), s.source)
+	}
+}
+```
+
+Will generate:
+
+```
+package ;
+
+import org.json.*;
+import java.io.Serializable;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+
+public class Mybaseclass implements Serializable
+{
+    private static final String FIELD_CODE = "Code";
+    private static final String FIELD_MESSAGE = "Message";
+
+    @Expose
+    @SerializedName(FIELD_CODE)
+    private Long code;
+    @Expose
+    @SerializedName(FIELD_MESSAGE)
+    private String message;
+
+    public Mybaseclass() {
+
+    }
+
+    public Mybaseclass(JSONObject jsonObject) {
+        parseObject(jsonObject);
+    }
+
+    public Mybaseclass(String jsonString) {
+        try {
+            parseString(jsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void parseString(String jsonString) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonString);
+        parseObject(jsonObject);
+    }
+
+    protected void parseObject(JSONObject object)
+    {
+        this.code = object.optLong(FIELD_CODE);
+        this.message = object.optString(FIELD_MESSAGE);
+    }
+
+    public void setCode(Long value) {
+        this.code = value;
+    }
+
+    public Long getCode() {
+        return this.code;
+    }
+
+    public void setMessage(String value) {
+        this.message = value;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Mybaseclass) {
+            return ((Mybaseclass) obj).getCode().equals(code) &&
+            ((Mybaseclass) obj).getMessage().equals(message) ;
+        }
+        return false;
+    }
+    @Override
+    public int hashCode(){
+        return (((Long)code).hashCode() +
+        ((String)message).hashCode());
+    }
+
+    @Override
+    public String toString() {
+      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+      return gson.toJson(this);
+    }
+}
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/kilza. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/jaspion/kilza. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 
 ## License
