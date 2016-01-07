@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'highline'
+require 'kilza'
+require 'net/http'
+require 'uri'
+
+def read_url(url)
+  Net::HTTP.get(URI.parse(url))
+end
+
+cli = HighLine.new
+
+say "Hi master. I can convert your JSON string to Object files."
+
+json_is_url = false
+cli.choose do |menu|
+  menu.prompt = "Where is your JSON string content?"
+  menu.choice("It's online. I have an URL.") {
+    say("Ok.")
+    json_is_url = true
+  }
+  menu.choices("It's offline. I have the file path.") { say("Ok.") }
+end
+
+json_string = ''
+if (json_is_url)
+  url = cli.ask "Please, what is the URL?"
+  json_string = read_url(url)
+else
+  file_path = cli.ask "Please, what is the file path?"
+  json_string = File.read(file_path)
+end
+
+target_path = cli.ask "Master, where would you like to save?"
+class_basename = cli.ask "Master, which name would like to call the first class?"
+
+cli.choose do |menu|
+  menu.prompt = "Please choose your target programming language?"
+  menu.choice("Objective-C") {
+    objc = Kilza::Objc.new(json_string)
+    objc.classes(class_basename).each { |c|
+      c.sources.each{ |s|
+        File.write(File.join(target_path, s.file_name), s.source)
+      }
+    }
+  }
+  menu.choices("Java") {
+    java = Kilza::Java.new(json_string)
+    java.classes(class_basename).each { |c|
+      c.sources.each{ |s|
+        File.write(File.join(target_path, s.file_name), s.source)
+      }
+    }
+  }
+end

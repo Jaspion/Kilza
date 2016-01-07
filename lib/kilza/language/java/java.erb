@@ -1,0 +1,125 @@
+package <%= @package %>;
+
+import org.json.*;
+import java.io.Serializable;
+<% for @import in @imports %>
+<%= @import %>
+<% end %>
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+
+public class <%= @name %> implements Serializable
+{
+<% for @property in @properties %>
+    private static final String FIELD_<%= @property.name.upcase %> = "<%= @property.original_name %>";
+<% end %>
+
+<% for @property in @properties %>
+    @Expose
+    @SerializedName(FIELD_<%= @property.name.upcase %>)
+    <% if @property.is_array? %>
+    private ArrayList<<%= @property.type %>> <%= @property.name %>;
+    <% else %>
+    private <%= @property.type %> <%= @property.name %>;
+    <% end %>
+<% end %>
+
+    public <%= @name %>() {
+
+    }
+
+    public <%= @name %>(JSONObject jsonObject) {
+        parseObject(jsonObject);
+    }
+
+    public <%= @name %>(String jsonString) {
+        try {
+            parseString(jsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void parseString(String jsonString) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonString);
+        parseObject(jsonObject);
+    }
+
+    protected void parseObject(JSONObject object)
+    {
+<% for @property in @properties %>
+  <% if @property.is_array? %>
+        if (object.optJSONArray(FIELD_<%= @property.name.upcase %>) != null)
+        {
+            this.<%= @property.name %> = new ArrayList<>();
+            JSONArray <%= @property.name %>JsonArray = object.optJSONArray(FIELD_<%= @property.name.upcase %>);
+            for (int i = 0; i < <%= @property.name %>JsonArray.length(); i++) {
+    <% if @property.is_object? %>
+                JSONObject <%= @property.name %> = <%= @property.name %>JsonArray.optJSONObject(i);
+    <% else %>
+                <%= @property.type %> <%= @property.name %> = <%= @property.name %>JsonArray.optJSON<%= @property.type %>(i);
+    <% end %>
+                this.<%= @property.name %>.add(new <%= @property.type %>(<%= @property.name %>));
+            }
+        }
+  <% else %>
+    <% if @property.is_object? %>
+        this.<%= @property.name %> = new <%= @property.type %>(object.optJSONObject(FIELD_<%= @property.name.upcase %>));
+    <% else %>
+      <% if @property.is_nil? %>
+        this.<%= @property.name %> = object.opt(FIELD_<%= @property.name.upcase %>);
+      <% else %>
+        this.<%= @property.name %> = object.opt<%= @property.type %>(FIELD_<%= @property.name.upcase %>);
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+    }
+
+<% for @property in @properties %>
+    public void set<%= @property.name.capitalize %>(<%= @property.type %> value) {
+        this.<%= @property.name %> = value;
+    }
+
+    <% if @property.is_boolean? %>
+    public <%= @property.type %> is<%= @property.name.capitalize %>() {
+    <% else %>
+    public <%= @property.type %> get<%= @property.name.capitalize %>() {
+    <% end %>
+        return this.<%= @property.name %>;
+    }
+
+<% end %>
+<%
+@eq = []
+@hs = []
+for @property in @properties
+  @eq.push("((#{@name}) obj).get#{@property.name.capitalize}().equals(#{@property.name})") if (@property.is_key)
+  @hs.push("((#{@property.type})#{@property.name}).hashCode()") if (@property.is_key)
+end
+%>
+<% if @eq.length > 0 %>
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof <%= @name %>) {
+            return <%= @eq.join(" &&\n            ") %> ;
+        }
+        return false;
+    }
+<% end %>
+<% if @hs.length > 0 %>
+    @Override
+    public int hashCode(){
+        return (<%= @hs.join(" +\n        ") %>);
+    }
+<% end %>
+
+    @Override
+    public String toString() {
+      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+      return gson.toJson(this);
+    }
+}
