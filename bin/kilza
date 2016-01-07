@@ -11,47 +11,100 @@ def read_url(url)
 end
 
 cli = HighLine.new
+cli.say "Hi <%= color('master', BOLD) %>. I can convert your JSON string to Object files.\n\n"
 
-say "Hi master. I can convert your JSON string to Object files."
-
-json_is_url = false
-cli.choose do |menu|
-  menu.prompt = "Where is your JSON string content?"
-  menu.choice("It's online. I have an URL.") {
-    say("Ok.")
-    json_is_url = true
-  }
-  menu.choices("It's offline. I have the file path.") { say("Ok.") }
-end
-
-json_string = ''
-if (json_is_url)
-  url = cli.ask "Please, what is the URL?"
-  json_string = read_url(url)
-else
-  file_path = cli.ask "Please, what is the file path?"
-  json_string = File.read(file_path)
-end
-
-target_path = cli.ask "Master, where would you like to save?"
-class_basename = cli.ask "Master, which name would like to call the first class?"
-
-cli.choose do |menu|
-  menu.prompt = "Please choose your target programming language?"
-  menu.choice("Objective-C") {
-    objc = Kilza::Objc.new(json_string)
-    objc.classes(class_basename).each { |c|
-      c.sources.each{ |s|
-        File.write(File.join(target_path, s.file_name), s.source)
+loop do
+  begin
+    cli.say "<%= color('What can I do for you?', BOLD) %>"
+    cli.choose do |menu|
+      menu.prompt = ""
+      menu.choice("I want some JSON objects.") {
       }
-    }
-  }
-  menu.choices("Java") {
-    java = Kilza::Java.new(json_string)
-    java.classes(class_basename).each { |c|
-      c.sources.each{ |s|
-        File.write(File.join(target_path, s.file_name), s.source)
+      menu.choice("Nothing.") {
+        break
       }
-    }
-  }
+    end
+
+    json_is_url = false
+    cli.say "<%= color('\nWhere is your JSON string content?', BOLD) %>"
+    cli.choose do |menu|
+      menu.prompt = ""
+      menu.choice("It's online. I have an URL.") {
+        json_is_url = true
+      }
+      menu.choice("It's offline. I have the file path.") { cli.say("Ok.") }
+    end
+
+    json_string = ''
+    if (json_is_url)
+      url = cli.ask ("<%= color('\nPlease, what is the URL?', BOLD) %>")
+      cli.say("<%= color('\nOk. I\\'ll try to get the content right now.', BOLD) %>")
+      json_string = read_url(url)
+    else
+      file_path = cli.ask ("<%= color('\nPlease, what is the file path?', BOLD) %>")
+      json_string = File.read(file_path)
+    end
+
+    target_path = cli.ask "<%= color('\nMaster, where would you like to save?', BOLD) %>"
+    target_path = File.expand_path(target_path)
+
+    class_basename = cli.ask "<%= color('\nMaster, which name would like to call the first class?', BOLD) %>"
+
+    target_lang = ''
+    cli.say("<%= color('\nPlease choose your target programming language?', BOLD) %>")
+    cli.choose do |menu|
+      menu.prompt = ""
+      menu.choice("Objective-C") {
+        target_lang = "objc"
+      }
+      menu.choice("Java") {
+        target_lang = "java"
+      }
+    end
+
+    cli.say "<%= color('\nIs that correct?', BOLD) %>"
+    cli.say("Target: " + target_path)
+    cli.say("Base class name:" + class_basename)
+    cli.say("Target language:" + target_lang)
+
+    cli.choose do |menu|
+      menu.prompt = ""
+      menu.choice("Yes.") {
+      }
+      menu.choice("No.") {
+        break
+      }
+    end
+
+    cli.say("<%= color('\nYes master. Now I\\'m going to generate all files.', BOLD) %>")
+    cli.say("<%= color('Berebekan Katabamba Berebekan Katabamba Berebekan Katabamba', BOLD) %>")
+
+    if (target_lang == "objc")
+      objc = Kilza::Objc.new(json_string)
+      objc.classes(class_basename).each { |c|
+        c.sources.each{ |s|
+          File.write(File.join(target_path, s.file_name), s.source)
+        }
+      }
+    else
+      java = Kilza::Java.new(json_string)
+      java.classes(class_basename).each { |c|
+        c.sources.each{ |s|
+          File.write(File.join(target_path, s.file_name), s.source)
+        }
+      }
+    end
+
+    cli.say("<%= color('\nKikera!', BOLD) %>")
+
+  rescue EOFError  # HighLine throws this if @input.eof?
+    break
+  rescue => e
+    cli.say("<%= color('\nOh master. Sorry, but I\\'ve encountered an error:', BOLD) %>")
+    puts e
+    puts "\n"
+  end
 end
+
+puts "Goodbye."
+exit
