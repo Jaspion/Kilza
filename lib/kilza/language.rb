@@ -70,7 +70,7 @@ module Kilza
     def classes(base_name)
       hash = JSON.parse(json_string)
       if (hash.is_a?(Array))
-        hash = { [base_name + "Object"] => hash }
+        hash = { base_name + "Object" => hash }
       end
       parse(hash, base_name)
       return @classes
