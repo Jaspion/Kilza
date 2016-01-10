@@ -1,8 +1,11 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'highline'
 require 'kilza'
+require 'pastel'
+require 'tty'
+require 'tty-prompt'
+require 'tty-spinner'
 require 'net/http'
 require 'uri'
 
@@ -10,101 +13,118 @@ def read_url(url)
   Net::HTTP.get(URI.parse(url))
 end
 
-cli = HighLine.new
-cli.say "Hi <%= color('master', BOLD) %>. I can convert your JSON string to Object files.\n\n"
-
-loop do
-  begin
-    cli.say "<%= color('What can I do for you?', BOLD) %>"
-    cli.choose do |menu|
-      menu.prompt = ""
-      menu.choice("I want some JSON objects.") {
-      }
-      menu.choice("Nothing.") {
-        break
-      }
+module TTY
+  class Prompt
+    class List
+      def numpad(value)
+        @numpad = value
+      end
     end
-
-    json_is_url = false
-    cli.say "<%= color('\nWhere is your JSON string content?', BOLD) %>"
-    cli.choose do |menu|
-      menu.prompt = ""
-      menu.choice("It's online. I have an URL.") {
-        json_is_url = true
-      }
-      menu.choice("It's offline. I have the file path.") { cli.say("Ok.") }
-    end
-
-    json_string = ''
-    if (json_is_url)
-      url = cli.ask ("<%= color('\nPlease, what is the URL?', BOLD) %>")
-      cli.say("<%= color('\nOk. I\\'ll try to get the content right now.', BOLD) %>")
-      json_string = read_url(url)
-    else
-      file_path = cli.ask ("<%= color('\nPlease, what is the file path?', BOLD) %>")
-      json_string = File.read(file_path)
-    end
-
-    target_path = cli.ask "<%= color('\nMaster, where would you like to save?', BOLD) %>"
-    target_path = File.expand_path(target_path)
-
-    class_basename = cli.ask "<%= color('\nMaster, which name would like to call the first class?', BOLD) %>"
-
-    target_lang = ''
-    cli.say("<%= color('\nPlease choose your target programming language?', BOLD) %>")
-    cli.choose do |menu|
-      menu.prompt = ""
-      menu.choice("Objective-C") {
-        target_lang = "objc"
-      }
-      menu.choice("Java") {
-        target_lang = "java"
-      }
-    end
-
-    cli.say "<%= color('\nIs that correct?', BOLD) %>"
-    cli.say("Target: " + target_path)
-    cli.say("Base class name:" + class_basename)
-    cli.say("Target language:" + target_lang)
-
-    cli.choose do |menu|
-      menu.prompt = ""
-      menu.choice("Yes.") {
-      }
-      menu.choice("No.") {
-        break
-      }
-    end
-
-    cli.say("<%= color('\nYes master. Now I\\'m going to generate all files.', BOLD) %>")
-    cli.say("<%= color('Berebekan Katabamba Berebekan Katabamba Berebekan Katabamba', BOLD) %>")
-
-    if (target_lang == "objc")
-      objc = Kilza::Objc.new(json_string)
-      objc.classes(class_basename).each { |c|
-        c.sources.each{ |s|
-          File.write(File.join(target_path, s.file_name), s.source)
-        }
-      }
-    else
-      java = Kilza::Java.new(json_string)
-      java.classes(class_basename).each { |c|
-        c.sources.each{ |s|
-          File.write(File.join(target_path, s.file_name), s.source)
-        }
-      }
-    end
-
-    cli.say("<%= color('\nKikera!', BOLD) %>")
-
-  rescue EOFError  # HighLine throws this if @input.eof?
-    break
-  rescue => e
-    cli.say("<%= color('\nOh master. Sorry, but I\\'ve encountered an error:', BOLD) %>")
-    puts e
-    puts "\n"
   end
 end
 
-puts "Goodbye."
-exit
+class KilzaApplication
+
+  def initialize
+    @pastel = Pastel.new
+    @prompt = TTY::Prompt.new
+    @spinner = TTY::Spinner.new
+
+    @done = false
+  end
+
+  def get_lang
+    action = @prompt.select(@pastel.bold("Target programming language?")) do |menu|
+      menu.default 1
+      menu.numpad true
+
+      menu.choice "Objective-C", 1
+      menu.choice "Java", 2
+    end
+    action
+  end
+
+  def get_json
+    action = @prompt.select(@pastel.bold("Where is your JSON string content?")) do |menu|
+      menu.default 1
+      menu.numpad true
+
+      menu.choice "It's online. I have an URL.", 1
+      menu.choice "It's offline. I have the file path.", 2
+    end
+
+    json_string = ''
+    if (action == 1)
+      url = @prompt.ask(@pastel.bold("Please, what is the URL?")) do |q|
+        q.required true
+      end
+      @prompt.say(@pastel.bold("Ok. I'll try to get the content right now."))
+      json_string = read_url(url)
+    else
+      file_path = File.expand_path(@prompt.ask(@pastel.bold("Please, what is the file path? "))) do |q|
+        q.required true
+      end
+      json_string = File.read(file_path.chomp)
+    end
+    json_string
+  end
+
+  def run
+    while (not @done)
+      action = @prompt.select(@pastel.bold("Choose your destiny?")) do |menu|
+        menu.default 1
+        menu.numpad true
+
+        menu.choice 'I want some JSON objects.', 1
+        menu.choice 'Nothing.', 2
+      end
+      if action == 1
+        json_string = get_json
+        target_path = @prompt.ask(@pastel.bold("Master, where would you like to save? ")).chomp
+        target_path = File.expand_path(target_path)
+        class_basename = @prompt.ask(@pastel.bold("Master, which name would like to call the first class? ")).chomp
+        lang = get_lang
+
+        class_package = nil
+        if (lang == 2)
+          class_package = @prompt.ask(@pastel.bold("What is the target Java package? ")).chomp
+        end
+
+        @prompt.say(@pastel.bold("Target: ") + target_path)
+        @prompt.say(@pastel.bold("Base class name: ") + class_basename)
+        @prompt.say(@pastel.bold("Target language: ") + (lang == 1 ? 'Objective-C' : 'Java'))
+        if (not class_package.nil?)
+          @prompt.say(@pastel.bold("Target package: ") + class_package)
+        end
+        ok = @prompt.yes?('Is that correct?')
+        if (ok.nil? or ok)
+          @prompt.say(@pastel.bold("Yes master. Now I'm going to generate all files."))
+          @prompt.say(@pastel.bold("Berebekan Katabamba Berebekan Katabamba Berebekan Katabamba"))
+
+          if (lang == 1)
+            objc = Kilza::Objc.new(json_string)
+            objc.classes(class_basename).each { |c|
+              c.sources.each{ |s|
+                File.write(File.join(target_path, s.file_name), s.source)
+              }
+            }
+          else
+            java = Kilza::Java.new(json_string)
+            java.classes(class_basename).each { |c|
+              c.package = class_package
+              c.sources.each{ |s|
+                File.write(File.join(target_path, s.file_name), s.source)
+              }
+            }
+          end
+
+          @prompt.say(@pastel.bold("Kikera!"))
+        end
+      else
+        @done = true
+      end
+    end
+  end
+end
+
+KilzaApplication.new.run

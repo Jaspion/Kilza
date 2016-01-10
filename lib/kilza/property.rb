@@ -20,7 +20,7 @@ module Kilza
     end
 
     def is_object?
-      @type == 'object'
+      @type == 'object' or @type == @name.capitalize
     end
 
     def is_fixnum?

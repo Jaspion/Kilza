@@ -80,14 +80,14 @@ public class <%= @name %> implements Serializable
     }
 
 <% for @property in @properties %>
-    public void set<%= @property.name.capitalize %>(<%= @property.type %> value) {
+    public void set<%= @property.name.capitalize %>(<%= @property.is_array? ? "ArrayList<" + @property.type + ">" : @property.type %> value) {
         this.<%= @property.name %> = value;
     }
 
     <% if @property.is_boolean? %>
     public <%= @property.type %> is<%= @property.name.capitalize %>() {
     <% else %>
-    public <%= @property.type %> get<%= @property.name.capitalize %>() {
+    public <%= @property.is_array? ? "ArrayList<" + @property.type + ">" : @property.type %> get<%= @property.name.capitalize %>() {
     <% end %>
         return this.<%= @property.name %>;
     }
@@ -98,7 +98,7 @@ public class <%= @name %> implements Serializable
 @hs = []
 for @property in @properties
   @eq.push("((#{@name}) obj).get#{@property.name.capitalize}().equals(#{@property.name})") if (@property.is_key)
-  @hs.push("((#{@property.type})#{@property.name}).hashCode()") if (@property.is_key)
+  @hs.push("(#{@property.name}).hashCode()") if (@property.is_key)
 end
 %>
 <% if @eq.length > 0 %>

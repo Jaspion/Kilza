@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Toshiro Sugii"]
   spec.email         = ["rtoshiro@printwtf.com"]
 
-  spec.summary       = %q{Parses JSON objects and generates objects in other languages}
-  spec.description   = %q{Parses JSON objects and generates objects in other languages}
+  spec.summary       = %q{Parses JSON objects and generates objects into other languages}
+  spec.description   = %q{Parses JSON objects and generates objects into other languages}
   spec.homepage      = "https://github.com/Jaspion/Kilza"
   spec.license       = "MIT"
 
@@ -33,5 +33,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "json"
   spec.add_dependency "erubis"
-  spec.add_dependency "highline"
+  spec.add_dependency "tty"
+  spec.add_dependency "pastel"
 end

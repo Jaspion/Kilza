@@ -8,6 +8,11 @@ module Kilza
 
       attr_accessor :package
 
+      def initialize(name, package = nil)
+        super(name)
+        @package = package
+      end
+
       def sources
         cur_path = File.expand_path(__FILE__)
         java_path = File.join(File.dirname(cur_path), File.basename(cur_path, '.rb'), "java.erb")

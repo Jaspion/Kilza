@@ -97,8 +97,8 @@ public class Base implements Serializable
         this.num = object.optLong(FIELD_NUM);
         this.flo = object.optDouble(FIELD_FLO);
         this.boo = object.optBoolean(FIELD_BOO);
-        this.spa_ce = object.optSpa_ce(FIELD_SPA_CE);
-        this.special = object.optSpecial(FIELD_SPECIAL);
+        this.spa_ce = new Spa_ce(object.optJSONObject(FIELD_SPA_CE));
+        this.special = new Special(object.optJSONObject(FIELD_SPECIAL));
         if (object.optJSONArray(FIELD_ARRDOUBLE) != null)
         {
             this.arrdouble = new ArrayList<>();
@@ -140,17 +140,17 @@ public class Base implements Serializable
             this.arrnull = new ArrayList<>();
             JSONArray arrnullJsonArray = object.optJSONArray(FIELD_ARRNULL);
             for (int i = 0; i < arrnullJsonArray.length(); i++) {
-                Arrnull arrnull = arrnullJsonArray.optJSONArrnull(i);
+                JSONObject arrnull = arrnullJsonArray.optJSONObject(i);
                 this.arrnull.add(new Arrnull(arrnull));
             }
         }
-        this.obj = object.optObj(FIELD_OBJ);
+        this.obj = new Obj(object.optJSONObject(FIELD_OBJ));
         if (object.optJSONArray(FIELD_ARROBJ) != null)
         {
             this.arrobj = new ArrayList<>();
             JSONArray arrobjJsonArray = object.optJSONArray(FIELD_ARROBJ);
             for (int i = 0; i < arrobjJsonArray.length(); i++) {
-                Arrobj arrobj = arrobjJsonArray.optJSONArrobj(i);
+                JSONObject arrobj = arrobjJsonArray.optJSONObject(i);
                 this.arrobj.add(new Arrobj(arrobj));
             }
         }
