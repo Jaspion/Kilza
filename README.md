@@ -1,5 +1,11 @@
 # Kilza
 
+[![Build Status](https://travis-ci.org/Jaspion/Kilza.svg?branch=master)](https://travis-ci.org/Jaspion/Kilza)
+
+[![Coverage Status](https://coveralls.io/repos/Jaspion/Kilza/badge.svg?branch=master&service=github)](https://coveralls.io/github/Jaspion/Kilza?branch=master)
+
+
+
 Ruby gem that can convert JSON strings in Objects.
 
 It supports Objective-C and Java classes. Contribuition would be appreciate.
