@@ -16,14 +16,17 @@ end
 module TTY
   class Prompt
     class List
-      def numpad(value)
-        @numpad = value
+      def enum(value)
+        @enum = value
       end
     end
   end
 end
 
 class KilzaApplication
+
+  OBJC = 1
+  JAVA = 2
 
   def initialize
     @pastel = Pastel.new
@@ -36,10 +39,10 @@ class KilzaApplication
   def get_lang
     action = @prompt.select(@pastel.bold("Target programming language?")) do |menu|
       menu.default 1
-      menu.numpad true
+      menu.enum '.'
 
-      menu.choice "Objective-C", 1
-      menu.choice "Java", 2
+      menu.choice "Objective-C", OBJC
+      menu.choice "Java", JAVA
     end
     action
   end
@@ -47,7 +50,7 @@ class KilzaApplication
   def get_json
     action = @prompt.select(@pastel.bold("Where is your JSON string content?")) do |menu|
       menu.default 1
-      menu.numpad true
+      menu.enum '.'
 
       menu.choice "It's online. I have an URL.", 1
       menu.choice "It's offline. I have the file path.", 2
@@ -69,30 +72,61 @@ class KilzaApplication
     json_string
   end
 
+  def generate(lang, json_string, class_basename, target_path, class_package = '')
+    if (lang == OBJC)
+      objc = Kilza::Objc.new(json_string)
+      objc.classes(class_basename).each { |c|
+        c.sources.each{ |s|
+          File.write(File.join(target_path, s.file_name), s.source)
+        }
+      }
+    elsif (lang == JAVA)
+      java = Kilza::Java.new(json_string)
+      java.classes(class_basename).each { |c|
+        c.package = class_package
+        c.sources.each{ |s|
+          File.write(File.join(target_path, s.file_name), s.source)
+        }
+      }
+    end
+  end
+
+  def get_target_path
+    target_path = @prompt.ask(@pastel.bold("Master, where would you like to save? ")).chomp
+    File.expand_path(target_path)
+  end
+
+  def get_basename
+    @prompt.ask(@pastel.bold("Master, which name would like to call the first class? ")).chomp
+  end
+
+  def get_package
+    @prompt.ask(@pastel.bold("What is the target Java package? ")).chomp
+  end
+
   def run
     while (not @done)
       action = @prompt.select(@pastel.bold("Choose your destiny?")) do |menu|
         menu.default 1
-        menu.numpad true
+        menu.enum '.'
 
         menu.choice 'I want some JSON objects.', 1
         menu.choice 'Nothing.', 2
       end
       if action == 1
         json_string = get_json
-        target_path = @prompt.ask(@pastel.bold("Master, where would you like to save? ")).chomp
-        target_path = File.expand_path(target_path)
-        class_basename = @prompt.ask(@pastel.bold("Master, which name would like to call the first class? ")).chomp
+        target_path = get_target_path
+        class_basename = get_basename
         lang = get_lang
 
         class_package = nil
-        if (lang == 2)
-          class_package = @prompt.ask(@pastel.bold("What is the target Java package? ")).chomp
+        if (lang == JAVA)
+          class_package = get_package
         end
 
         @prompt.say(@pastel.bold("Target: ") + target_path)
         @prompt.say(@pastel.bold("Base class name: ") + class_basename)
-        @prompt.say(@pastel.bold("Target language: ") + (lang == 1 ? 'Objective-C' : 'Java'))
+        @prompt.say(@pastel.bold("Target language: ") + (lang == OBJC ? 'Objective-C' : 'Java'))
         if (not class_package.nil?)
           @prompt.say(@pastel.bold("Target package: ") + class_package)
         end
@@ -101,22 +135,7 @@ class KilzaApplication
           @prompt.say(@pastel.bold("Yes master. Now I'm going to generate all files."))
           @prompt.say(@pastel.bold("Berebekan Katabamba Berebekan Katabamba Berebekan Katabamba"))
 
-          if (lang == 1)
-            objc = Kilza::Objc.new(json_string)
-            objc.classes(class_basename).each { |c|
-              c.sources.each{ |s|
-                File.write(File.join(target_path, s.file_name), s.source)
-              }
-            }
-          else
-            java = Kilza::Java.new(json_string)
-            java.classes(class_basename).each { |c|
-              c.package = class_package
-              c.sources.each{ |s|
-                File.write(File.join(target_path, s.file_name), s.source)
-              }
-            }
-          end
+          generate(lang, json_string, class_basename, target_path, class_package)
 
           @prompt.say(@pastel.bold("Kikera!"))
         end

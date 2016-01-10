@@ -4,7 +4,7 @@
 
 [![Coverage Status](https://coveralls.io/repos/Jaspion/Kilza/badge.svg?branch=master&service=github)](https://coveralls.io/github/Jaspion/Kilza?branch=master)
 
-
+[![Inline docs](http://inch-ci.org/github/jaspion/kilza.svg?branch=master)](http://inch-ci.org/github/jaspion/kilza)
 
 Ruby gem that can convert JSON strings in Objects.
 

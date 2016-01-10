@@ -19,16 +19,32 @@ module Kilza
       @equal_keys = []
     end
 
+    # Creates a new Class object and checks for valid name
+    #
+    # @param name [String] name of the class to be created
+    # @return [Kilza::Class] new class
     def get_class(name)
       name = "_" + name if not @reserved_words.index(name).nil?
       Class.new(name)
     end
 
+    # Creates a new Property object and checks for valid name
+    #
+    # @param name [String] name of the property to be created
+    # @param type [String] type of the property based on class name
+    # @param is_array [Boolean] indicates if this property represents an array
+    # @param is_key [Boolean] indicates if this property can be used to compare objects
+    # @return [Kilza::Property] new property
     def get_property(name, type, is_array, is_key)
       name = "_" + name if not @reserved_words.index(name).nil?
       Property.new(name, type, is_array, is_key.nil?)
     end
 
+    # Searches for a Kilza::Class inside @classes
+    # and creates a new one if could not be found
+    #
+    # @param name [String] class name to find
+    # @return [Kilza::Class] class with the specified name
     def find(name)
       @classes.each { |cl|
         return cl if (cl.name == name)
@@ -37,6 +53,14 @@ module Kilza
       return @classes.last
     end
 
+    # Traverses each element inside a hash
+    # Transform each hash into Kilza::Class
+    # Trasnform each element into Kilza::Property
+    # It build the @classes property
+    #
+    # @param hash [Hash] hash to be parsed
+    # @param class_name [String] class name that represents the hash
+    # @return
     def parse(hash, class_name)
       current_class = find(class_name)
       hash.each { |property_name, value|
