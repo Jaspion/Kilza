@@ -101,10 +101,10 @@ public class Obj implements Serializable
     }
     @Override
     public int hashCode(){
-        return (((String)str).hashCode() +
-        ((Long)num).hashCode() +
-        ((Double)flo).hashCode() +
-        ((Boolean)boo).hashCode());
+        return (str.hashCode() +
+        num.hashCode() +
+        flo.hashCode() +
+        boo.hashCode());
     }
 
     @Override

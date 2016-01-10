@@ -59,7 +59,7 @@ public class Spa_ce implements Serializable
     }
     @Override
     public int hashCode(){
-        return (((String)_1one).hashCode());
+        return (_1one.hashCode());
     }
 
     @Override

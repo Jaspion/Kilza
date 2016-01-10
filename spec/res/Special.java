@@ -101,10 +101,10 @@ public class Special implements Serializable
     }
     @Override
     public int hashCode(){
-        return (((Object)a).hashCode() +
-        ((String)_b______).hashCode() +
-        ((String)with_some_spaces).hashCode() +
-        ((Long)_new).hashCode());
+        return (a.hashCode() +
+        _b______.hashCode() +
+        with_some_spaces.hashCode() +
+        _new.hashCode());
     }
 
     @Override

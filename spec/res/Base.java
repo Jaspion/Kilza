@@ -212,43 +212,43 @@ public class Base implements Serializable
         return this.special;
     }
 
-    public void setArrdouble(Double value) {
+    public void setArrdouble(ArrayList<Double> value) {
         this.arrdouble = value;
     }
 
-    public Double getArrdouble() {
+    public ArrayList<Double> getArrdouble() {
         return this.arrdouble;
     }
 
-    public void setArrnum(Long value) {
+    public void setArrnum(ArrayList<Long> value) {
         this.arrnum = value;
     }
 
-    public Long getArrnum() {
+    public ArrayList<Long> getArrnum() {
         return this.arrnum;
     }
 
-    public void setArrstr(String value) {
+    public void setArrstr(ArrayList<String> value) {
         this.arrstr = value;
     }
 
-    public String getArrstr() {
+    public ArrayList<String> getArrstr() {
         return this.arrstr;
     }
 
-    public void setArrboo(Boolean value) {
+    public void setArrboo(ArrayList<Boolean> value) {
         this.arrboo = value;
     }
 
-    public Boolean getArrboo() {
+    public ArrayList<Boolean> getArrboo() {
         return this.arrboo;
     }
 
-    public void setArrnull(Arrnull value) {
+    public void setArrnull(ArrayList<Arrnull> value) {
         this.arrnull = value;
     }
 
-    public Arrnull getArrnull() {
+    public ArrayList<Arrnull> getArrnull() {
         return this.arrnull;
     }
 
@@ -260,11 +260,11 @@ public class Base implements Serializable
         return this.obj;
     }
 
-    public void setArrobj(Arrobj value) {
+    public void setArrobj(ArrayList<Arrobj> value) {
         this.arrobj = value;
     }
 
-    public Arrobj getArrobj() {
+    public ArrayList<Arrobj> getArrobj() {
         return this.arrobj;
     }
 
@@ -289,19 +289,19 @@ public class Base implements Serializable
     }
     @Override
     public int hashCode(){
-        return (((String)str).hashCode() +
-        ((Long)num).hashCode() +
-        ((Double)flo).hashCode() +
-        ((Boolean)boo).hashCode() +
-        ((Spa_ce)spa_ce).hashCode() +
-        ((Special)special).hashCode() +
-        ((Double)arrdouble).hashCode() +
-        ((Long)arrnum).hashCode() +
-        ((String)arrstr).hashCode() +
-        ((Boolean)arrboo).hashCode() +
-        ((Arrnull)arrnull).hashCode() +
-        ((Obj)obj).hashCode() +
-        ((Arrobj)arrobj).hashCode());
+        return (str.hashCode() +
+        num.hashCode() +
+        flo.hashCode() +
+        boo.hashCode() +
+        spa_ce.hashCode() +
+        special.hashCode() +
+        arrdouble.hashCode() +
+        arrnum.hashCode() +
+        arrstr.hashCode() +
+        arrboo.hashCode() +
+        arrnull.hashCode() +
+        obj.hashCode() +
+        arrobj.hashCode());
     }
 
     @Override

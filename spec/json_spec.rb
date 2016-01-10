@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'fileutils'
+require 'erubis'
 
 require 'kilza'
 
@@ -16,7 +17,8 @@ describe "Kilza" do
       @objc.classes('Base').each { |c|
         c.sources.each{ |s|
           test_source = File.read(File.join(@res_path, s.file_name))
-          expect(test_source).to eq(s.source)
+          eruby = Erubis::Eruby.new(test_source)
+          expect(eruby.result).to eq(s.source)
         }
       }
     end
@@ -28,7 +30,8 @@ describe "Kilza" do
       @java.classes('Base').each { |c|
         c.sources.each{ |s|
           test_source = File.read(File.join(@res_path, s.file_name))
-          expect(test_source).to eq(s.source)
+          eruby = Erubis::Eruby.new(test_source)
+          expect(eruby.result).to eq(s.source)
         }
       }
     end

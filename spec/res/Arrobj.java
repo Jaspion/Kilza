@@ -115,11 +115,11 @@ public class Arrobj implements Serializable
     }
     @Override
     public int hashCode(){
-        return (((String)str).hashCode() +
-        ((Long)num).hashCode() +
-        ((Double)flo).hashCode() +
-        ((Boolean)boo).hashCode() +
-        ((Object)_null).hashCode());
+        return (str.hashCode() +
+        num.hashCode() +
+        flo.hashCode() +
+        boo.hashCode() +
+        _null.hashCode());
     }
 
     @Override

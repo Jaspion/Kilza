@@ -1,8 +1,8 @@
 //
 //  Obj.m
 //
-//  Created on 2016-01-07
-//  Copyright (c) 2016. All rights reserved.
+//  Created on <%= Time.now.strftime("%Y-%m-%d") %>
+//  Copyright (c) <%= Time.now.strftime("%Y") %>. All rights reserved.
 //
 
 #import "Obj.h"

@@ -98,7 +98,7 @@ public class <%= @name %> implements Serializable
 @hs = []
 for @property in @properties
   @eq.push("((#{@name}) obj).get#{@property.name.capitalize}().equals(#{@property.name})") if (@property.is_key)
-  @hs.push("(#{@property.name}).hashCode()") if (@property.is_key)
+  @hs.push("#{@property.name}.hashCode()") if (@property.is_key)
 end
 %>
 <% if @eq.length > 0 %>

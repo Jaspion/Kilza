@@ -150,8 +150,8 @@ public class Mybaseclass implements Serializable
     }
     @Override
     public int hashCode(){
-        return (((Long)code).hashCode() +
-        ((String)message).hashCode());
+        return (code.hashCode() +
+        message.hashCode());
     }
 
     @Override
