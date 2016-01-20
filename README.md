@@ -1,5 +1,7 @@
 # Kilza
 
+[![Gem Version](https://badge.fury.io/rb/kilza.svg)](https://badge.fury.io/rb/kilza)
+
 [![Build Status](https://travis-ci.org/Jaspion/Kilza.svg?branch=master)](https://travis-ci.org/Jaspion/Kilza)
 
 [![Coverage Status](https://coveralls.io/repos/Jaspion/Kilza/badge.svg?branch=master&service=github)](https://coveralls.io/github/Jaspion/Kilza?branch=master)
