@@ -1,9 +1,11 @@
+require 'coveralls'
+Coveralls.wear!
+
 require 'spec_helper'
 require 'fileutils'
 require 'erubis'
 require 'kilza'
-require 'coveralls'
-Coveralls.wear!
+
 
 describe 'Kilza' do
   before(:context) do
