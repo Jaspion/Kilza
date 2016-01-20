@@ -13,7 +13,7 @@
 @property (nonatomic, strong) id a;
 @property (nonatomic, strong) NSString * _b______;
 @property (nonatomic, strong) NSString * with_some_spaces;
-@property (nonatomic, strong) NSNumber * new;
+@property (nonatomic, strong) NSNumber * _mynew;
 
 + (Special *)modelWithDictionary:(NSDictionary *)dict;
 + (Special *)modelWithString:(NSString *)json;

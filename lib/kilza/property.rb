@@ -1,58 +1,62 @@
 module Kilza
+  # Represents a single Class property
   class Property
+    # Normalized property name
+    # Starts with _ or alphanumeric character
+    # and doesn't contain any special character
     attr_accessor :name
-    attr_accessor :original_name
-    attr_accessor :type
-    attr_accessor :params
-    attr_accessor :is_array
-    attr_accessor :is_key
 
-    def initialize(name, type, is_array, is_key)
-      @name = Kilza::normalize(name)
+    # Original JSON property name
+    attr_accessor :original_name
+
+    # Ruby string type
+    # Can be object, fixnum, float, falseclass, trueclass and nilclass
+    attr_accessor :type
+
+    # Indicates if the property represents an array of objects
+    attr_accessor :array
+    alias_method :array?, :array
+
+    # Indicates if the property should be used for comparing purposes
+    # Used to compare if one object is equal to another one
+    attr_accessor :key
+
+    def initialize(name, type, array, key)
+      @name = Kilza.normalize(name)
       @original_name = name
       @type = type
-      @is_array = is_array
-      @is_key = is_key
+      @array = array
+      @key = key
+      @original_type = type
     end
 
-    def is_array?
-      @is_array
+    def object?
+      @original_type == 'hash'
     end
 
-    def is_object?
-      @type == 'object' or @type == @name.capitalize
+    def fixnum?
+      @original_type == 'fixnum'
     end
 
-    def is_fixnum?
-      @type == 'fixnum'
+    def boolean?
+      @original_type == 'trueclass' || @original_type == 'falseclass'
     end
 
-    def is_boolean?
-      @type == 'trueclass' or @type == 'falseclass'
+    def float?
+      @original_type == 'float'
     end
 
-    def is_float?
-      @type == 'float'
+    def null?
+      @original_type == 'nilclass'
     end
 
-    def is_nil?
-      @type == 'nilclass'
-    end
-
-    def to_hash
-      hash = {
-        :name => @name,
-        :original_name => @original_name,
-        :type => @type,
-        :params => @params,
-        :is_array? => @is_array,
-        :is_object? => is_object?,
-        :is_fixnum? => is_fixnum?,
-        :is_boolean? => is_boolean?,
-        :is_float? => is_float?,
-        :is_nil? => is_nil?
-      }
-      hash
+    def to_s
+      {
+        name: @name,
+        original_name: @original_name,
+        type: @type,
+        array?: @array
+      }.to_s
     end
   end
 end

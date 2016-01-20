@@ -57,9 +57,9 @@ NSString * const k<%= @name %><%= @property.name.capitalize %> = @"<%= @property
   if (self && [dict isKindOfClass:[NSDictionary class]])
   {
 <% for @property in @properties %>
-<% if @property.is_object? %>
+<% if @property.object? || (@property.null? && @property.array?) %>
     NSObject *obj<%= @property.name.capitalize %> = [dict objectForKey:k<%= @name %><%= @property.name.capitalize %>];
-<% if @property.is_array? %>
+<% if @property.array? %>
     if ([obj<%= @property.name.capitalize %> isKindOfClass:[NSArray class]])
     {
       NSMutableArray *list<%= @property.name.capitalize %> = [NSMutableArray array];
@@ -88,8 +88,8 @@ NSString * const k<%= @name %><%= @property.name.capitalize %> = @"<%= @property
   NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
 
 <% for @property in @properties %>
-<% if @property.is_object? %>
-<% if @property.is_array? %>
+<% if @property.object? || (@property.null? && @property.array?) %>
+<% if @property.array? %>
   NSMutableArray *tempArray<%= @property.name.capitalize %> = [NSMutableArray array];
   for (NSObject *subArray in self.<%= @property.name %>) {
     if ([subArray respondsToSelector:@selector(dictionaryRepresentation)]) {

@@ -59,7 +59,7 @@ public class Arrobj implements Serializable
         this.num = object.optLong(FIELD_NUM);
         this.flo = object.optDouble(FIELD_FLO);
         this.boo = object.optBoolean(FIELD_BOO);
-        this._null = object.optObject(FIELD__NULL);
+        this._null = object.opt(FIELD__NULL);
     }
 
     public void setStr(String value) {
@@ -90,7 +90,7 @@ public class Arrobj implements Serializable
         this.boo = value;
     }
 
-    public Boolean getBoo() {
+    public Boolean isBoo() {
         return this.boo;
     }
 

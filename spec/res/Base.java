@@ -192,7 +192,7 @@ public class Base implements Serializable
         this.boo = value;
     }
 
-    public Boolean getBoo() {
+    public Boolean isBoo() {
         return this.boo;
     }
 

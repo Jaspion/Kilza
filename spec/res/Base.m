@@ -13,7 +13,7 @@
 #import "Arrobj.h"
 
 // Original names
-NSString * const kBase_id = @"_id";
+NSString * const kBase_myid = @"_myid";
 NSString * const kBaseStr = @"str";
 NSString * const kBaseNum = @"num";
 NSString * const kBaseFlo = @"flo";
@@ -69,20 +69,49 @@ NSString * const kBaseArrobj = @"arrobj";
 
   if (self && [dict isKindOfClass:[NSDictionary class]])
   {
-    self._id = [self objectOrNilForKey:kBase_id fromDictionary:dict];
+    self._myid = [self objectOrNilForKey:kBase_myid fromDictionary:dict];
     self.str = [self objectOrNilForKey:kBaseStr fromDictionary:dict];
     self.num = [self objectOrNilForKey:kBaseNum fromDictionary:dict];
     self.flo = [self objectOrNilForKey:kBaseFlo fromDictionary:dict];
     self.boo = [self objectOrNilForKey:kBaseBoo fromDictionary:dict];
-    self.spa_ce = [self objectOrNilForKey:kBaseSpa_ce fromDictionary:dict];
-    self.special = [self objectOrNilForKey:kBaseSpecial fromDictionary:dict];
+    NSObject *objSpa_ce = [dict objectForKey:kBaseSpa_ce];
+    {
+      self.spa_ce = [Spa_ce modelWithDictionary:(NSDictionary *)objSpa_ce];
+    }
+    NSObject *objSpecial = [dict objectForKey:kBaseSpecial];
+    {
+      self.special = [Special modelWithDictionary:(NSDictionary *)objSpecial];
+    }
     self.arrdouble = [self objectOrNilForKey:kBaseArrdouble fromDictionary:dict];
     self.arrnum = [self objectOrNilForKey:kBaseArrnum fromDictionary:dict];
     self.arrstr = [self objectOrNilForKey:kBaseArrstr fromDictionary:dict];
     self.arrboo = [self objectOrNilForKey:kBaseArrboo fromDictionary:dict];
-    self.arrnull = [self objectOrNilForKey:kBaseArrnull fromDictionary:dict];
-    self.obj = [self objectOrNilForKey:kBaseObj fromDictionary:dict];
-    self.arrobj = [self objectOrNilForKey:kBaseArrobj fromDictionary:dict];
+    NSObject *objArrnull = [dict objectForKey:kBaseArrnull];
+    if ([objArrnull isKindOfClass:[NSArray class]])
+    {
+      NSMutableArray *listArrnull = [NSMutableArray array];
+      for (NSDictionary *item in (NSArray *)objArrnull) {
+        if ([item isKindOfClass:[NSDictionary class]]) {
+          [listArrnull addObject:[Arrnull modelWithDictionary:(NSDictionary *)item]];
+        }
+      }
+      self.arrnull = listArrnull;
+    }
+    NSObject *objObj = [dict objectForKey:kBaseObj];
+    {
+      self.obj = [Obj modelWithDictionary:(NSDictionary *)objObj];
+    }
+    NSObject *objArrobj = [dict objectForKey:kBaseArrobj];
+    if ([objArrobj isKindOfClass:[NSArray class]])
+    {
+      NSMutableArray *listArrobj = [NSMutableArray array];
+      for (NSDictionary *item in (NSArray *)objArrobj) {
+        if ([item isKindOfClass:[NSDictionary class]]) {
+          [listArrobj addObject:[Arrobj modelWithDictionary:(NSDictionary *)item]];
+        }
+      }
+      self.arrobj = listArrobj;
+    }
   }
   return self;
 }
@@ -91,20 +120,48 @@ NSString * const kBaseArrobj = @"arrobj";
 {
   NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
 
-  [mutableDict setValue:self._id forKey:kBase_id];
+  [mutableDict setValue:self._myid forKey:kBase_myid];
   [mutableDict setValue:self.str forKey:kBaseStr];
   [mutableDict setValue:self.num forKey:kBaseNum];
   [mutableDict setValue:self.flo forKey:kBaseFlo];
   [mutableDict setValue:self.boo forKey:kBaseBoo];
-  [mutableDict setValue:self.spa_ce forKey:kBaseSpa_ce];
-  [mutableDict setValue:self.special forKey:kBaseSpecial];
+  if ([self.spa_ce respondsToSelector:@selector(dictionaryRepresentation)]) {
+    [mutableDict setValue:[self.spa_ce performSelector:@selector(dictionaryRepresentation)] forKey:kBaseSpa_ce];
+  } else {
+    [mutableDict setValue:self.spa_ce forKey:kBaseSpa_ce];
+  }
+  if ([self.special respondsToSelector:@selector(dictionaryRepresentation)]) {
+    [mutableDict setValue:[self.special performSelector:@selector(dictionaryRepresentation)] forKey:kBaseSpecial];
+  } else {
+    [mutableDict setValue:self.special forKey:kBaseSpecial];
+  }
   [mutableDict setValue:self.arrdouble forKey:kBaseArrdouble];
   [mutableDict setValue:self.arrnum forKey:kBaseArrnum];
   [mutableDict setValue:self.arrstr forKey:kBaseArrstr];
   [mutableDict setValue:self.arrboo forKey:kBaseArrboo];
-  [mutableDict setValue:self.arrnull forKey:kBaseArrnull];
-  [mutableDict setValue:self.obj forKey:kBaseObj];
-  [mutableDict setValue:self.arrobj forKey:kBaseArrobj];
+  NSMutableArray *tempArrayArrnull = [NSMutableArray array];
+  for (NSObject *subArray in self.arrnull) {
+    if ([subArray respondsToSelector:@selector(dictionaryRepresentation)]) {
+       [tempArrayArrnull addObject:[subArray performSelector:@selector(dictionaryRepresentation)]];
+    } else {
+       [tempArrayArrnull addObject:subArray];
+    }
+  }
+  [mutableDict setValue:[NSArray arrayWithArray:tempArrayArrnull] forKey:kBaseArrnull];
+  if ([self.obj respondsToSelector:@selector(dictionaryRepresentation)]) {
+    [mutableDict setValue:[self.obj performSelector:@selector(dictionaryRepresentation)] forKey:kBaseObj];
+  } else {
+    [mutableDict setValue:self.obj forKey:kBaseObj];
+  }
+  NSMutableArray *tempArrayArrobj = [NSMutableArray array];
+  for (NSObject *subArray in self.arrobj) {
+    if ([subArray respondsToSelector:@selector(dictionaryRepresentation)]) {
+       [tempArrayArrobj addObject:[subArray performSelector:@selector(dictionaryRepresentation)]];
+    } else {
+       [tempArrayArrobj addObject:subArray];
+    }
+  }
+  [mutableDict setValue:[NSArray arrayWithArray:tempArrayArrobj] forKey:kBaseArrobj];
 
   return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
@@ -127,7 +184,7 @@ NSString * const kBaseArrobj = @"arrobj";
 {
   self = [super init];
 
-  self._id = [aDecoder decodeObjectForKey:kBase_id];
+  self._myid = [aDecoder decodeObjectForKey:kBase_myid];
   self.str = [aDecoder decodeObjectForKey:kBaseStr];
   self.num = [aDecoder decodeObjectForKey:kBaseNum];
   self.flo = [aDecoder decodeObjectForKey:kBaseFlo];
@@ -147,7 +204,7 @@ NSString * const kBaseArrobj = @"arrobj";
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-  [aCoder encodeObject:__id forKey:kBase_id];
+  [aCoder encodeObject:__myid forKey:kBase_myid];
   [aCoder encodeObject:_str forKey:kBaseStr];
   [aCoder encodeObject:_num forKey:kBaseNum];
   [aCoder encodeObject:_flo forKey:kBaseFlo];
@@ -168,7 +225,7 @@ NSString * const kBaseArrobj = @"arrobj";
   Base *copy = [[Base alloc] init];
   if (copy)
   {
-    copy._id = [self._id copyWithZone:zone];
+    copy._myid = [self._myid copyWithZone:zone];
     copy.str = [self.str copyWithZone:zone];
     copy.num = [self.num copyWithZone:zone];
     copy.flo = [self.flo copyWithZone:zone];

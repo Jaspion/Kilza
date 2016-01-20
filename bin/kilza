@@ -37,34 +37,34 @@ class KilzaApplication
   end
 
   def get_lang
-    action = @prompt.select(@pastel.bold("Target programming language?")) do |menu|
+    action = @prompt.select(@pastel.bold('Target programming language?')) do |menu|
       menu.default 1
       menu.enum '.'
 
-      menu.choice "Objective-C", OBJC
-      menu.choice "Java", JAVA
+      menu.choice 'Objective-C', OBJC
+      menu.choice 'Java', JAVA
     end
     action
   end
 
   def get_json
-    action = @prompt.select(@pastel.bold("Where is your JSON string content?")) do |menu|
+    action = @prompt.select(@pastel.bold('Where is your JSON string content?')) do |menu|
       menu.default 1
       menu.enum '.'
 
-      menu.choice "It's online. I have an URL.", 1
-      menu.choice "It's offline. I have the file path.", 2
+      menu.choice 'It\'s online. I have an URL.', 1
+      menu.choice 'It\'s offline. I have the file path.', 2
     end
 
     json_string = ''
     if (action == 1)
-      url = @prompt.ask(@pastel.bold("Please, what is the URL?")) do |q|
+      url = @prompt.ask(@pastel.bold('Please, what is the URL?')) do |q|
         q.required true
       end
-      @prompt.say(@pastel.bold("Ok. I'll try to get the content right now."))
+      @prompt.say(@pastel.bold('Ok. I\'ll try to get the content right now.'))
       json_string = read_url(url)
     else
-      file_path = File.expand_path(@prompt.ask(@pastel.bold("Please, what is the file path? "))) do |q|
+      file_path = File.expand_path(@prompt.ask(@pastel.bold('Please, what is the file path? '))) do |q|
         q.required true
       end
       json_string = File.read(file_path.chomp)
@@ -92,21 +92,21 @@ class KilzaApplication
   end
 
   def get_target_path
-    target_path = @prompt.ask(@pastel.bold("Master, where would you like to save? ")).chomp
+    target_path = @prompt.ask(@pastel.bold('Master, where would you like to save? ')).chomp
     File.expand_path(target_path)
   end
 
   def get_basename
-    @prompt.ask(@pastel.bold("Master, which name would like to call the first class? ")).chomp
+    @prompt.ask(@pastel.bold('Master, which name would like to call the first class? ')).chomp
   end
 
   def get_package
-    @prompt.ask(@pastel.bold("What is the target Java package? ")).chomp
+    @prompt.ask(@pastel.bold('What is the target Java package? ')).chomp
   end
 
   def run
     while (not @done)
-      action = @prompt.select(@pastel.bold("Choose your destiny?")) do |menu|
+      action = @prompt.select(@pastel.bold('Choose your destiny?')) do |menu|
         menu.default 1
         menu.enum '.'
 
@@ -119,25 +119,22 @@ class KilzaApplication
         class_basename = get_basename
         lang = get_lang
 
-        class_package = nil
-        if (lang == JAVA)
-          class_package = get_package
-        end
+        class_package = get_package if (lang == JAVA)
 
-        @prompt.say(@pastel.bold("Target: ") + target_path)
-        @prompt.say(@pastel.bold("Base class name: ") + class_basename)
-        @prompt.say(@pastel.bold("Target language: ") + (lang == OBJC ? 'Objective-C' : 'Java'))
-        if (not class_package.nil?)
-          @prompt.say(@pastel.bold("Target package: ") + class_package)
+        @prompt.say(@pastel.bold('Target: ') + target_path)
+        @prompt.say(@pastel.bold('Base class name: ') + class_basename)
+        @prompt.say(@pastel.bold('Target language: ') + (lang == OBJC ? 'Objective-C' : 'Java'))
+        if not class_package.nil?
+          @prompt.say(@pastel.bold('Target package: ') + class_package)
         end
         ok = @prompt.yes?('Is that correct?')
-        if (ok.nil? or ok)
-          @prompt.say(@pastel.bold("Yes master. Now I'm going to generate all files."))
-          @prompt.say(@pastel.bold("Berebekan Katabamba Berebekan Katabamba Berebekan Katabamba"))
+        if ok.nil? or ok
+          @prompt.say(@pastel.bold('Yes master. Now I\'m going to generate all files.'))
+          @prompt.say(@pastel.bold('Berebekan Katabamba Berebekan Katabamba Berebekan Katabamba'))
 
           generate(lang, json_string, class_basename, target_path, class_package)
 
-          @prompt.say(@pastel.bold("Kikera!"))
+          @prompt.say(@pastel.bold('Kikera!'))
         end
       else
         @done = true

@@ -11,7 +11,7 @@
 NSString * const kSpecialA = @"A";
 NSString * const kSpecial_b______ = @"[B]""&^ ";
 NSString * const kSpecialWith_some_spaces = @"with some spaces";
-NSString * const kSpecialNew = @"new";
+NSString * const kSpecial_mynew = @"_mynew";
 
 @interface Special ()
 
@@ -57,7 +57,7 @@ NSString * const kSpecialNew = @"new";
     self.a = [self objectOrNilForKey:kSpecialA fromDictionary:dict];
     self._b______ = [self objectOrNilForKey:kSpecial_b______ fromDictionary:dict];
     self.with_some_spaces = [self objectOrNilForKey:kSpecialWith_some_spaces fromDictionary:dict];
-    self.new = [self objectOrNilForKey:kSpecialNew fromDictionary:dict];
+    self._mynew = [self objectOrNilForKey:kSpecial_mynew fromDictionary:dict];
   }
   return self;
 }
@@ -69,7 +69,7 @@ NSString * const kSpecialNew = @"new";
   [mutableDict setValue:self.a forKey:kSpecialA];
   [mutableDict setValue:self._b______ forKey:kSpecial_b______];
   [mutableDict setValue:self.with_some_spaces forKey:kSpecialWith_some_spaces];
-  [mutableDict setValue:self.new forKey:kSpecialNew];
+  [mutableDict setValue:self._mynew forKey:kSpecial_mynew];
 
   return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
@@ -95,7 +95,7 @@ NSString * const kSpecialNew = @"new";
   self.a = [aDecoder decodeObjectForKey:kSpecialA];
   self._b______ = [aDecoder decodeObjectForKey:kSpecial_b______];
   self.with_some_spaces = [aDecoder decodeObjectForKey:kSpecialWith_some_spaces];
-  self.new = [aDecoder decodeObjectForKey:kSpecialNew];
+  self._mynew = [aDecoder decodeObjectForKey:kSpecial_mynew];
 
   return self;
 }
@@ -105,7 +105,7 @@ NSString * const kSpecialNew = @"new";
   [aCoder encodeObject:_a forKey:kSpecialA];
   [aCoder encodeObject:__b______ forKey:kSpecial_b______];
   [aCoder encodeObject:_with_some_spaces forKey:kSpecialWith_some_spaces];
-  [aCoder encodeObject:_new forKey:kSpecialNew];
+  [aCoder encodeObject:__mynew forKey:kSpecial_mynew];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -116,7 +116,7 @@ NSString * const kSpecialNew = @"new";
     copy.a = [self.a copyWithZone:zone];
     copy._b______ = [self._b______ copyWithZone:zone];
     copy.with_some_spaces = [self.with_some_spaces copyWithZone:zone];
-    copy.new = [self.new copyWithZone:zone];
+    copy._mynew = [self._mynew copyWithZone:zone];
   }
 
   return copy;

@@ -51,7 +51,7 @@ public class Special implements Serializable
 
     protected void parseObject(JSONObject object)
     {
-        this.a = object.optObject(FIELD_A);
+        this.a = object.opt(FIELD_A);
         this._b______ = object.optString(FIELD__B______);
         this.with_some_spaces = object.optString(FIELD_WITH_SOME_SPACES);
         this._new = object.optLong(FIELD__NEW);
