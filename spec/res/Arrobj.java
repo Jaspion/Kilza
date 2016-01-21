@@ -102,25 +102,6 @@ public class Arrobj implements Serializable
         return this._null;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Arrobj) {
-            return ((Arrobj) obj).getStr().equals(str) &&
-            ((Arrobj) obj).getNum().equals(num) &&
-            ((Arrobj) obj).getFlo().equals(flo) &&
-            ((Arrobj) obj).getBoo().equals(boo) &&
-            ((Arrobj) obj).get_null().equals(_null) ;
-        }
-        return false;
-    }
-    @Override
-    public int hashCode(){
-        return (str.hashCode() +
-        num.hashCode() +
-        flo.hashCode() +
-        boo.hashCode() +
-        _null.hashCode());
-    }
 
     @Override
     public String toString() {

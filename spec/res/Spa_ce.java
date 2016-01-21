@@ -50,17 +50,6 @@ public class Spa_ce implements Serializable
         return this._1one;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Spa_ce) {
-            return ((Spa_ce) obj).get_1one().equals(_1one) ;
-        }
-        return false;
-    }
-    @Override
-    public int hashCode(){
-        return (_1one.hashCode());
-    }
 
     @Override
     public String toString() {

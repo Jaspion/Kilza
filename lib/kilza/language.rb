@@ -43,6 +43,7 @@ module Kilza
       hash = JSON.parse(json_string)
       hash = { base_name + 'Object' => hash } if hash.is_a?(Array)
       parse_hash(base_name, hash)
+
       @classes
     end
 
@@ -69,7 +70,7 @@ module Kilza
     # @return [Kilza::Property] new property
     def property(name, type, array, key)
       name = @reserved_delimiter + name unless @reserved_words.index(name).nil?
-      Property.new(name, type, array, key.nil?)
+      Property.new(name, type, array, key)
     end
 
     # Searches for a Kilza::Class inside @classes
@@ -98,7 +99,7 @@ module Kilza
       return parse_array(class_name, name, value) if type == 'array'
 
       cur_class = find(class_name)
-      key = @equal_keys.index(name)
+      key = @equal_keys.index(name).nil? ? false : true
       cur_class.push(property(name, type, array, key))
 
       parse_hash(name, value) if type == 'hash'

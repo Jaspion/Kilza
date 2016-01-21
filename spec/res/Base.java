@@ -271,37 +271,13 @@ public class Base implements Serializable
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Base) {
-            return ((Base) obj).getStr().equals(str) &&
-            ((Base) obj).getNum().equals(num) &&
-            ((Base) obj).getFlo().equals(flo) &&
-            ((Base) obj).getBoo().equals(boo) &&
-            ((Base) obj).getSpa_ce().equals(spa_ce) &&
-            ((Base) obj).getSpecial().equals(special) &&
-            ((Base) obj).getArrdouble().equals(arrdouble) &&
-            ((Base) obj).getArrnum().equals(arrnum) &&
-            ((Base) obj).getArrstr().equals(arrstr) &&
-            ((Base) obj).getArrboo().equals(arrboo) &&
-            ((Base) obj).getArrnull().equals(arrnull) &&
-            ((Base) obj).getObj().equals(obj) &&
-            ((Base) obj).getArrobj().equals(arrobj) ;
+            return ((Base) obj).getId().equals(id) ;
         }
         return false;
     }
     @Override
     public int hashCode(){
-        return (str.hashCode() +
-        num.hashCode() +
-        flo.hashCode() +
-        boo.hashCode() +
-        spa_ce.hashCode() +
-        special.hashCode() +
-        arrdouble.hashCode() +
-        arrnum.hashCode() +
-        arrstr.hashCode() +
-        arrboo.hashCode() +
-        arrnull.hashCode() +
-        obj.hashCode() +
-        arrobj.hashCode());
+        return (id.hashCode());
     }
 
     @Override

@@ -58,7 +58,7 @@ class KilzaApplication
 
     json_string = ''
     if (action == 1)
-      url = @prompt.ask(@pastel.bold('Please, what is the URL?')) do |q|
+      url = @prompt.ask(@pastel.bold('Please, what is the URL? ')) do |q|
         q.required true
       end
       @prompt.say(@pastel.bold('Ok. I\'ll try to get the content right now.'))
@@ -105,8 +105,9 @@ class KilzaApplication
   end
 
   def run
+    @prompt.say(@pastel.bold('Kilza - v' + Kilza::VERSION))
     while (not @done)
-      action = @prompt.select(@pastel.bold('Choose your destiny?')) do |menu|
+      action = @prompt.select(@pastel.bold('Master, what can I do for you?')) do |menu|
         menu.default 1
         menu.enum '.'
 
@@ -127,11 +128,8 @@ class KilzaApplication
         if not class_package.nil?
           @prompt.say(@pastel.bold('Target package: ') + class_package)
         end
-        ok = @prompt.yes?('Is that correct?')
+        ok = @prompt.yes?('Is that correct? ')
         if ok.nil? or ok
-          @prompt.say(@pastel.bold('Yes master. Now I\'m going to generate all files.'))
-          @prompt.say(@pastel.bold('Berebekan Katabamba Berebekan Katabamba Berebekan Katabamba'))
-
           generate(lang, json_string, class_basename, target_path, class_package)
 
           @prompt.say(@pastel.bold('Kikera!'))

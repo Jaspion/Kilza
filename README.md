@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/Jaspion/Kilza.svg?branch=master)](https://travis-ci.org/Jaspion/Kilza)
 
-[![Coverage Status](https://coveralls.io/repos/Jaspion/Kilza/badge.svg?branch=master&service=github)](https://coveralls.io/github/Jaspion/Kilza?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Jaspion/Kilza/badge.svg?branch=master)](https://coveralls.io/github/Jaspion/Kilza?branch=master)
 
 [![Inline docs](http://inch-ci.org/github/jaspion/kilza.svg?branch=master)](http://inch-ci.org/github/jaspion/kilza)
 

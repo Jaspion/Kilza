@@ -89,23 +89,6 @@ public class Special implements Serializable
         return this._new;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Special) {
-            return ((Special) obj).getA().equals(a) &&
-            ((Special) obj).get_b______().equals(_b______) &&
-            ((Special) obj).getWith_some_spaces().equals(with_some_spaces) &&
-            ((Special) obj).get_new().equals(_new) ;
-        }
-        return false;
-    }
-    @Override
-    public int hashCode(){
-        return (a.hashCode() +
-        _b______.hashCode() +
-        with_some_spaces.hashCode() +
-        _new.hashCode());
-    }
 
     @Override
     public String toString() {

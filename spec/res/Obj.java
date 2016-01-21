@@ -89,23 +89,6 @@ public class Obj implements Serializable
         return this.boo;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Obj) {
-            return ((Obj) obj).getStr().equals(str) &&
-            ((Obj) obj).getNum().equals(num) &&
-            ((Obj) obj).getFlo().equals(flo) &&
-            ((Obj) obj).getBoo().equals(boo) ;
-        }
-        return false;
-    }
-    @Override
-    public int hashCode(){
-        return (str.hashCode() +
-        num.hashCode() +
-        flo.hashCode() +
-        boo.hashCode());
-    }
 
     @Override
     public String toString() {

@@ -11,6 +11,9 @@ module Kilza
 
     # Ruby string type
     # Can be object, fixnum, float, falseclass, trueclass and nilclass
+    attr_accessor :original_type
+
+    # Property type name
     attr_accessor :type
 
     # Indicates if the property represents an array of objects
@@ -20,6 +23,7 @@ module Kilza
     # Indicates if the property should be used for comparing purposes
     # Used to compare if one object is equal to another one
     attr_accessor :key
+    alias_method :key?, :key
 
     def initialize(name, type, array, key)
       @name = Kilza.normalize(name)
@@ -48,6 +52,10 @@ module Kilza
 
     def null?
       @original_type == 'nilclass'
+    end
+
+    def ==(pr)
+      @name == pr.name
     end
 
     def to_s
