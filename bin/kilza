@@ -122,13 +122,14 @@ class KilzaApplication
 
         class_package = get_package if (lang == JAVA)
 
+        @prompt.say("\n")
         @prompt.say(@pastel.bold('Target: ') + target_path)
         @prompt.say(@pastel.bold('Base class name: ') + class_basename)
         @prompt.say(@pastel.bold('Target language: ') + (lang == OBJC ? 'Objective-C' : 'Java'))
         if not class_package.nil?
           @prompt.say(@pastel.bold('Target package: ') + class_package)
         end
-        ok = @prompt.yes?('Is that correct? ')
+        ok = @prompt.yes?(@pastel.bold('Is that correct? '))
         if ok.nil? or ok
           generate(lang, json_string, class_basename, target_path, class_package)
 

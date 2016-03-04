@@ -86,7 +86,7 @@ module Kilza
       @classes.last
     end
 
-    # Parses an element value an verify if it should create a new Class
+    # Parses an element value an verify if it should create a new Classs
     # inside @classes
     #
     # @param class_name [String] Name of the class the element is inside
@@ -101,6 +101,9 @@ module Kilza
       cur_class = find(class_name)
       key = @equal_keys.index(name).nil? ? false : true
       cur_class.push(property(name, type, array, key))
+
+      # if value is nil, consider it as an Object
+      find(name) if type == 'nilclass'
 
       parse_hash(name, value) if type == 'hash'
     end
