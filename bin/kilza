@@ -105,8 +105,7 @@ class KilzaApplication
   end
 
   def run
-    @prompt.say(@pastel.bold('[DEPRECATION] This gem has been renamed to jaspion-kilza and will no longer be supported. Please switch to jaspion-kilza as soon as possible.'))
-    @prompt.say(@pastel.bold('Kilza - v' + Kilza::VERSION))
+    @prompt.say(@pastel.bold('Kilza - v' + Jaspion::Kilza::VERSION))
     while (not @done)
       action = @prompt.select(@pastel.bold('Master, what can I do for you?')) do |menu|
         menu.default 1
