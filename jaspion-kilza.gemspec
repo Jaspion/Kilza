@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'kilza/version'
+require 'jaspion/kilza/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'kilza'
-  spec.version       = Kilza::VERSION
+  spec.name          = 'jaspion-kilza'
+  spec.version       = Jaspion::Kilza::VERSION
   spec.authors       = ['Toshiro Sugii']
   spec.email         = ['rtoshiro@printwtf.com']
 
@@ -42,10 +42,4 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'erubis'
   spec.add_dependency 'tty'
   spec.add_dependency 'pastel'
-
-  spec.post_install_message = <<-MESSAGE
-!    The 'kilza' gem has been deprecated and has been replaced by 'jaspion-kilza'.
-!    See: https://rubygems.org/gems/jaspion-kilza
-!    And: https://github.com/Jaspion/Kilza
-MESSAGE
 end

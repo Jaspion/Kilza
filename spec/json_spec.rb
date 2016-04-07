@@ -4,7 +4,7 @@ Coveralls.wear!
 require 'spec_helper'
 require 'fileutils'
 require 'erubis'
-require 'kilza'
+require 'jaspion/kilza'
 
 
 describe 'Kilza' do
@@ -17,7 +17,7 @@ describe 'Kilza' do
 
   describe 'test objc' do
     it 'Hash JSON - lists all classes' do
-      @objc = Kilza::Objc.new(@json_string)
+      @objc = Jaspion::Kilza::Objc.new(@json_string)
       @objc.classes('Base').each do |c|
         c.sources.each do |s|
           res_spec = File.join(@res_path, s.file_name)
@@ -46,7 +46,7 @@ describe 'Kilza' do
 
   describe 'test java' do
     it 'Hash JSON - lists all classes' do
-      @java = Kilza::Java.new(@json_string)
+      @java = Jaspion::Kilza::Java.new(@json_string)
       @java.classes('Base').each do |c|
         c.sources.each do |s|
           test_source = File.read(File.join(@res_path, s.file_name))

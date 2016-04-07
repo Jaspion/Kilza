@@ -1,4 +1,4 @@
-# Kilza
+# Jaspion Kilza
 
 [![Gem Version](https://badge.fury.io/rb/kilza.svg)](https://badge.fury.io/rb/kilza)
 
@@ -17,7 +17,7 @@ It supports Objective-C and Java classes. Contribuition would be appreciate.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'kilza'
+gem 'jaspion-kilza'
 ```
 
 And then execute:
@@ -26,28 +26,28 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install kilza
+    $ gem install jaspion-kilza
 
 ## Binary
 
 Just call:
 
 	kilza
-	
+
 And the Kilza will guide you.
 
 ## Usage in code
 
 Just
 
-	require 'kilza'
-	
+	require 'jaspion/kilza'
+
 And then
 
 ```
 json_string = "..."
 
-java = Kilza::Java.new(json_string)
+java = Jaspion::Kilza::Java.new(json_string)
 java.classes("MyBaseClass").each { |c|
 	c.sources.each{ |s|
 	File.write(File.join("my/target/path", s.file_name), s.source)
@@ -72,7 +72,7 @@ Suppose our variable **json_string** have the following string:
 Calling the code above:
 
 ```
-java = Kilza::Java.new(json_string)
+java = Jaspion::Kilza::Java.new(json_string)
 java.classes("MyBaseClass").each { |c|
 	c.sources.each{ |s|
 	File.write(File.join("my/target/path", s.file_name), s.source)

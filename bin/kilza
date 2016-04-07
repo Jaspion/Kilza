@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'kilza'
+require 'jaspion/kilza'
 require 'pastel'
 require 'tty'
 require 'tty-prompt'
@@ -74,14 +74,14 @@ class KilzaApplication
 
   def generate(lang, json_string, class_basename, target_path, class_package = '')
     if (lang == OBJC)
-      objc = Kilza::Objc.new(json_string)
+      objc = Jaspion::Kilza::Objc.new(json_string)
       objc.classes(class_basename).each { |c|
         c.sources.each{ |s|
           File.write(File.join(target_path, s.file_name), s.source)
         }
       }
     elsif (lang == JAVA)
-      java = Kilza::Java.new(json_string)
+      java = Jaspion::Kilza::Java.new(json_string)
       java.classes(class_basename).each { |c|
         c.package = class_package
         c.sources.each{ |s|
