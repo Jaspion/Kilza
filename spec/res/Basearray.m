@@ -1,32 +1,32 @@
 //
-//  Spa_ce.m
+//  Basearray.m
 //
-//  Created on <%= Time.now.strftime("%Y-%m-%d") %>
-//  Copyright (c) <%= Time.now.strftime("%Y") %>. All rights reserved.
+//  Created on 2016-04-07
+//  Copyright (c) 2016. All rights reserved.
 //
 
-#import "Spa_ce.h"
+#import "Basearray.h"
 
 // Original names
-NSString * const kSpa_ce_1one = @"1one";
+NSString * const kBasearrayBasearrayobject = @"BaseArrayObject";
 
-@interface Spa_ce ()
+@interface Basearray ()
 
 - (id)objectOrNilForKey:(id)aKey fromDictionary:(NSDictionary *)dict;
 
 @end
 
-@implementation Spa_ce
+@implementation Basearray
 
-+ (Spa_ce *)modelWithDictionary:(NSDictionary *)dict
++ (Basearray *)modelWithDictionary:(NSDictionary *)dict
 {
-  Spa_ce *instance = [[Spa_ce alloc] initWithDictionary:dict];
+  Basearray *instance = [[Basearray alloc] initWithDictionary:dict];
   return instance;
 }
 
-+ (Spa_ce *)modelWithString:(NSString *)json
++ (Basearray *)modelWithString:(NSString *)json
 {
-  Spa_ce *instance = [[Spa_ce alloc] initWithString:json];
+  Basearray *instance = [[Basearray alloc] initWithString:json];
   return instance;
 }
 
@@ -35,7 +35,7 @@ NSString * const kSpa_ce_1one = @"1one";
   self = [super init];
 
   if (![[json stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] hasPrefix:@"{"])
-    json = [NSString stringWithFormat:@"{ \"%@\" : %@ }", kSpa_ce_1one, json];
+    json = [NSString stringWithFormat:@"{ \"%@\" : %@ }", kBasearrayBasearrayobject, json];
 
   NSError *jsonError = nil;
   NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
@@ -54,7 +54,7 @@ NSString * const kSpa_ce_1one = @"1one";
 
   if (self && [dict isKindOfClass:[NSDictionary class]])
   {
-    self._1one = [self objectOrNilForKey:kSpa_ce_1one fromDictionary:dict];
+    self.basearrayobject = [self objectOrNilForKey:kBasearrayBasearrayobject fromDictionary:dict];
   }
   return self;
 }
@@ -63,7 +63,7 @@ NSString * const kSpa_ce_1one = @"1one";
 {
   NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
 
-  [mutableDict setValue:self._1one forKey:kSpa_ce_1one];
+  [mutableDict setValue:self.basearrayobject forKey:kBasearrayBasearrayobject];
 
   return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
@@ -86,22 +86,22 @@ NSString * const kSpa_ce_1one = @"1one";
 {
   self = [super init];
 
-  self._1one = [aDecoder decodeObjectForKey:kSpa_ce_1one];
+  self.basearrayobject = [aDecoder decodeObjectForKey:kBasearrayBasearrayobject];
 
   return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-  [aCoder encodeObject:__1one forKey:kSpa_ce_1one];
+  [aCoder encodeObject:_basearrayobject forKey:kBasearrayBasearrayobject];
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-  Spa_ce *copy = [[Spa_ce alloc] init];
+  Basearray *copy = [[Basearray alloc] init];
   if (copy)
   {
-    copy._1one = [self._1one copyWithZone:zone];
+    copy.basearrayobject = [self.basearrayobject copyWithZone:zone];
   }
 
   return copy;

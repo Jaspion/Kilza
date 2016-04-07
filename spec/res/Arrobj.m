@@ -37,7 +37,6 @@ NSString * const kArrobjNull = @"null";
 - (instancetype)initWithString:(NSString *)json
 {
   self = [super init];
-
   NSError *jsonError = nil;
   NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:objectData

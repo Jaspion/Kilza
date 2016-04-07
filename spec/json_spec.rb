@@ -29,19 +29,18 @@ describe 'Kilza' do
       end
     end
 
-    # it 'Array JSON - lists all classes' do
-    #   @objc = Kilza::Objc.new(@json_array)
-    #   @objc.classes('Base').each do |c|
-    #     c.sources.each do |s|
-    #       p s.source
-    #       # res_spec = File.join(@res_path, s.file_name)
-    #       # test_source = File.read(res_spec)
-    #       # eruby = Erubis::Eruby.new(test_source)
-    #
-    #       # expect(s.source).to eq(eruby.result)
-    #     end
-    #   end
-    # end
+    it 'Array JSON - lists all classes' do
+      @java = Jaspion::Kilza::Objc.new(@json_array)
+      @java.classes('BaseArray').each do |c|
+        c.sources.each do |s|
+          test_source = File.read(File.join(@res_path, s.file_name))
+          eruby = Erubis::Eruby.new(test_source)
+          expect(s.source).to eq(eruby.result)
+
+          File.write(File.join(@res_path, s.file_name), s.source)
+        end
+      end
+    end
   end
 
   describe 'test java' do
@@ -52,6 +51,19 @@ describe 'Kilza' do
           test_source = File.read(File.join(@res_path, s.file_name))
           eruby = Erubis::Eruby.new(test_source)
           expect(s.source).to eq(eruby.result)
+        end
+      end
+    end
+
+    it 'Array JSON - lists all classes' do
+      @java = Jaspion::Kilza::Java.new(@json_array)
+      @java.classes('BaseArray').each do |c|
+        c.sources.each do |s|
+          test_source = File.read(File.join(@res_path, s.file_name))
+          eruby = Erubis::Eruby.new(test_source)
+          expect(s.source).to eq(eruby.result)
+
+          # File.write(File.join(@res_path, s.file_name), s.source)
         end
       end
     end

@@ -14,7 +14,7 @@ public class Arrobj implements Serializable
     private static final String FIELD_NUM = "num";
     private static final String FIELD_FLO = "flo";
     private static final String FIELD_BOO = "boo";
-    private static final String FIELD__NULL = "_null";
+    private static final String FIELD__NULL = "null";
 
     @Expose
     @SerializedName(FIELD_STR)

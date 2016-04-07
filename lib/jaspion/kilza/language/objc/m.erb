@@ -38,7 +38,12 @@ NSString * const k<%= @name %><%= @property.name.capitalize %> = @"<%= @property
 - (instancetype)initWithString:(NSString *)json
 {
   self = [super init];
+<% if @properties.length == 1 %>
 
+  if (![[json stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] hasPrefix:@"{"])
+    json = [NSString stringWithFormat:@"{ \"%@\" : %@ }", k<%= @name %><%= @properties.first.name.capitalize %>, json];
+
+<% end %>
   NSError *jsonError = nil;
   NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:objectData

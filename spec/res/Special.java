@@ -13,7 +13,7 @@ public class Special implements Serializable
     private static final String FIELD_A = "A";
     private static final String FIELD__B______ = "[B]""&^ ";
     private static final String FIELD_WITH_SOME_SPACES = "with some spaces";
-    private static final String FIELD__NEW = "_new";
+    private static final String FIELD__NEW = "new";
 
     @Expose
     @SerializedName(FIELD_A)

@@ -33,6 +33,8 @@ public class Spa_ce implements Serializable
     }
 
     protected void parseString(String jsonString) throws JSONException {
+        if (!jsonString.trim().startsWith("{"))
+            jsonString = "{\"" + FIELD__1ONE + "\" : " + jsonString + "}";
         JSONObject jsonObject = new JSONObject(jsonString);
         parseObject(jsonObject);
     }

@@ -28,6 +28,7 @@ module Jaspion
     #
     # @return [String] cleaned string
     def self.clean(str)
+      return if str.nil?
       str = '_' + str if str[0].number?
       str.gsub(/[^a-zA-Z0-9]/, '_')
     end
@@ -38,6 +39,7 @@ module Jaspion
     #
     # @return [String] cleaned string
     def self.normalize(str)
+      return if str.nil?
       Jaspion::Kilza.clean(str).downcase
     end
   end

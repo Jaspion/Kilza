@@ -11,7 +11,7 @@
 NSString * const kSpecialA = @"A";
 NSString * const kSpecial_b______ = @"[B]""&^ ";
 NSString * const kSpecialWith_some_spaces = @"with some spaces";
-NSString * const kSpecial_mynew = @"_mynew";
+NSString * const kSpecial_mynew = @"new";
 
 @interface Special ()
 
@@ -36,7 +36,6 @@ NSString * const kSpecial_mynew = @"_mynew";
 - (instancetype)initWithString:(NSString *)json
 {
   self = [super init];
-
   NSError *jsonError = nil;
   NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:objectData

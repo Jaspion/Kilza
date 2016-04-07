@@ -13,7 +13,7 @@
 #import "Arrobj.h"
 
 // Original names
-NSString * const kBase_myid = @"_myid";
+NSString * const kBase_myid = @"id";
 NSString * const kBaseStr = @"str";
 NSString * const kBaseNum = @"num";
 NSString * const kBaseFlo = @"flo";
@@ -51,7 +51,6 @@ NSString * const kBaseArrobj = @"arrobj";
 - (instancetype)initWithString:(NSString *)json
 {
   self = [super init];
-
   NSError *jsonError = nil;
   NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:objectData

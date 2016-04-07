@@ -26,6 +26,12 @@ module Jaspion
       # Hash table with all language types mapped to target language
       attr_accessor :types
 
+      # Initializes the language
+      # If json_string is not a Hash {}, it will surroud the json with
+      # { "base_name"} = json_string
+      #
+      # @param json_string [String] JSON String
+      #
       def initialize(json_string)
         @json_string = json_string
         @classes = []
@@ -70,8 +76,11 @@ module Jaspion
       #
       # @return [Kilza::Property] new property
       def property(name, type, array, key)
+        original_name = name
         name = @reserved_delimiter + name unless @reserved_words.index(name).nil?
-        Property.new(name, type, array, key)
+        prop = Property.new(name , type, array, key)
+        prop.original_name = original_name
+        prop
       end
 
       # Searches for a Kilza::Class inside @classes

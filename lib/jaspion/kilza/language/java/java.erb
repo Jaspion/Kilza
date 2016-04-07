@@ -44,6 +44,10 @@ public class <%= @name %> implements Serializable
     }
 
     protected void parseString(String jsonString) throws JSONException {
+<% if @properties.length == 1 %>
+        if (!jsonString.trim().startsWith("{"))
+            jsonString = "{\"" + FIELD_<%= @properties.first.name.upcase %> + "\" : " + jsonString + "}";
+<% end %>
         JSONObject jsonObject = new JSONObject(jsonString);
         parseObject(jsonObject);
     }
