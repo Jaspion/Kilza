@@ -42,4 +42,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'erubis'
   spec.add_dependency 'tty'
   spec.add_dependency 'pastel'
+
+  spec.post_install_message = <<-MESSAGE
+!    The 'kilza' gem has been deprecated and has been replaced by 'jaspion-kilza'.
+!    See: https://rubygems.org/gems/jaspion-kilza
+!    And: https://github.com/Jaspion/Kilza
+MESSAGE
 end
