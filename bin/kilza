@@ -27,6 +27,7 @@ class KilzaApplication
 
   OBJC = 1
   JAVA = 2
+  SWIFT = 3
 
   def initialize
     @pastel = Pastel.new
@@ -42,6 +43,7 @@ class KilzaApplication
       menu.enum '.'
 
       menu.choice 'Objective-C', OBJC
+      menu.choice 'Swift', SWIFT
       menu.choice 'Java', JAVA
     end
     action
@@ -88,6 +90,13 @@ class KilzaApplication
           File.write(File.join(target_path, s.file_name), s.source)
         }
       }
+    elsif (lang == SWIFT)
+      swift = Jaspion::Kilza::Swift.new(json_string)
+      swift.classes(class_basename).each { |c|
+        c.sources.each{ |s|
+          File.write(File.join(target_path, s.file_name), s.source)
+        }
+      }
     end
   end
 
@@ -125,8 +134,8 @@ class KilzaApplication
         @prompt.say("\n")
         @prompt.say(@pastel.bold('Target: ') + target_path)
         @prompt.say(@pastel.bold('Base class name: ') + class_basename)
-        @prompt.say(@pastel.bold('Target language: ') + (lang == OBJC ? 'Objective-C' : 'Java'))
-        if not class_package.nil?
+        @prompt.say(@pastel.bold('Target language: ') + (lang == OBJC ? 'Objective-C' : (lang == SWIFT ? 'Swift' : 'Java')))
+        unless class_package.nil?
           @prompt.say(@pastel.bold('Target package: ') + class_package)
         end
         ok = @prompt.yes?(@pastel.bold('Is that correct? '))
