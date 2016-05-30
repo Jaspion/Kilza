@@ -47,6 +47,7 @@ module Jaspion
       #
       # @return [Array] All available classes
       def classes(base_name)
+        @classes = []
         hash = JSON.parse(json_string)
         hash = { base_name + 'Object' => hash } if hash.is_a?(Array)
         parse_hash(base_name, hash)
