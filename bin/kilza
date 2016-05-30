@@ -5,7 +5,6 @@ require 'jaspion/kilza'
 require 'pastel'
 require 'tty'
 require 'tty-prompt'
-require 'tty-spinner'
 require 'net/http'
 require 'uri'
 
@@ -32,7 +31,6 @@ class KilzaApplication
   def initialize
     @pastel = Pastel.new
     @prompt = TTY::Prompt.new
-    @spinner = TTY::Spinner.new
 
     @done = false
   end

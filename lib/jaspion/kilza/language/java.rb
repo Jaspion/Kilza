@@ -24,6 +24,70 @@ end
 
 module Jaspion
   module Kilza
+    class Java
+      class Property < Jaspion::Kilza::Property
+
+        def json_key
+          return '    private static final String FIELD_' +
+          @name.upcase + ' = "' + @original_name + '";'
+        end
+
+        def declaration
+          r = %(    @Expose
+    @SerializedName(FIELD_#{@name.upcase})
+)
+
+          if array?
+            r + "    private ArrayList<#{@type}> #{@name};"
+          else
+            r + "    private #{@type} #{@name};"
+          end
+        end
+
+        def parse_element
+          if object?
+            "        this.#{@name} = new #{@type}(object.optJSONObject(FIELD_#{@name.upcase}));"
+          elsif null?
+            "        this.#{@name} = object.opt(FIELD_#{@name.upcase});"
+          else
+            "        this.#{@name} = object.opt#{@type}(FIELD_#{@name.upcase});"
+          end
+        end
+
+        def parse_array
+          r = %(        if (object.optJSONArray(FIELD_#{@name.upcase}) != null)
+        {
+            this.#{@name} = new ArrayList<>();
+            JSONArray #{@name}JsonArray = object.optJSONArray(FIELD_#{@name.upcase});
+            for (int i = 0; i < #{@name}JsonArray.length(); i++) {
+          )
+
+          if object? || null?
+            r = r + "      JSONObject #{@name} = #{@name}JsonArray.optJSONObject(i);"
+          else
+            r = r + "      #{@type} #{@name} = #{@name}JsonArray.optJSON#{@type}(i);"
+          end
+          r = r + %(
+                this.#{@name}.add(new #{@type}(#{@name}));
+            }
+        })
+          return r
+        end
+
+        def parse_json
+          if array?
+            parse_array
+          else
+            parse_element
+          end
+        end
+      end
+    end
+  end
+end
+
+module Jaspion
+  module Kilza
     # Objective-C Language parser
     class Java
       include Jaspion::Kilza::Language
@@ -54,6 +118,14 @@ module Jaspion
 
       def clazz(name)
         Jaspion::Kilza::Java::Class.new(name)
+      end
+
+      def property(name, type, array, key)
+        original_name = name
+        name = @reserved_delimiter + name unless @reserved_words.index(name).nil?
+        prop = Jaspion::Kilza::Java::Property.new(name , type, array, key)
+        prop.original_name = original_name
+        prop
       end
 
       def classes(class_name)
