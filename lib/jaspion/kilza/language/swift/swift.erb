@@ -31,7 +31,7 @@ public class <%= @name %>: NSObject, NSCoding {
 <% if @properties.length == 1 %>
         var nStr: String = str
         if let trimmed: String = str.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) {
-          if trimmed.hasPrefix("{") {
+          if !trimmed.hasPrefix("{") {
             nStr = "{ \"\\(k<%= @name %><%= @properties.first.name.capitalize %>)\" : \(str) }"
           }
         }
