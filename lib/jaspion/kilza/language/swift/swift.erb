@@ -11,7 +11,7 @@ import Foundation
 public class <%= @name %>: NSObject, NSCoding {
     // Original names
 <% for @property in @properties %>
-    internal let k<%= @name %><%= @property.name.capitalize %>: String = "<%= @property.original_name.gsub('"', '\"') %>"
+    static let k<%= @name %><%= @property.name.capitalize %>: String = "<%= @property.original_name.gsub('"', '\"') %>"
 <% end %>
 
 <% for @property in @properties %>
@@ -33,7 +33,7 @@ public class <%= @name %>: NSObject, NSCoding {
         var nStr: String = str
         if let trimmed: String = str.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) {
           if !trimmed.hasPrefix("{") {
-            nStr = "{ \"\\(k<%= @name %><%= @properties.first.name.capitalize %>)\" : \(str) }"
+            nStr = "{ \"\(<%= @name %>.k<%= @name %><%= @properties.first.name.capitalize %>)\" : \(str) }"
           }
         }
 
@@ -57,7 +57,7 @@ public class <%= @name %>: NSObject, NSCoding {
 <% for @property in @properties %>
 <% if @property.object? || @property.null? %>
 <% if @property.array? %>
-        let obj<%= @property.name.capitalize %>: [AnyObject] = dict[k<%= @name %><%= @property.name.capitalize %>]! as! [AnyObject]
+        let obj<%= @property.name.capitalize %>: [AnyObject] = dict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>]! as! [AnyObject]
         var list<%= @property.name.capitalize %> = <%= @property.type %>()
         for item in obj<%= @property.name.capitalize %> {
             if item is Dictionary<String, AnyObject> {
@@ -66,10 +66,10 @@ public class <%= @name %>: NSObject, NSCoding {
         }
         self.<%= @property.name %> = list<%= @property.name.capitalize %>
 <% else %>
-        self.<%= @property.name %> = <%= @property.name.capitalize %>.model(dict[k<%= @name %><%= @property.name.capitalize %>]!)
+        self.<%= @property.name %> = <%= @property.name.capitalize %>.model(dict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>]!)
 <% end %>
 <% else %>
-        self.<%= @property.name %> = objectOrNil(forKey: k<%= @name %><%= @property.name.capitalize %>, fromDictionary:dict)<% if @property.type != 'AnyObject' %> as? <%= @property.type %><% end %>
+        self.<%= @property.name %> = objectOrNil(forKey: <%= @name %>.k<%= @name %><%= @property.name.capitalize %>, fromDictionary:dict)<% if @property.type != 'AnyObject' %> as? <%= @property.type %><% end %>
 <% end %>
 <% end %>
     }
@@ -89,16 +89,16 @@ public class <%= @name %>: NSObject, NSCoding {
                  tempArray<%= @property.name.capitalize %>.append(dicRepresentation)
             }
         }
-        mutableDict[k<%= @name %><%= @property.name.capitalize %>] = Array.init(tempArray<%= @property.name.capitalize %>)
+        mutableDict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>] = Array.init(tempArray<%= @property.name.capitalize %>)
 <% else %>
         if let dic = <%= @property.name %>?.dictionaryRepresentation() {
-            mutableDict[k<%= @name %><%= @property.name.capitalize %>] = dic
+            mutableDict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>] = dic
         } else {
-            mutableDict[k<%= @name %><%= @property.name.capitalize %>] = self.<%= @property.name %>
+            mutableDict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>] = self.<%= @property.name %>
         }
 <% end %>
 <% else %>
-        mutableDict[k<%= @name %><%= @property.name.capitalize %>] = self.<%= @property.name %>
+        mutableDict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>] = self.<%= @property.name %>
 <% end %>
 <% end %>
         return NSDictionary.init(dictionary: mutableDict) as! Dictionary<String, AnyObject>
@@ -116,13 +116,13 @@ public class <%= @name %>: NSObject, NSCoding {
 
     required public init(coder aDecoder: NSCoder) {
 <% for @property in @properties %>
-        self.<%= @property.name %> = aDecoder.decodeObjectForKey(k<%= @name %><%= @property.name.capitalize %>)!<% if @property.type != 'AnyObject' %> as? <%= @property.type %><% end %>
+        self.<%= @property.name %> = aDecoder.decodeObjectForKey(<%= @name %>.k<%= @name %><%= @property.name.capitalize %>)!<% if @property.type != 'AnyObject' %> as? <%= @property.type %><% end %>
 <% end %>
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
 <% for @property in @properties %>
-        aCoder.encodeObject(<%= @property.name %>, forKey:k<%= @name %><%= @property.name.capitalize %>)
+        aCoder.encodeObject(<%= @property.name %>, forKey:<%= @name %>.k<%= @name %><%= @property.name.capitalize %>)
 <% end %>
     }
 

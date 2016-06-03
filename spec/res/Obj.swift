@@ -10,10 +10,10 @@ import Foundation
 
 public class Obj: NSObject, NSCoding {
     // Original names
-    internal let kObjStr: String = "str"
-    internal let kObjNum: String = "num"
-    internal let kObjFlo: String = "flo"
-    internal let kObjBoo: String = "boo"
+    static let kObjStr: String = "str"
+    static let kObjNum: String = "num"
+    static let kObjFlo: String = "flo"
+    static let kObjBoo: String = "boo"
 
     public var str: String?
     public var num: Int?
@@ -45,18 +45,18 @@ public class Obj: NSObject, NSCoding {
 
     public init(dict: Dictionary<String, AnyObject>) {
       super.init()
-        self.str = objectOrNil(forKey: kObjStr, fromDictionary:dict) as? String
-        self.num = objectOrNil(forKey: kObjNum, fromDictionary:dict) as? Int
-        self.flo = objectOrNil(forKey: kObjFlo, fromDictionary:dict) as? Double
-        self.boo = objectOrNil(forKey: kObjBoo, fromDictionary:dict) as? Bool
+        self.str = objectOrNil(forKey: Obj.kObjStr, fromDictionary:dict) as? String
+        self.num = objectOrNil(forKey: Obj.kObjNum, fromDictionary:dict) as? Int
+        self.flo = objectOrNil(forKey: Obj.kObjFlo, fromDictionary:dict) as? Double
+        self.boo = objectOrNil(forKey: Obj.kObjBoo, fromDictionary:dict) as? Bool
     }
 
     public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var mutableDict: Dictionary = [String: AnyObject]()
-        mutableDict[kObjStr] = self.str
-        mutableDict[kObjNum] = self.num
-        mutableDict[kObjFlo] = self.flo
-        mutableDict[kObjBoo] = self.boo
+        mutableDict[Obj.kObjStr] = self.str
+        mutableDict[Obj.kObjNum] = self.num
+        mutableDict[Obj.kObjFlo] = self.flo
+        mutableDict[Obj.kObjBoo] = self.boo
         return NSDictionary.init(dictionary: mutableDict) as! Dictionary<String, AnyObject>
     }
 
@@ -71,17 +71,17 @@ public class Obj: NSObject, NSCoding {
     }
 
     required public init(coder aDecoder: NSCoder) {
-        self.str = aDecoder.decodeObjectForKey(kObjStr)! as? String
-        self.num = aDecoder.decodeObjectForKey(kObjNum)! as? Int
-        self.flo = aDecoder.decodeObjectForKey(kObjFlo)! as? Double
-        self.boo = aDecoder.decodeObjectForKey(kObjBoo)! as? Bool
+        self.str = aDecoder.decodeObjectForKey(Obj.kObjStr)! as? String
+        self.num = aDecoder.decodeObjectForKey(Obj.kObjNum)! as? Int
+        self.flo = aDecoder.decodeObjectForKey(Obj.kObjFlo)! as? Double
+        self.boo = aDecoder.decodeObjectForKey(Obj.kObjBoo)! as? Bool
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(str, forKey:kObjStr)
-        aCoder.encodeObject(num, forKey:kObjNum)
-        aCoder.encodeObject(flo, forKey:kObjFlo)
-        aCoder.encodeObject(boo, forKey:kObjBoo)
+        aCoder.encodeObject(str, forKey:Obj.kObjStr)
+        aCoder.encodeObject(num, forKey:Obj.kObjNum)
+        aCoder.encodeObject(flo, forKey:Obj.kObjFlo)
+        aCoder.encodeObject(boo, forKey:Obj.kObjBoo)
     }
 
     override public var description: String {

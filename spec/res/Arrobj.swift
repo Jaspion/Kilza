@@ -10,11 +10,11 @@ import Foundation
 
 public class Arrobj: NSObject, NSCoding {
     // Original names
-    internal let kArrobjStr: String = "str"
-    internal let kArrobjNum: String = "num"
-    internal let kArrobjFlo: String = "flo"
-    internal let kArrobjBoo: String = "boo"
-    internal let kArrobjNull: String = "null"
+    static let kArrobjStr: String = "str"
+    static let kArrobjNum: String = "num"
+    static let kArrobjFlo: String = "flo"
+    static let kArrobjBoo: String = "boo"
+    static let kArrobjNull: String = "null"
 
     public var str: String?
     public var num: Int?
@@ -47,20 +47,20 @@ public class Arrobj: NSObject, NSCoding {
 
     public init(dict: Dictionary<String, AnyObject>) {
       super.init()
-        self.str = objectOrNil(forKey: kArrobjStr, fromDictionary:dict) as? String
-        self.num = objectOrNil(forKey: kArrobjNum, fromDictionary:dict) as? Int
-        self.flo = objectOrNil(forKey: kArrobjFlo, fromDictionary:dict) as? Double
-        self.boo = objectOrNil(forKey: kArrobjBoo, fromDictionary:dict) as? Bool
-        self.null = Null.model(dict[kArrobjNull]!)
+        self.str = objectOrNil(forKey: Arrobj.kArrobjStr, fromDictionary:dict) as? String
+        self.num = objectOrNil(forKey: Arrobj.kArrobjNum, fromDictionary:dict) as? Int
+        self.flo = objectOrNil(forKey: Arrobj.kArrobjFlo, fromDictionary:dict) as? Double
+        self.boo = objectOrNil(forKey: Arrobj.kArrobjBoo, fromDictionary:dict) as? Bool
+        self.null = Null.model(dict[Arrobj.kArrobjNull]!)
     }
 
     public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var mutableDict: Dictionary = [String: AnyObject]()
-        mutableDict[kArrobjStr] = self.str
-        mutableDict[kArrobjNum] = self.num
-        mutableDict[kArrobjFlo] = self.flo
-        mutableDict[kArrobjBoo] = self.boo
-        mutableDict[kArrobjNull] = self.null
+        mutableDict[Arrobj.kArrobjStr] = self.str
+        mutableDict[Arrobj.kArrobjNum] = self.num
+        mutableDict[Arrobj.kArrobjFlo] = self.flo
+        mutableDict[Arrobj.kArrobjBoo] = self.boo
+        mutableDict[Arrobj.kArrobjNull] = self.null
         return NSDictionary.init(dictionary: mutableDict) as! Dictionary<String, AnyObject>
     }
 
@@ -75,19 +75,19 @@ public class Arrobj: NSObject, NSCoding {
     }
 
     required public init(coder aDecoder: NSCoder) {
-        self.str = aDecoder.decodeObjectForKey(kArrobjStr)! as? String
-        self.num = aDecoder.decodeObjectForKey(kArrobjNum)! as? Int
-        self.flo = aDecoder.decodeObjectForKey(kArrobjFlo)! as? Double
-        self.boo = aDecoder.decodeObjectForKey(kArrobjBoo)! as? Bool
-        self.null = aDecoder.decodeObjectForKey(kArrobjNull)!
+        self.str = aDecoder.decodeObjectForKey(Arrobj.kArrobjStr)! as? String
+        self.num = aDecoder.decodeObjectForKey(Arrobj.kArrobjNum)! as? Int
+        self.flo = aDecoder.decodeObjectForKey(Arrobj.kArrobjFlo)! as? Double
+        self.boo = aDecoder.decodeObjectForKey(Arrobj.kArrobjBoo)! as? Bool
+        self.null = aDecoder.decodeObjectForKey(Arrobj.kArrobjNull)!
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(str, forKey:kArrobjStr)
-        aCoder.encodeObject(num, forKey:kArrobjNum)
-        aCoder.encodeObject(flo, forKey:kArrobjFlo)
-        aCoder.encodeObject(boo, forKey:kArrobjBoo)
-        aCoder.encodeObject(null, forKey:kArrobjNull)
+        aCoder.encodeObject(str, forKey:Arrobj.kArrobjStr)
+        aCoder.encodeObject(num, forKey:Arrobj.kArrobjNum)
+        aCoder.encodeObject(flo, forKey:Arrobj.kArrobjFlo)
+        aCoder.encodeObject(boo, forKey:Arrobj.kArrobjBoo)
+        aCoder.encodeObject(null, forKey:Arrobj.kArrobjNull)
     }
 
     override public var description: String {

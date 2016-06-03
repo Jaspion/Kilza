@@ -10,7 +10,7 @@ import Foundation
 
 public class Basearray: NSObject, NSCoding {
     // Original names
-    internal let kBasearrayBasearrayobject: String = "BaseArrayObject"
+    static let kBasearrayBasearrayobject: String = "BaseArrayObject"
 
     public var basearrayobject: [String]?
 
@@ -28,7 +28,7 @@ public class Basearray: NSObject, NSCoding {
         var nStr: String = str
         if let trimmed: String = str.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) {
           if !trimmed.hasPrefix("{") {
-            nStr = "{ \"\\(kBasearrayBasearrayobject)\" : \(str) }"
+            nStr = "{ \"\(Basearray.kBasearrayBasearrayobject)\" : \(str) }"
           }
         }
 
@@ -46,12 +46,12 @@ public class Basearray: NSObject, NSCoding {
 
     public init(dict: Dictionary<String, AnyObject>) {
       super.init()
-        self.basearrayobject = objectOrNil(forKey: kBasearrayBasearrayobject, fromDictionary:dict) as? [String]
+        self.basearrayobject = objectOrNil(forKey: Basearray.kBasearrayBasearrayobject, fromDictionary:dict) as? [String]
     }
 
     public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var mutableDict: Dictionary = [String: AnyObject]()
-        mutableDict[kBasearrayBasearrayobject] = self.basearrayobject
+        mutableDict[Basearray.kBasearrayBasearrayobject] = self.basearrayobject
         return NSDictionary.init(dictionary: mutableDict) as! Dictionary<String, AnyObject>
     }
 
@@ -66,11 +66,11 @@ public class Basearray: NSObject, NSCoding {
     }
 
     required public init(coder aDecoder: NSCoder) {
-        self.basearrayobject = aDecoder.decodeObjectForKey(kBasearrayBasearrayobject)! as? [String]
+        self.basearrayobject = aDecoder.decodeObjectForKey(Basearray.kBasearrayBasearrayobject)! as? [String]
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(basearrayobject, forKey:kBasearrayBasearrayobject)
+        aCoder.encodeObject(basearrayobject, forKey:Basearray.kBasearrayBasearrayobject)
     }
 
     override public var description: String {

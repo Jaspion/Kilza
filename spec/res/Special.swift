@@ -10,10 +10,10 @@ import Foundation
 
 public class Special: NSObject, NSCoding {
     // Original names
-    internal let kSpecialA: String = "A"
-    internal let kSpecial_b______: String = "[B]\"\"&^ "
-    internal let kSpecialWith_some_spaces: String = "with some spaces"
-    internal let kSpecialNew: String = "new"
+    static let kSpecialA: String = "A"
+    static let kSpecial_b______: String = "[B]\"\"&^ "
+    static let kSpecialWith_some_spaces: String = "with some spaces"
+    static let kSpecialNew: String = "new"
 
     public var a: AnyObject?
     public var _b______: String?
@@ -45,18 +45,18 @@ public class Special: NSObject, NSCoding {
 
     public init(dict: Dictionary<String, AnyObject>) {
       super.init()
-        self.a = A.model(dict[kSpecialA]!)
-        self._b______ = objectOrNil(forKey: kSpecial_b______, fromDictionary:dict) as? String
-        self.with_some_spaces = objectOrNil(forKey: kSpecialWith_some_spaces, fromDictionary:dict) as? String
-        self.new = objectOrNil(forKey: kSpecialNew, fromDictionary:dict) as? Int
+        self.a = A.model(dict[Special.kSpecialA]!)
+        self._b______ = objectOrNil(forKey: Special.kSpecial_b______, fromDictionary:dict) as? String
+        self.with_some_spaces = objectOrNil(forKey: Special.kSpecialWith_some_spaces, fromDictionary:dict) as? String
+        self.new = objectOrNil(forKey: Special.kSpecialNew, fromDictionary:dict) as? Int
     }
 
     public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var mutableDict: Dictionary = [String: AnyObject]()
-        mutableDict[kSpecialA] = self.a
-        mutableDict[kSpecial_b______] = self._b______
-        mutableDict[kSpecialWith_some_spaces] = self.with_some_spaces
-        mutableDict[kSpecialNew] = self.new
+        mutableDict[Special.kSpecialA] = self.a
+        mutableDict[Special.kSpecial_b______] = self._b______
+        mutableDict[Special.kSpecialWith_some_spaces] = self.with_some_spaces
+        mutableDict[Special.kSpecialNew] = self.new
         return NSDictionary.init(dictionary: mutableDict) as! Dictionary<String, AnyObject>
     }
 
@@ -71,17 +71,17 @@ public class Special: NSObject, NSCoding {
     }
 
     required public init(coder aDecoder: NSCoder) {
-        self.a = aDecoder.decodeObjectForKey(kSpecialA)!
-        self._b______ = aDecoder.decodeObjectForKey(kSpecial_b______)! as? String
-        self.with_some_spaces = aDecoder.decodeObjectForKey(kSpecialWith_some_spaces)! as? String
-        self.new = aDecoder.decodeObjectForKey(kSpecialNew)! as? Int
+        self.a = aDecoder.decodeObjectForKey(Special.kSpecialA)!
+        self._b______ = aDecoder.decodeObjectForKey(Special.kSpecial_b______)! as? String
+        self.with_some_spaces = aDecoder.decodeObjectForKey(Special.kSpecialWith_some_spaces)! as? String
+        self.new = aDecoder.decodeObjectForKey(Special.kSpecialNew)! as? Int
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(a, forKey:kSpecialA)
-        aCoder.encodeObject(_b______, forKey:kSpecial_b______)
-        aCoder.encodeObject(with_some_spaces, forKey:kSpecialWith_some_spaces)
-        aCoder.encodeObject(new, forKey:kSpecialNew)
+        aCoder.encodeObject(a, forKey:Special.kSpecialA)
+        aCoder.encodeObject(_b______, forKey:Special.kSpecial_b______)
+        aCoder.encodeObject(with_some_spaces, forKey:Special.kSpecialWith_some_spaces)
+        aCoder.encodeObject(new, forKey:Special.kSpecialNew)
     }
 
     override public var description: String {

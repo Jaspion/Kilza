@@ -10,20 +10,20 @@ import Foundation
 
 public class Base: NSObject, NSCoding {
     // Original names
-    internal let kBase_myid: String = "id"
-    internal let kBaseStr: String = "str"
-    internal let kBaseNum: String = "num"
-    internal let kBaseFlo: String = "flo"
-    internal let kBaseBoo: String = "boo"
-    internal let kBaseSpa_ce: String = "spa ce"
-    internal let kBaseSpecial: String = "special"
-    internal let kBaseArrdouble: String = "arrdouble"
-    internal let kBaseArrnum: String = "arrnum"
-    internal let kBaseArrstr: String = "arrstr"
-    internal let kBaseArrboo: String = "arrboo"
-    internal let kBaseArrnull: String = "arrnull"
-    internal let kBaseObj: String = "obj"
-    internal let kBaseArrobj: String = "arrobj"
+    static let kBase_myid: String = "id"
+    static let kBaseStr: String = "str"
+    static let kBaseNum: String = "num"
+    static let kBaseFlo: String = "flo"
+    static let kBaseBoo: String = "boo"
+    static let kBaseSpa_ce: String = "spa ce"
+    static let kBaseSpecial: String = "special"
+    static let kBaseArrdouble: String = "arrdouble"
+    static let kBaseArrnum: String = "arrnum"
+    static let kBaseArrstr: String = "arrstr"
+    static let kBaseArrboo: String = "arrboo"
+    static let kBaseArrnull: String = "arrnull"
+    static let kBaseObj: String = "obj"
+    static let kBaseArrobj: String = "arrobj"
 
     public var _myid: String?
     public var str: String?
@@ -65,18 +65,18 @@ public class Base: NSObject, NSCoding {
 
     public init(dict: Dictionary<String, AnyObject>) {
       super.init()
-        self._myid = objectOrNil(forKey: kBase_myid, fromDictionary:dict) as? String
-        self.str = objectOrNil(forKey: kBaseStr, fromDictionary:dict) as? String
-        self.num = objectOrNil(forKey: kBaseNum, fromDictionary:dict) as? Int
-        self.flo = objectOrNil(forKey: kBaseFlo, fromDictionary:dict) as? Double
-        self.boo = objectOrNil(forKey: kBaseBoo, fromDictionary:dict) as? Bool
-        self.spa_ce = Spa_ce.model(dict[kBaseSpa_ce]!)
-        self.special = Special.model(dict[kBaseSpecial]!)
-        self.arrdouble = objectOrNil(forKey: kBaseArrdouble, fromDictionary:dict) as? [Double]
-        self.arrnum = objectOrNil(forKey: kBaseArrnum, fromDictionary:dict) as? [Int]
-        self.arrstr = objectOrNil(forKey: kBaseArrstr, fromDictionary:dict) as? [String]
-        self.arrboo = objectOrNil(forKey: kBaseArrboo, fromDictionary:dict) as? [Bool]
-        let objArrnull: [AnyObject] = dict[kBaseArrnull]! as! [AnyObject]
+        self._myid = objectOrNil(forKey: Base.kBase_myid, fromDictionary:dict) as? String
+        self.str = objectOrNil(forKey: Base.kBaseStr, fromDictionary:dict) as? String
+        self.num = objectOrNil(forKey: Base.kBaseNum, fromDictionary:dict) as? Int
+        self.flo = objectOrNil(forKey: Base.kBaseFlo, fromDictionary:dict) as? Double
+        self.boo = objectOrNil(forKey: Base.kBaseBoo, fromDictionary:dict) as? Bool
+        self.spa_ce = Spa_ce.model(dict[Base.kBaseSpa_ce]!)
+        self.special = Special.model(dict[Base.kBaseSpecial]!)
+        self.arrdouble = objectOrNil(forKey: Base.kBaseArrdouble, fromDictionary:dict) as? [Double]
+        self.arrnum = objectOrNil(forKey: Base.kBaseArrnum, fromDictionary:dict) as? [Int]
+        self.arrstr = objectOrNil(forKey: Base.kBaseArrstr, fromDictionary:dict) as? [String]
+        self.arrboo = objectOrNil(forKey: Base.kBaseArrboo, fromDictionary:dict) as? [Bool]
+        let objArrnull: [AnyObject] = dict[Base.kBaseArrnull]! as! [AnyObject]
         var listArrnull = [Arrnull]()
         for item in objArrnull {
             if item is Dictionary<String, AnyObject> {
@@ -84,8 +84,8 @@ public class Base: NSObject, NSCoding {
             }
         }
         self.arrnull = listArrnull
-        self.obj = Obj.model(dict[kBaseObj]!)
-        let objArrobj: [AnyObject] = dict[kBaseArrobj]! as! [AnyObject]
+        self.obj = Obj.model(dict[Base.kBaseObj]!)
+        let objArrobj: [AnyObject] = dict[Base.kBaseArrobj]! as! [AnyObject]
         var listArrobj = [Arrobj]()
         for item in objArrobj {
             if item is Dictionary<String, AnyObject> {
@@ -97,36 +97,36 @@ public class Base: NSObject, NSCoding {
 
     public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var mutableDict: Dictionary = [String: AnyObject]()
-        mutableDict[kBase_myid] = self._myid
-        mutableDict[kBaseStr] = self.str
-        mutableDict[kBaseNum] = self.num
-        mutableDict[kBaseFlo] = self.flo
-        mutableDict[kBaseBoo] = self.boo
+        mutableDict[Base.kBase_myid] = self._myid
+        mutableDict[Base.kBaseStr] = self.str
+        mutableDict[Base.kBaseNum] = self.num
+        mutableDict[Base.kBaseFlo] = self.flo
+        mutableDict[Base.kBaseBoo] = self.boo
         if let dic = spa_ce?.dictionaryRepresentation() {
-            mutableDict[kBaseSpa_ce] = dic
+            mutableDict[Base.kBaseSpa_ce] = dic
         } else {
-            mutableDict[kBaseSpa_ce] = self.spa_ce
+            mutableDict[Base.kBaseSpa_ce] = self.spa_ce
         }
         if let dic = special?.dictionaryRepresentation() {
-            mutableDict[kBaseSpecial] = dic
+            mutableDict[Base.kBaseSpecial] = dic
         } else {
-            mutableDict[kBaseSpecial] = self.special
+            mutableDict[Base.kBaseSpecial] = self.special
         }
-        mutableDict[kBaseArrdouble] = self.arrdouble
-        mutableDict[kBaseArrnum] = self.arrnum
-        mutableDict[kBaseArrstr] = self.arrstr
-        mutableDict[kBaseArrboo] = self.arrboo
+        mutableDict[Base.kBaseArrdouble] = self.arrdouble
+        mutableDict[Base.kBaseArrnum] = self.arrnum
+        mutableDict[Base.kBaseArrstr] = self.arrstr
+        mutableDict[Base.kBaseArrboo] = self.arrboo
         var tempArrayArrnull = [Dictionary<String, AnyObject>]()
         for subArray in self.arrnull! {
             if let dicRepresentation: Dictionary<String, AnyObject> = subArray.dictionaryRepresentation() {
                  tempArrayArrnull.append(dicRepresentation)
             }
         }
-        mutableDict[kBaseArrnull] = Array.init(tempArrayArrnull)
+        mutableDict[Base.kBaseArrnull] = Array.init(tempArrayArrnull)
         if let dic = obj?.dictionaryRepresentation() {
-            mutableDict[kBaseObj] = dic
+            mutableDict[Base.kBaseObj] = dic
         } else {
-            mutableDict[kBaseObj] = self.obj
+            mutableDict[Base.kBaseObj] = self.obj
         }
         var tempArrayArrobj = [Dictionary<String, AnyObject>]()
         for subArray in self.arrobj! {
@@ -134,7 +134,7 @@ public class Base: NSObject, NSCoding {
                  tempArrayArrobj.append(dicRepresentation)
             }
         }
-        mutableDict[kBaseArrobj] = Array.init(tempArrayArrobj)
+        mutableDict[Base.kBaseArrobj] = Array.init(tempArrayArrobj)
         return NSDictionary.init(dictionary: mutableDict) as! Dictionary<String, AnyObject>
     }
 
@@ -149,37 +149,37 @@ public class Base: NSObject, NSCoding {
     }
 
     required public init(coder aDecoder: NSCoder) {
-        self._myid = aDecoder.decodeObjectForKey(kBase_myid)! as? String
-        self.str = aDecoder.decodeObjectForKey(kBaseStr)! as? String
-        self.num = aDecoder.decodeObjectForKey(kBaseNum)! as? Int
-        self.flo = aDecoder.decodeObjectForKey(kBaseFlo)! as? Double
-        self.boo = aDecoder.decodeObjectForKey(kBaseBoo)! as? Bool
-        self.spa_ce = aDecoder.decodeObjectForKey(kBaseSpa_ce)! as? Spa_ce
-        self.special = aDecoder.decodeObjectForKey(kBaseSpecial)! as? Special
-        self.arrdouble = aDecoder.decodeObjectForKey(kBaseArrdouble)! as? [Double]
-        self.arrnum = aDecoder.decodeObjectForKey(kBaseArrnum)! as? [Int]
-        self.arrstr = aDecoder.decodeObjectForKey(kBaseArrstr)! as? [String]
-        self.arrboo = aDecoder.decodeObjectForKey(kBaseArrboo)! as? [Bool]
-        self.arrnull = aDecoder.decodeObjectForKey(kBaseArrnull)! as? [Arrnull]
-        self.obj = aDecoder.decodeObjectForKey(kBaseObj)! as? Obj
-        self.arrobj = aDecoder.decodeObjectForKey(kBaseArrobj)! as? [Arrobj]
+        self._myid = aDecoder.decodeObjectForKey(Base.kBase_myid)! as? String
+        self.str = aDecoder.decodeObjectForKey(Base.kBaseStr)! as? String
+        self.num = aDecoder.decodeObjectForKey(Base.kBaseNum)! as? Int
+        self.flo = aDecoder.decodeObjectForKey(Base.kBaseFlo)! as? Double
+        self.boo = aDecoder.decodeObjectForKey(Base.kBaseBoo)! as? Bool
+        self.spa_ce = aDecoder.decodeObjectForKey(Base.kBaseSpa_ce)! as? Spa_ce
+        self.special = aDecoder.decodeObjectForKey(Base.kBaseSpecial)! as? Special
+        self.arrdouble = aDecoder.decodeObjectForKey(Base.kBaseArrdouble)! as? [Double]
+        self.arrnum = aDecoder.decodeObjectForKey(Base.kBaseArrnum)! as? [Int]
+        self.arrstr = aDecoder.decodeObjectForKey(Base.kBaseArrstr)! as? [String]
+        self.arrboo = aDecoder.decodeObjectForKey(Base.kBaseArrboo)! as? [Bool]
+        self.arrnull = aDecoder.decodeObjectForKey(Base.kBaseArrnull)! as? [Arrnull]
+        self.obj = aDecoder.decodeObjectForKey(Base.kBaseObj)! as? Obj
+        self.arrobj = aDecoder.decodeObjectForKey(Base.kBaseArrobj)! as? [Arrobj]
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(_myid, forKey:kBase_myid)
-        aCoder.encodeObject(str, forKey:kBaseStr)
-        aCoder.encodeObject(num, forKey:kBaseNum)
-        aCoder.encodeObject(flo, forKey:kBaseFlo)
-        aCoder.encodeObject(boo, forKey:kBaseBoo)
-        aCoder.encodeObject(spa_ce, forKey:kBaseSpa_ce)
-        aCoder.encodeObject(special, forKey:kBaseSpecial)
-        aCoder.encodeObject(arrdouble, forKey:kBaseArrdouble)
-        aCoder.encodeObject(arrnum, forKey:kBaseArrnum)
-        aCoder.encodeObject(arrstr, forKey:kBaseArrstr)
-        aCoder.encodeObject(arrboo, forKey:kBaseArrboo)
-        aCoder.encodeObject(arrnull, forKey:kBaseArrnull)
-        aCoder.encodeObject(obj, forKey:kBaseObj)
-        aCoder.encodeObject(arrobj, forKey:kBaseArrobj)
+        aCoder.encodeObject(_myid, forKey:Base.kBase_myid)
+        aCoder.encodeObject(str, forKey:Base.kBaseStr)
+        aCoder.encodeObject(num, forKey:Base.kBaseNum)
+        aCoder.encodeObject(flo, forKey:Base.kBaseFlo)
+        aCoder.encodeObject(boo, forKey:Base.kBaseBoo)
+        aCoder.encodeObject(spa_ce, forKey:Base.kBaseSpa_ce)
+        aCoder.encodeObject(special, forKey:Base.kBaseSpecial)
+        aCoder.encodeObject(arrdouble, forKey:Base.kBaseArrdouble)
+        aCoder.encodeObject(arrnum, forKey:Base.kBaseArrnum)
+        aCoder.encodeObject(arrstr, forKey:Base.kBaseArrstr)
+        aCoder.encodeObject(arrboo, forKey:Base.kBaseArrboo)
+        aCoder.encodeObject(arrnull, forKey:Base.kBaseArrnull)
+        aCoder.encodeObject(obj, forKey:Base.kBaseObj)
+        aCoder.encodeObject(arrobj, forKey:Base.kBaseArrobj)
     }
 
     override public var description: String {
