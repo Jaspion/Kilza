@@ -81,6 +81,30 @@ module Jaspion
             parse_element
           end
         end
+
+        def setter
+          r = StringIO.new
+          if array?
+            r << "public void set#{@name.capitalize}(ArrayList<#{@type}> value) {"
+          else
+            r << "public void set#{@name.capitalize}(#{@type} value) {"
+          end
+          r << "\n        this.#{@name} = value;\n    }"
+          r.string
+        end
+
+        def getter
+          r = StringIO.new
+          if array?
+            r << "public ArrayList<#{@type}> get#{@name.capitalize}() {"
+          elsif boolean?
+            r << "public #{@type} is#{@name.capitalize}() {"
+          else
+            r << "public #{@type} get#{@name.capitalize}() {"
+          end
+          r << "\n        return this.#{@name};\n    }"
+          r.string
+        end
       end
     end
   end
