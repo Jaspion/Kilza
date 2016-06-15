@@ -2,47 +2,6 @@ require 'date'
 
 module Jaspion
   module Kilza
-    class Swift
-      class Class
-        include Jaspion::Kilza::Class
-
-        def initialize(name)
-          super(name)
-          @name = @name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
-        end
-        
-        def sources
-          [code('swift', 'swift')]
-        end
-      end
-    end
-  end
-end
-
-module Jaspion
-  module Kilza
-    class Swift
-      class Property < Jaspion::Kilza::Property
-        def class_name
-          return if !object? || array?
-          Jaspion::Kilza::Swift::Class.new(@original_name).name
-        end
-
-        def constants(cl_name)
-          "    static let k#{cl_name}#{@name.capitalize}: String = \"#{@original_name.gsub('"', '\"')}\""
-        end
-
-        def declaration
-          "    public var #{@name}: #{@type}?"
-        end
-
-      end
-    end
-  end
-end
-
-module Jaspion
-  module Kilza
     # Swift Language parser
     class Swift
       include Jaspion::Kilza::Language

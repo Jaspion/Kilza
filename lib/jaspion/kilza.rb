@@ -7,6 +7,8 @@ require 'jaspion/kilza/language'
 require 'jaspion/kilza/language/objc'
 require 'jaspion/kilza/language/java'
 require 'jaspion/kilza/language/swift'
+require 'jaspion/kilza/language/swift/class'
+require 'jaspion/kilza/language/swift/property'
 
 # Ruby class
 class String
