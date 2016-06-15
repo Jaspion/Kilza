@@ -54,7 +54,7 @@ module Jaspion
 
         s = Kilza::Source.new
         s.source = eruby.result(binding)
-        s.file_name = @name.capitalize + '.' + file_name
+        s.file_name = @name + '.' + file_name
         s
       end
 
