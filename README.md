@@ -1,6 +1,6 @@
 # Jaspion Kilza
 
-[![Gem Version](https://badge.fury.io/rb/jaspion-kilza.svg)](https://badge.fury.io/rb/kilza)
+[![Gem Version](https://badge.fury.io/rb/jaspion-kilza.svg)](https://badge.fury.io/rb/jaspion-kilza)
 
 [![Build Status](https://travis-ci.org/Jaspion/Kilza.svg?branch=master)](https://travis-ci.org/Jaspion/Kilza)
 
