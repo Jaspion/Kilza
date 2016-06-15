@@ -6,9 +6,36 @@ module Jaspion
       class Class
         include Jaspion::Kilza::Class
 
+        def initialize(name)
+          super(name)
+          @name = @name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
+        end
+        
         def sources
           [code('swift', 'swift')]
         end
+      end
+    end
+  end
+end
+
+module Jaspion
+  module Kilza
+    class Swift
+      class Property < Jaspion::Kilza::Property
+        def class_name
+          return if !object? || array?
+          Jaspion::Kilza::Swift::Class.new(@original_name).name
+        end
+
+        def constants(cl_name)
+          "    static let k#{cl_name}#{@name.capitalize}: String = \"#{@original_name.gsub('"', '\"')}\""
+        end
+
+        def declaration
+          "    public var #{@name}: #{@type}?"
+        end
+
       end
     end
   end
@@ -20,22 +47,22 @@ module Jaspion
     class Swift
       include Jaspion::Kilza::Language
 
+      RESERVED_PROPERTY_PREFIX = '_'
+      RESERVED_CLASS_POSFIX = 'Class'
+      RESERVED_WORDS = %w(
+        class break as associativity deinit case dynamicType
+        convenience enum continue false dynamic extension default
+        is didSet func do nil final import else self get init
+        fallthrough Self infix internal for super inout let
+        if true lazy operator in left private return mutating
+        protocol switch none public where nonmutating static
+        while optional struct override subscript postfix
+        typealias precedence var prefix required right set
+        type unowned weak id description
+      )
+
       def initialize(json_string)
         super(json_string)
-
-        @reserved_delimiter = '_my'
-
-        @reserved_words = %w(
-          class break as associativity deinit case dynamicType
-          convenience enum continue false dynamic extension default
-          is didSet func do nil final import else self get init
-          fallthrough Self infix internal for super inout let
-          if true lazy operator in left private return mutating
-          protocol switch none public where nonmutating static
-          while optional struct override subscript postfix
-          typealias precedence var prefix required right set
-          type unowned weak id
-        )
 
         @types = {
           'nilclass' => 'AnyObject',
@@ -51,7 +78,16 @@ module Jaspion
       end
 
       def clazz(name)
+        name = name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
         Jaspion::Kilza::Swift::Class.new(name)
+      end
+
+      def property(name, type, array, key)
+        original_name = name
+        name = RESERVED_PROPERTY_PREFIX + name unless RESERVED_WORDS.index(name.downcase).nil?
+        prop = Jaspion::Kilza::Swift::Property.new(name , type, array, key)
+        prop.original_name = original_name
+        prop
       end
 
       def classes(class_name)
@@ -60,7 +96,11 @@ module Jaspion
         @classes.each do |cl|
           cl.properties.each do |pr|
             if pr.object? || (pr.array? && pr.null?)
-              pr.type = pr.name.capitalize
+              name = Kilza.clean(pr.original_name)
+              name[0] = name[0].capitalize
+              name = name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
+
+              pr.type = name
               cl.imports.push("import #{pr.name.capitalize}")
             end
 

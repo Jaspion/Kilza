@@ -8,31 +8,35 @@ require 'jaspion/kilza'
 
 describe Jaspion::Kilza do
   let(:res_path) { File.join(File.dirname(__FILE__), '..', 'spec', 'res') }
+  let(:res_objc) { File.join(res_path, 'objc') }
   let(:json_path) { File.join(res_path, 'test.json') }
   let(:json_string) { File.read(json_path) }
   let(:json_array) { File.read(File.join(res_path, 'array.json')) }
 
-  context 'when json root element is an hash' do
-    subject(:objc) { Jaspion::Kilza::Objc.new(json_string) }
+  let(:json_reservedwords) { File.read(File.join(res_path, 'reservedwords.json')) }
+  context 'when json has reserved words' do
+    subject(:objc) { Jaspion::Kilza::Objc.new(json_reservedwords) }
 
     describe '#classes' do
-      it { expect(objc.classes('Base').size).to eq(8) }
+      it { expect(objc.classes('ReservedWords').size).to eq(2) }
 
       it 'compares the source codes' do
-        objc.classes('Base').each do |c|
+        objc.classes('ReservedWords').each do |c|
           c.sources.each do |s|
-            res_spec = File.join(res_path, s.file_name)
+            res_spec = File.join(res_objc, 'reservedwords', s.file_name)
             test_source = File.read(res_spec)
             eruby = Erubis::Eruby.new(test_source)
 
             expect(s.source).to eq(eruby.result)
+            # File.write(res_spec, s.source)
           end
         end
       end
     end
   end
 
-  context 'when json root element is an array' do
+  let(:json_array) { File.read(File.join(res_path, 'array.json')) }
+  context 'when json root element is not a hash' do
     subject(:objc) { Jaspion::Kilza::Objc.new(json_array) }
 
     describe '#classes' do
@@ -41,40 +45,35 @@ describe Jaspion::Kilza do
       it 'compares the source codes' do
         objc.classes('BaseArray').each do |c|
           c.sources.each do |s|
-            test_source = File.read(File.join(res_path, s.file_name))
+            test_source = File.read(File.join(res_objc, 'array', s.file_name))
             eruby = Erubis::Eruby.new(test_source)
 
             expect(s.source).to eq(eruby.result)
-            # File.write(File.join(res_path, s.file_name), s.source)
+            # File.write(File.join(res_objc, 'array', s.file_name), s.source)
           end
         end
       end
     end
   end
 
-  # describe 'test java' do
-  #   it 'Hash JSON - lists all classes' do
-  #     @java = Jaspion::Kilza::Java.new(@json_string)
-  #     @java.classes('Base').each do |c|
-  #       c.sources.each do |s|
-  #         test_source = File.read(File.join(@res_path, s.file_name))
-  #         eruby = Erubis::Eruby.new(test_source)
-  #         expect(s.source).to eq(eruby.result)
-  #       end
-  #     end
-  #   end
-  #
-  #   it 'Array JSON - lists all classes' do
-  #     @java = Jaspion::Kilza::Java.new(@json_array)
-  #     @java.classes('BaseArray').each do |c|
-  #       c.sources.each do |s|
-  #         test_source = File.read(File.join(@res_path, s.file_name))
-  #         eruby = Erubis::Eruby.new(test_source)
-  #         expect(s.source).to eq(eruby.result)
-  #
-  #         # File.write(File.join(@res_path, s.file_name), s.source)
-  #       end
-  #     end
-  #   end
-  # end
+  let(:json_hash) { File.read(File.join(res_path, 'hash.json')) }
+  context 'when json root element is a hash' do
+    subject(:objc) { Jaspion::Kilza::Objc.new(json_hash) }
+
+    describe '#classes' do
+      it { expect(objc.classes('Base').size).to eq(8) }
+
+      it 'compares the source codes' do
+        objc.classes('Base').each do |c|
+          c.sources.each do |s|
+            test_source = File.read(File.join(res_objc, 'hash', s.file_name))
+            eruby = Erubis::Eruby.new(test_source)
+
+            expect(s.source).to eq(eruby.result)
+            # File.write(File.join(res_objc, 'hash', s.file_name), s.source)
+          end
+        end
+      end
+    end
+  end
 end

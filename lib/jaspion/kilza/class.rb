@@ -16,7 +16,8 @@ module Jaspion
       #
       # @param name [String] Class Name
       def initialize(name)
-        @name = Kilza.normalize(name).capitalize
+        @name = Kilza.clean(name)
+        @name[0] = @name[0].capitalize
         @properties = []
         @imports = []
       end

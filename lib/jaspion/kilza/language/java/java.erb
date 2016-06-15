@@ -18,13 +18,13 @@ import com.google.gson.annotations.Expose;
 public class <%= @name %> implements Serializable
 {
 <% for @property in @properties %>
-<%= @property.json_key %>
+<%= @property.constants %>
 <% end %>
 
 <% for @property in @properties %>
 <%= @property.declaration %>
-<% end %>
 
+<% end %>
     public <%= @name %>() {
 
     }
@@ -67,10 +67,11 @@ public class <%= @name %> implements Serializable
 @eq = []
 @hs = []
 for @property in @properties
+  newname = @property.name.gsub(/_*(.+)/) { $1 }.capitalize
   if @property.boolean?
-    @eq.push("((#{@name}) obj).is#{@property.name.capitalize}().equals(#{@property.name})") if @property.key?
+    @eq.push("((#{@name}) obj).is#{newname}().equals(#{@property.name})") if @property.key?
   else
-    @eq.push("((#{@name}) obj).get#{@property.name.capitalize}().equals(#{@property.name})") if @property.key?
+    @eq.push("((#{@name}) obj).get#{newname}().equals(#{@property.name})") if @property.key?
   end
   @hs.push("#{@property.name}.hashCode()") if @property.key?
 end

@@ -13,7 +13,7 @@
 
 // Original names
 <% for @property in @properties %>
-NSString * const k<%= @name %><%= @property.name.capitalize %> = @"<%= @property.original_name %>";
+<%= @property.constants(name) %>
 <% end %>
 
 @interface <%= @name %> ()
@@ -24,145 +24,132 @@ NSString * const k<%= @name %><%= @property.name.capitalize %> = @"<%= @property
 
 @implementation <%= @name %>
 
-+ (<%= @name %> *)modelWithDictionary:(NSDictionary *)dict
-{
-  <%= @name %> *instance = [[<%= @name %> alloc] initWithDictionary:dict];
-  return instance;
++ (<%= @name %> *)modelWithDictionary:(NSDictionary *)dict {
+    <%= @name %> *instance = [[<%= @name %> alloc] initWithDictionary:dict];
+    return instance;
 }
 
-+ (<%= @name %> *)modelWithString:(NSString *)json
-{
-  <%= @name %> *instance = [[<%= @name %> alloc] initWithString:json];
-  return instance;
++ (<%= @name %> *)modelWithString:(NSString *)json {
+    <%= @name %> *instance = [[<%= @name %> alloc] initWithString:json];
+    return instance;
 }
 
-- (instancetype)initWithString:(NSString *)json
-{
-  self = [super init];
+- (instancetype)initWithString:(NSString *)json {
+    self = [super init];
 <% if @properties.length == 1 %>
 
-  if (![[json stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] hasPrefix:@"{"])
-    json = [NSString stringWithFormat:@"{ \"%@\" : %@ }", k<%= @name %><%= @properties.first.name.capitalize %>, json];
+    if (![[json stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] hasPrefix:@"{"])
+        json = [NSString stringWithFormat:@"{ \"%@\" : %@ }", k<%= @name %><%= @properties.first.name.capitalize %>, json];
 
 <% end %>
-  NSError *jsonError = nil;
-  NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
-  NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:objectData
-                                      options:NSJSONReadingMutableContainers
-                                        error:&jsonError];
-  if (!jsonError)
-    self = [self initWithDictionary:dict];
+    NSError *jsonError = nil;
+    NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:objectData
+                                                         options:NSJSONReadingMutableContainers
+                                                           error:&jsonError];
+    if (!jsonError)
+        self = [self initWithDictionary:dict];
 
-  return self;
+    return self;
 }
 
-- (instancetype)initWithDictionary:(NSDictionary *)dict
-{
-  self = [super init];
+- (instancetype)initWithDictionary:(NSDictionary *)dict {
+    self = [super init];
 
-  if (self && [dict isKindOfClass:[NSDictionary class]])
-  {
+    if (self && [dict isKindOfClass:[NSDictionary class]]) {
 <% for @property in @properties %>
 <% if @property.object? || (@property.null? && @property.array?) %>
-    NSObject *obj<%= @property.name.capitalize %> = [dict objectForKey:k<%= @name %><%= @property.name.capitalize %>];
+        NSObject *obj<%= @property.class_name %> = [self objectOrNilForKey:k<%= @name %><%= @property.name.capitalize %> fromDictionary:dict];
 <% if @property.array? %>
-    if ([obj<%= @property.name.capitalize %> isKindOfClass:[NSArray class]])
-    {
-      NSMutableArray *list<%= @property.name.capitalize %> = [NSMutableArray array];
-      for (NSDictionary *item in (NSArray *)obj<%= @property.name.capitalize %>) {
-        if ([item isKindOfClass:[NSDictionary class]]) {
-          [list<%= @property.name.capitalize %> addObject:[<%= @property.name.capitalize %> modelWithDictionary:(NSDictionary *)item]];
+        if ([obj<%= @property.class_name %> isKindOfClass:[NSArray class]]) {
+            NSMutableArray *list<%= @property.class_name %> = [NSMutableArray array];
+            for (NSDictionary *item in (NSArray *)obj<%= @property.name.capitalize %>) {
+                if ([item isKindOfClass:[NSDictionary class]]) {
+                    [list<%= @property.class_name %> addObject:[<%= @property.class_name %> modelWithDictionary:(NSDictionary *)item]];
+                }
+            }
+            self.<%= @property.name %> = list<%= @property.name.capitalize %>;
         }
-      }
-      self.<%= @property.name %> = list<%= @property.name.capitalize %>;
-    }
 <% else %>
-    {
-      self.<%= @property.name %> = [<%= @property.name.capitalize %> modelWithDictionary:(NSDictionary *)obj<%= @property.name.capitalize %>];
-    }
+        if (obj<%= @property.class_name %>) {
+            self.<%= @property.name %> = [<%= @property.class_name %> modelWithDictionary:(NSDictionary *)obj<%= @property.class_name %>];
+        }
 <% end %>
 <% else %>
-    self.<%= @property.name %> = [self objectOrNilForKey:k<%= @name %><%= @property.name.capitalize %> fromDictionary:dict];
+        self.<%= @property.name %> = [self objectOrNilForKey:k<%= @name %><%= @property.name.capitalize %> fromDictionary:dict];
 <% end %>
 <% end %>
-  }
-  return self;
+    }
+    return self;
 }
 
-- (NSDictionary *)dictionaryRepresentation
-{
-  NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
+- (NSDictionary *)dictionaryRepresentation {
+    NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
 
 <% for @property in @properties %>
 <% if @property.object? || (@property.null? && @property.array?) %>
 <% if @property.array? %>
-  NSMutableArray *tempArray<%= @property.name.capitalize %> = [NSMutableArray array];
-  for (NSObject *subArray in self.<%= @property.name %>) {
-    if ([subArray respondsToSelector:@selector(dictionaryRepresentation)]) {
-       [tempArray<%= @property.name.capitalize %> addObject:[subArray performSelector:@selector(dictionaryRepresentation)]];
-    } else {
-       [tempArray<%= @property.name.capitalize %> addObject:subArray];
+    NSMutableArray *tempArray<%= @property.name.capitalize %> = [NSMutableArray array];
+    for (NSObject *subArray in self.<%= @property.name %>) {
+        if ([subArray respondsToSelector:@selector(dictionaryRepresentation)]) {
+            [tempArray<%= @property.name.capitalize %> addObject:[subArray performSelector:@selector(dictionaryRepresentation)]];
+        } else {
+            [tempArray<%= @property.name.capitalize %> addObject:subArray];
+        }
     }
-  }
-  [mutableDict setValue:[NSArray arrayWithArray:tempArray<%= @property.name.capitalize %>] forKey:k<%= @name %><%= @property.name.capitalize %>];
+    [mutableDict setValue:[NSArray arrayWithArray:tempArray<%= @property.name.capitalize %>] forKey:k<%= @name %><%= @property.name.capitalize %>];
 <% else %>
-  if ([self.<%= @property.name %> respondsToSelector:@selector(dictionaryRepresentation)]) {
-    [mutableDict setValue:[self.<%= @property.name %> performSelector:@selector(dictionaryRepresentation)] forKey:k<%= @name %><%= @property.name.capitalize %>];
-  } else {
-    [mutableDict setValue:self.<%= @property.name %> forKey:k<%= @name %><%= @property.name.capitalize %>];
-  }
+    if ([self.<%= @property.name %> respondsToSelector:@selector(dictionaryRepresentation)]) {
+        [mutableDict setValue:[self.<%= @property.name %> performSelector:@selector(dictionaryRepresentation)] forKey:k<%= @name %><%= @property.name.capitalize %>];
+    } else {
+        [mutableDict setValue:self.<%= @property.name %> forKey:k<%= @name %><%= @property.name.capitalize %>];
+    }
 <% end %>
 <% else %>
-  [mutableDict setValue:self.<%= @property.name %> forKey:k<%= @name %><%= @property.name.capitalize %>];
+    [mutableDict setValue:self.<%= @property.name %> forKey:k<%= @name %><%= @property.name.capitalize %>];
 <% end %>
 <% end %>
 
-  return [NSDictionary dictionaryWithDictionary:mutableDict];
+    return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
-- (NSString *)description
-{
-  return [NSString stringWithFormat:@"%@", [self dictionaryRepresentation]];
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@", [self dictionaryRepresentation]];
 }
 
 #pragma mark - Helper Method
-- (id)objectOrNilForKey:(id)aKey fromDictionary:(NSDictionary *)dict
-{
-  id object = [dict objectForKey:aKey];
-  return [object isEqual:[NSNull null]] ? nil : object;
+- (id)objectOrNilForKey:(id)aKey fromDictionary:(NSDictionary *)dict {
+    id object = [dict objectForKey:aKey];
+    return [object isEqual:[NSNull null]] ? nil : object;
 }
 
 #pragma mark - NSCoding Methods
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-  self = [super init];
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
 
 <% for @property in @properties %>
-  self.<%= @property.name %> = [aDecoder decodeObjectForKey:k<%= @name %><%= @property.name.capitalize %>];
+    self.<%= @property.name %> = [aDecoder decodeObjectForKey:k<%= @name %><%= @property.name.capitalize %>];
 <% end %>
 
-  return self;
+    return self;
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
+- (void)encodeWithCoder:(NSCoder *)aCoder {
 <% for @property in @properties %>
-  [aCoder encodeObject:_<%= @property.name %> forKey:k<%= @name %><%= @property.name.capitalize %>];
+    [aCoder encodeObject:_<%= @property.name %> forKey:k<%= @name %><%= @property.name.capitalize %>];
 <% end %>
 }
 
-- (id)copyWithZone:(NSZone *)zone
-{
-  <%= @name %> *copy = [[<%= @name %> alloc] init];
-  if (copy)
-  {
+- (id)copyWithZone:(NSZone *)zone {
+    <%= @name %> *copy = [[<%= @name %> alloc] init];
+    if (copy) {
 <% for @property in @properties %>
-    copy.<%= @property.name %> = [self.<%= @property.name %> copyWithZone:zone];
+        copy.<%= @property.name %> = [self.<%= @property.name %> copyWithZone:zone];
 <% end %>
-  }
+    }
 
-  return copy;
+    return copy;
 }
 
 @end

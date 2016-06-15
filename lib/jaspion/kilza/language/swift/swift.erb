@@ -1,5 +1,5 @@
 //
-//  <%= @name %>.m
+//  <%= @name %>.swift
 //
 //  Created on <%= Time.now.strftime("%Y-%m-%d") %>
 //  Copyright (c) <%= Time.now.strftime("%Y") %>. All rights reserved.
@@ -11,62 +11,66 @@ import Foundation
 public class <%= @name %>: NSObject, NSCoding {
     // Original names
 <% for @property in @properties %>
-    static let k<%= @name %><%= @property.name.capitalize %>: String = "<%= @property.original_name.gsub('"', '\"') %>"
+<%= @property.constants(@name) %>
 <% end %>
 
 <% for @property in @properties %>
     public var <%= @property.name %>: <%= @property.type %>?
 <% end %>
 
-    public class func model(obj: AnyObject) -> <%= @name %> {
+    public class func model(obj: AnyObject) -> <%= @name %>? {
         var instance: <%= @name %>?
         if (obj is String) {
             instance = <%= @name %>.init(str: obj as! String)
         } else if (obj is Dictionary<String, AnyObject>) {
             instance = <%= @name %>.init(dict: obj as! Dictionary)
         }
-        return instance!
+        return instance
     }
 
-    public convenience init(str: String) {
+    public convenience init?(str: String) {
 <% if @properties.length == 1 %>
         var nStr: String = str
         if let trimmed: String = str.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) {
-          if !trimmed.hasPrefix("{") {
-            nStr = "{ \"\(<%= @name %>.k<%= @name %><%= @properties.first.name.capitalize %>)\" : \(str) }"
-          }
+            if !trimmed.hasPrefix("{") {
+                nStr = "{ \"\(<%= @name %>.k<%= @name %><%= @properties.first.name.capitalize %>)\" : \(str) }"
+            }
         }
 
         if let data = nStr.dataUsingEncoding(NSUTF8StringEncoding) {
 <% else %>
         if let data = str.dataUsingEncoding(NSUTF8StringEncoding) {
 <% end %>
-          do {
-              let object: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
-              self.init(dict: object as! Dictionary)
-          } catch _ as NSError {
-              self.init(dict: Dictionary())
-          }
+            do {
+                let object: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
+                self.init(dict: object as! Dictionary)
+            } catch _ as NSError {
+                self.init(dict: Dictionary())
+            }
         } else {
-          self.init(dict: Dictionary())
+            self.init(dict: Dictionary())
         }
     }
 
-    public init(dict: Dictionary<String, AnyObject>) {
-      super.init()
+    public init?(dict: Dictionary<String, AnyObject>) {
+        super.init()
 <% for @property in @properties %>
 <% if @property.object? || @property.null? %>
 <% if @property.array? %>
-        let obj<%= @property.name.capitalize %>: [AnyObject] = dict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>]! as! [AnyObject]
-        var list<%= @property.name.capitalize %> = <%= @property.type %>()
-        for item in obj<%= @property.name.capitalize %> {
-            if item is Dictionary<String, AnyObject> {
-                list<%= @property.name.capitalize %>.append(<%= @property.name.capitalize %>.model(item))
+        if let obj<%= @property.name.capitalize %>: [AnyObject] = dict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>] as? [AnyObject] {
+
+            var list<%= @property.name.capitalize %> = <%= @property.type %>()
+                for item in obj<%= @property.name.capitalize %> {
+                if item is Dictionary<String, AnyObject> {
+                    list<%= @property.name.capitalize %>.append(<%= @property.name.capitalize %>.model(item))
+                }
             }
+            self.<%= @property.name %> = list<%= @property.name.capitalize %>
+        } else {
+            return nil
         }
-        self.<%= @property.name %> = list<%= @property.name.capitalize %>
 <% else %>
-        self.<%= @property.name %> = <%= @property.name.capitalize %>.model(dict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>]!)
+        self.<%= @property.name %> = <%= @property.class_name %>.model(dict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>]!)
 <% end %>
 <% else %>
         self.<%= @property.name %> = objectOrNil(forKey: <%= @name %>.k<%= @name %><%= @property.name.capitalize %>, fromDictionary:dict)<% if @property.type != 'AnyObject' %> as? <%= @property.type %><% end %>
@@ -91,7 +95,7 @@ public class <%= @name %>: NSObject, NSCoding {
         }
         mutableDict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>] = Array.init(tempArray<%= @property.name.capitalize %>)
 <% else %>
-        if let dic = <%= @property.name %>?.dictionaryRepresentation() {
+        if let dic = self.<%= @property.name %>?.dictionaryRepresentation() {
             mutableDict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>] = dic
         } else {
             mutableDict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>] = self.<%= @property.name %>
@@ -106,12 +110,12 @@ public class <%= @name %>: NSObject, NSCoding {
 
     public func objectOrNil(forKey key: String, fromDictionary dict: Dictionary<String, AnyObject>) -> AnyObject?
     {
-      if let object: AnyObject = dict[key] {
-        if !(object is NSNull) {
-          return object
+        if let object: AnyObject = dict[key] {
+            if !(object is NSNull) {
+                return object
+            }
         }
-      }
-      return nil
+        return nil
     }
 
     required public init(coder aDecoder: NSCoder) {

@@ -9,15 +9,15 @@
 #import <Foundation/Foundation.h>
 
 <% for @property in @properties %>
-<% if @property.object? && !@property.array? %>
-@class <%= @property.name.capitalize %>;
+<% unless @property.class_reference.nil? %>
+<%= @property.class_reference %>
 <% end %>
 <% end %>
 
 @interface <%= @name %> : NSObject <NSCoding, NSCopying>
 
 <% for @property in @properties %>
-@property (nonatomic, strong) <%= @property.type %> <%= @property.name %>;
+<%= @property.declaration %>
 <% end %>
 
 + (<%= @name %> *)modelWithDictionary:(NSDictionary *)dict;
