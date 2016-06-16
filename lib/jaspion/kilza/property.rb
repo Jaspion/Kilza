@@ -59,6 +59,12 @@ module Jaspion
         @name == pr.name
       end
 
+      # If this Property represents a new Class,
+      # it returns the formatted class name
+      def class_name
+        Jaspion::Kilza::Class.normalize(@original_name)
+      end
+
       def to_s
         {
           name: @name,

@@ -58,16 +58,15 @@ public class <%= @name %>: NSObject, NSCoding {
 <% if @property.object? || @property.null? %>
 <% if @property.array? %>
         if let obj<%= @property.name.capitalize %>: [AnyObject] = dict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>] as? [AnyObject] {
-
             var list<%= @property.name.capitalize %> = <%= @property.type %>()
-                for item in obj<%= @property.name.capitalize %> {
+            for item in obj<%= @property.name.capitalize %> {
                 if item is Dictionary<String, AnyObject> {
-                    list<%= @property.name.capitalize %>.append(<%= @property.name.capitalize %>.model(item))
+                    if let obj = <%= @property.class_name %>.model(item) {
+                        list<%= @property.name.capitalize %>.append(obj)
+                    }
                 }
             }
             self.<%= @property.name %> = list<%= @property.name.capitalize %>
-        } else {
-            return nil
         }
 <% else %>
         self.<%= @property.name %> = <%= @property.class_name %>.model(dict[<%= @name %>.k<%= @name %><%= @property.name.capitalize %>]!)

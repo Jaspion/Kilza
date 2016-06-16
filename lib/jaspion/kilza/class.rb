@@ -16,8 +16,8 @@ module Jaspion
       #
       # @param name [String] Class Name
       def initialize(name)
-        @name = Kilza.clean(name)
-        @name[0] = @name[0].capitalize
+        @name = Jaspion::Kilza::Class.normalize(name)
+        # @name[0] = @name[0].capitalize
         @properties = []
         @imports = []
       end
@@ -83,6 +83,21 @@ module Jaspion
         src.array = dst.array unless src.array?
         src.key = dst.key unless src.key
         src
+      end
+
+      # Removes everything except numbers and letters replacing with _
+      # and removes all _ at the beginning and capitalizes the first character
+      #
+      # @param str [String] string to be cleaned
+      #
+      # @return [String] cleaned string
+      def self.normalize(str)
+        return if str.nil?
+        str = '_' + str if str[0].number?
+        str = str.gsub(/[^a-zA-Z0-9]/, '_')
+        str = str.gsub(/_*(.+)/) { $1 }
+        str[0] = str[0].capitalize
+        str
       end
     end
   end

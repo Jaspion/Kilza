@@ -24,6 +24,7 @@ public class Base: NSObject, NSCoding {
     static let kBaseArrnull: String = "arrnull"
     static let kBaseObj: String = "obj"
     static let kBaseArrobj: String = "arrobj"
+    static let kBase_underscore: String = "_underscore"
 
     public var _id: String?
     public var str: String?
@@ -39,6 +40,7 @@ public class Base: NSObject, NSCoding {
     public var arrnull: [Arrnull]?
     public var obj: Obj?
     public var arrobj: [Arrobj]?
+    public var _underscore: Underscore?
 
     public class func model(obj: AnyObject) -> Base? {
         var instance: Base?
@@ -77,30 +79,29 @@ public class Base: NSObject, NSCoding {
         self.arrstr = objectOrNil(forKey: Base.kBaseArrstr, fromDictionary:dict) as? [String]
         self.arrboo = objectOrNil(forKey: Base.kBaseArrboo, fromDictionary:dict) as? [Bool]
         if let objArrnull: [AnyObject] = dict[Base.kBaseArrnull] as? [AnyObject] {
-
             var listArrnull = [Arrnull]()
-                for item in objArrnull {
+            for item in objArrnull {
                 if item is Dictionary<String, AnyObject> {
-                    listArrnull.append(Arrnull.model(item))
+                    if let obj = Arrnull.model(item) {
+                        listArrnull.append(obj)
+                    }
                 }
             }
             self.arrnull = listArrnull
-        } else {
-            return nil
         }
         self.obj = Obj.model(dict[Base.kBaseObj]!)
         if let objArrobj: [AnyObject] = dict[Base.kBaseArrobj] as? [AnyObject] {
-
             var listArrobj = [Arrobj]()
-                for item in objArrobj {
+            for item in objArrobj {
                 if item is Dictionary<String, AnyObject> {
-                    listArrobj.append(Arrobj.model(item))
+                    if let obj = Arrobj.model(item) {
+                        listArrobj.append(obj)
+                    }
                 }
             }
             self.arrobj = listArrobj
-        } else {
-            return nil
         }
+        self._underscore = Underscore.model(dict[Base.kBase_underscore]!)
     }
 
     public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
@@ -143,6 +144,11 @@ public class Base: NSObject, NSCoding {
             }
         }
         mutableDict[Base.kBaseArrobj] = Array.init(tempArrayArrobj)
+        if let dic = self._underscore?.dictionaryRepresentation() {
+            mutableDict[Base.kBase_underscore] = dic
+        } else {
+            mutableDict[Base.kBase_underscore] = self._underscore
+        }
         return NSDictionary.init(dictionary: mutableDict) as! Dictionary<String, AnyObject>
     }
 
@@ -171,6 +177,7 @@ public class Base: NSObject, NSCoding {
         self.arrnull = aDecoder.decodeObjectForKey(Base.kBaseArrnull)! as? [Arrnull]
         self.obj = aDecoder.decodeObjectForKey(Base.kBaseObj)! as? Obj
         self.arrobj = aDecoder.decodeObjectForKey(Base.kBaseArrobj)! as? [Arrobj]
+        self._underscore = aDecoder.decodeObjectForKey(Base.kBase_underscore)! as? Underscore
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
@@ -188,6 +195,7 @@ public class Base: NSObject, NSCoding {
         aCoder.encodeObject(arrnull, forKey:Base.kBaseArrnull)
         aCoder.encodeObject(obj, forKey:Base.kBaseObj)
         aCoder.encodeObject(arrobj, forKey:Base.kBaseArrobj)
+        aCoder.encodeObject(_underscore, forKey:Base.kBase_underscore)
     }
 
     override public var description: String {

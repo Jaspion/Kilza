@@ -29,6 +29,7 @@ public class Base implements Serializable
     private static final String FIELD_ARRNULL = "arrnull";
     private static final String FIELD_OBJ = "obj";
     private static final String FIELD_ARROBJ = "arrobj";
+    private static final String FIELD__UNDERSCORE = "_underscore";
 
     @Expose
     @SerializedName(FIELD_ID)
@@ -85,6 +86,10 @@ public class Base implements Serializable
     @Expose
     @SerializedName(FIELD_ARROBJ)
     private ArrayList<Arrobj> arrobj;
+
+    @Expose
+    @SerializedName(FIELD__UNDERSCORE)
+    private Underscore _underscore;
 
     public Base() {
 
@@ -171,6 +176,7 @@ public class Base implements Serializable
                 this.arrobj.add(new Arrobj(arrobj));
             }
         }
+        this._underscore = new Underscore(object.optJSONObject(FIELD__UNDERSCORE));
     }
 
     public void setId(String value) {
@@ -283,6 +289,14 @@ public class Base implements Serializable
 
     public ArrayList<Arrobj> getArrobj() {
         return this.arrobj;
+    }
+
+    public void setUnderscore(Underscore value) {
+        this._underscore = value;
+    }
+
+    public Underscore getUnderscore() {
+        return this._underscore;
     }
 
     @Override

@@ -62,10 +62,9 @@ describe Jaspion::Kilza do
     subject(:java) { Jaspion::Kilza::Java.new(json_hash) }
 
     describe '#classes' do
-      it { expect(java.classes('Base').size).to eq(8) }
+      it { expect(java.classes('Base').size).to eq(9) }
 
       it 'compares the source codes' do
-        puts java.classes('Base')
         java.classes('Base').each do |c|
           c.sources.each do |s|
             test_source = File.read(File.join(res_java, 'hash', s.file_name))

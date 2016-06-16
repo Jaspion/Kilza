@@ -45,7 +45,7 @@ public class Special: NSObject, NSCoding {
 
     public init?(dict: Dictionary<String, AnyObject>) {
         super.init()
-        self.a = .model(dict[Special.kSpecialA]!)
+        self.a = A.model(dict[Special.kSpecialA]!)
         self._b______ = objectOrNil(forKey: Special.kSpecial_b______, fromDictionary:dict) as? String
         self.with_some_spaces = objectOrNil(forKey: Special.kSpecialWith_some_spaces, fromDictionary:dict) as? String
         self.new = objectOrNil(forKey: Special.kSpecialNew, fromDictionary:dict) as? Int

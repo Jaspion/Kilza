@@ -5,8 +5,11 @@ module Jaspion
     class Swift
       class Property < Jaspion::Kilza::Property
         def class_name
-          return if !object? || array?
-          Jaspion::Kilza::Swift::Class.new(@original_name).name
+          return if !(object? || null? || (array? && null?))
+
+          class_name = super
+          class_name = class_name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(class_name.downcase).nil?
+          class_name
         end
 
         def constants(cl_name)

@@ -28,6 +28,12 @@ module Jaspion
     class Java
       class Property < Jaspion::Kilza::Property
 
+        def class_name
+          class_name = super
+          class_name = class_name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(class_name.downcase).nil?
+          class_name
+        end
+
         def constants
           return '    private static final String FIELD_' +
           @name.upcase + ' = "' + @original_name + '";'
@@ -162,10 +168,7 @@ module Jaspion
 
         @classes.each do |cl|
           cl.properties.each do |pr|
-            name = Kilza.clean(pr.original_name)
-            name[0] = name[0].capitalize
-            name = name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
-            pr.type = name if pr.object? || (pr.array? && pr.null?)
+            pr.type = pr.class_name if pr.object? || (pr.array? && pr.null?)
 
             cl.imports.push('import java.util.ArrayList;') if pr.array? &&
               cl.imports.index('import java.util.ArrayList;').nil?

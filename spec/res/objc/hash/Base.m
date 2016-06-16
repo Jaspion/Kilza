@@ -12,6 +12,7 @@
 #import "Arrnull.h"
 #import "Obj.h"
 #import "Arrobj.h"
+#import "Underscore.h"
 
 // Original names
 NSString *const kBase_id = @"id";
@@ -28,6 +29,7 @@ NSString *const kBaseArrboo = @"arrboo";
 NSString *const kBaseArrnull = @"arrnull";
 NSString *const kBaseObj = @"obj";
 NSString *const kBaseArrobj = @"arrobj";
+NSString *const kBase_underscore = @"_underscore";
 
 @interface Base ()
 
@@ -81,12 +83,12 @@ NSString *const kBaseArrobj = @"arrobj";
         self.arrnum = [self objectOrNilForKey:kBaseArrnum fromDictionary:dict];
         self.arrstr = [self objectOrNilForKey:kBaseArrstr fromDictionary:dict];
         self.arrboo = [self objectOrNilForKey:kBaseArrboo fromDictionary:dict];
-        NSObject *obj = [self objectOrNilForKey:kBaseArrnull fromDictionary:dict];
-        if ([obj isKindOfClass:[NSArray class]]) {
-            NSMutableArray *list = [NSMutableArray array];
+        NSObject *objArrnull = [self objectOrNilForKey:kBaseArrnull fromDictionary:dict];
+        if ([objArrnull isKindOfClass:[NSArray class]]) {
+            NSMutableArray *listArrnull = [NSMutableArray array];
             for (NSDictionary *item in (NSArray *)objArrnull) {
                 if ([item isKindOfClass:[NSDictionary class]]) {
-                    [list addObject:[ modelWithDictionary:(NSDictionary *)item]];
+                    [listArrnull addObject:[Arrnull modelWithDictionary:(NSDictionary *)item]];
                 }
             }
             self.arrnull = listArrnull;
@@ -104,6 +106,10 @@ NSString *const kBaseArrobj = @"arrobj";
                 }
             }
             self.arrobj = listArrobj;
+        }
+        NSObject *objUnderscore = [self objectOrNilForKey:kBase_underscore fromDictionary:dict];
+        if (objUnderscore) {
+            self._underscore = [Underscore modelWithDictionary:(NSDictionary *)objUnderscore];
         }
     }
     return self;
@@ -154,6 +160,11 @@ NSString *const kBaseArrobj = @"arrobj";
         }
     }
     [mutableDict setValue:[NSArray arrayWithArray:tempArrayArrobj] forKey:kBaseArrobj];
+    if ([self._underscore respondsToSelector:@selector(dictionaryRepresentation)]) {
+        [mutableDict setValue:[self._underscore performSelector:@selector(dictionaryRepresentation)] forKey:kBase_underscore];
+    } else {
+        [mutableDict setValue:self._underscore forKey:kBase_underscore];
+    }
 
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
@@ -187,6 +198,7 @@ NSString *const kBaseArrobj = @"arrobj";
     self.arrnull = [aDecoder decodeObjectForKey:kBaseArrnull];
     self.obj = [aDecoder decodeObjectForKey:kBaseObj];
     self.arrobj = [aDecoder decodeObjectForKey:kBaseArrobj];
+    self._underscore = [aDecoder decodeObjectForKey:kBase_underscore];
 
     return self;
 }
@@ -206,6 +218,7 @@ NSString *const kBaseArrobj = @"arrobj";
     [aCoder encodeObject:_arrnull forKey:kBaseArrnull];
     [aCoder encodeObject:_obj forKey:kBaseObj];
     [aCoder encodeObject:_arrobj forKey:kBaseArrobj];
+    [aCoder encodeObject:__underscore forKey:kBase_underscore];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -225,6 +238,7 @@ NSString *const kBaseArrobj = @"arrobj";
         copy.arrnull = [self.arrnull copyWithZone:zone];
         copy.obj = [self.obj copyWithZone:zone];
         copy.arrobj = [self.arrobj copyWithZone:zone];
+        copy._underscore = [self._underscore copyWithZone:zone];
     }
 
     return copy;

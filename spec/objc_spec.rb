@@ -61,7 +61,7 @@ describe Jaspion::Kilza do
     subject(:objc) { Jaspion::Kilza::Objc.new(json_hash) }
 
     describe '#classes' do
-      it { expect(objc.classes('Base').size).to eq(8) }
+      it { expect(objc.classes('Base').size).to eq(9) }
 
       it 'compares the source codes' do
         objc.classes('Base').each do |c|

@@ -14,12 +14,6 @@ module Jaspion
       # JSON that will be used to generate objects
       attr_accessor :json_string
 
-      # String that will be used to posfix reserved words for classes
-      attr_accessor :reserved_class_posfix
-
-      # String that will be used to prefix reserved words for properties
-      attr_accessor :reserved_property_prefix
-
       # Words that will receive an undescore before property name
       attr_accessor :reserved_words
 
@@ -40,8 +34,6 @@ module Jaspion
         @classes = []
         @types = {}
         @reserved_words = []
-        @reserved_class_posfix = 'Class'
-        @reserved_property_prefix = '_'
         @equal_keys = []
       end
 
@@ -67,7 +59,6 @@ module Jaspion
       #
       # @return [Kilza::Class] new class
       def clazz(name)
-        name = name + @reserved_class_posfix unless @reserved_words.index(name.downcase).nil?
         Class.new(name)
       end
 
@@ -82,7 +73,6 @@ module Jaspion
       # @return [Kilza::Property] new property
       def property(name, type, array, key)
         original_name = name
-        name = @reserved_property_prefix + name unless @reserved_words.index(name.downcase).nil?
         prop = Property.new(name , type, array, key)
         prop.original_name = original_name
         prop
@@ -95,9 +85,7 @@ module Jaspion
       #
       # @return [Kilza::Class] class with the specified name
       def find(name)
-        name = name + @reserved_class_posfix unless @reserved_words.index(name.downcase).nil?
-        name = Kilza.clean(name)
-        name[0] = name[0].capitalize
+        name = Jaspion::Kilza::Class::normalize(name)
 
         @classes.each { |cl| return cl if cl.name == name }
         @classes.push(clazz(name))

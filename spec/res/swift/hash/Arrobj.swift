@@ -51,7 +51,7 @@ public class Arrobj: NSObject, NSCoding {
         self.num = objectOrNil(forKey: Arrobj.kArrobjNum, fromDictionary:dict) as? Int
         self.flo = objectOrNil(forKey: Arrobj.kArrobjFlo, fromDictionary:dict) as? Double
         self.boo = objectOrNil(forKey: Arrobj.kArrobjBoo, fromDictionary:dict) as? Bool
-        self.null = .model(dict[Arrobj.kArrobjNull]!)
+        self.null = Null.model(dict[Arrobj.kArrobjNull]!)
     }
 
     public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {

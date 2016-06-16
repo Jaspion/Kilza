@@ -60,7 +60,7 @@ describe Jaspion::Kilza do
     subject(:swift) { Jaspion::Kilza::Swift.new(json_hash) }
 
     describe '#classes' do
-      it { expect(swift.classes('Base').size).to eq(8) }
+      it { expect(swift.classes('Base').size).to eq(9) }
 
       it 'compares the source codes' do
         swift.classes('Base').each do |c|

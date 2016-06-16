@@ -11,6 +11,7 @@
 @class Spa_ce;
 @class Special;
 @class Obj;
+@class Underscore;
 
 @interface Base : NSObject <NSCoding, NSCopying>
 
@@ -28,6 +29,7 @@
 @property (nonatomic, strong) NSMutableArray * arrnull;
 @property (nonatomic, strong) Obj * obj;
 @property (nonatomic, strong) NSMutableArray * arrobj;
+@property (nonatomic, strong) Underscore * _underscore;
 
 + (Base *)modelWithDictionary:(NSDictionary *)dict;
 + (Base *)modelWithString:(NSString *)json;

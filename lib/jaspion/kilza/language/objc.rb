@@ -40,8 +40,11 @@ module Jaspion
       class Property < Jaspion::Kilza::Property
 
         def class_name
-          return if !object?
-          Jaspion::Kilza::Objc::Class.new(@original_name).name
+          return if !(object? || (array? && null?))
+
+          class_name = super
+          class_name = class_name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(class_name.downcase).nil?
+          class_name
         end
 
         def class_reference
@@ -116,11 +119,8 @@ module Jaspion
         @classes.each do |cl|
           cl.properties.each do |pr|
             if pr.object? || (pr.array? && pr.null?)
-              name = Kilza.clean(pr.original_name)
-              name[0] = name[0].capitalize
-              name = name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
-              pr.type = name + ' *'
-              cl.imports.push("#import \"#{name}.h\"")
+              pr.type = pr.class_name + ' *'
+              cl.imports.push("#import \"#{pr.class_name}.h\"")
             end
 
             pr.type = 'NSMutableArray *' if pr.array?

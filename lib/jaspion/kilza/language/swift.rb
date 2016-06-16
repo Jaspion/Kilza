@@ -55,12 +55,8 @@ module Jaspion
         @classes.each do |cl|
           cl.properties.each do |pr|
             if pr.object? || (pr.array? && pr.null?)
-              name = Kilza.clean(pr.original_name)
-              name[0] = name[0].capitalize
-              name = name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
-
-              pr.type = name
-              cl.imports.push("import #{pr.name.capitalize}")
+              pr.type = pr.class_name
+              cl.imports.push("import #{pr.class_name}")
             end
 
             pr.type = @types[pr.type] unless @types[pr.type].nil?
