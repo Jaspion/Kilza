@@ -4,6 +4,8 @@
 */
 package ;
 
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 
 import org.json.*;
 
-public class Base implements Serializable
+public class Base implements Parcelable, Serializable
 {
     private static final String FIELD_ID = "id";
     private static final String FIELD_STR = "str";
@@ -315,7 +317,57 @@ public class Base implements Serializable
 
     @Override
     public String toString() {
-      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-      return gson.toJson(this);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(this);
     }
+
+    private Base(Parcel in) {
+        id = in.readString();
+        str = in.readString();
+        num = in.readLong();
+        flo = in.readDouble();
+        boo = in.readByte() != 0;
+        spa_ce = in.readParcelable(Space.class.getClassLoader());
+        special = in.readParcelable(Special.class.getClassLoader());
+        arrdouble = in.readArrayList(null);
+        arrnum = in.readArrayList(null);
+        arrstr = in.readArrayList(null);
+        arrboo = in.readArrayList(null);
+        arrnull = in.readArrayList(null);
+        obj = in.readParcelable(Obj.class.getClassLoader());
+        in.readTypedList(arrobj, Arrobj.CREATOR);
+        _underscore = in.readParcelable(Underscore.class.getClassLoader());
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(id);
+        out.writeString(str);
+        out.writeLong(num);
+        out.writeDouble(flo);
+        out.writeByte((byte) (boo ? 1 : 0));
+        out.writeParcelable(spa_ce, flags);
+        out.writeParcelable(special, flags);
+        out.writeList(arrdouble);
+        out.writeList(arrnum);
+        out.writeList(arrstr);
+        out.writeList(arrboo);
+        out.writeList(arrnull);
+        out.writeParcelable(obj, flags);
+        out.writeTypedList(arrobj);
+        out.writeParcelable(_underscore, flags);
+    }
+
+    public static final Parcelable.Creator<Base> CREATOR = new Parcelable.Creator<Base>() {
+        public Base createFromParcel(Parcel in) {
+            return new Base(in);
+        }
+
+        public Base[] newArray(int size) {
+            return new Base[size];
+        }
+    };
 }

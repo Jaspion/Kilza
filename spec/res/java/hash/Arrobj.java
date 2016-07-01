@@ -4,6 +4,8 @@
 */
 package ;
 
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import java.io.Serializable;
 
 import org.json.*;
 
-public class Arrobj implements Serializable
+public class Arrobj implements Parcelable, Serializable
 {
     private static final String FIELD_STR = "str";
     private static final String FIELD_NUM = "num";
@@ -114,7 +116,37 @@ public class Arrobj implements Serializable
 
     @Override
     public String toString() {
-      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-      return gson.toJson(this);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(this);
     }
+
+    private Arrobj(Parcel in) {
+        str = in.readString();
+        num = in.readLong();
+        flo = in.readDouble();
+        boo = in.readByte() != 0;
+        _null = in.readObject();
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(str);
+        out.writeLong(num);
+        out.writeDouble(flo);
+        out.writeByte((byte) (boo ? 1 : 0));
+        out.writeObject(_null);
+    }
+
+    public static final Parcelable.Creator<Arrobj> CREATOR = new Parcelable.Creator<Arrobj>() {
+        public Arrobj createFromParcel(Parcel in) {
+            return new Arrobj(in);
+        }
+
+        public Arrobj[] newArray(int size) {
+            return new Arrobj[size];
+        }
+    };
 }

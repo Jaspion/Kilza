@@ -19,54 +19,68 @@ module Jaspion
           super(name)
           @name = @name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
           @package = package
+          @implements = []
+
           push_import('import org.json.*;')
 
           self.serializable = true
-          self.parcelable = false
+          self.parcelable = true
           self.gson = true
+        end
+
+        def push(property)
+          super(property)
+          property.gson = gson?
+        end
+
+        def push_implements(implement)
+          @implements.push(implement)
+        end
+
+        def implements
+          @implements.sort
         end
 
         def gson=(g)
           @gson = g
 
-          if (g)
-            i = %w(
-              import\ com.google.gson.Gson;
-              import\ com.google.gson.GsonBuilder;
-              import\ com.google.gson.annotations.SerializedName;
-              import\ com.google.gson.annotations.Expose;
-            )
+          v = %w(
+            import\ com.google.gson.Gson;
+            import\ com.google.gson.GsonBuilder;
+            import\ com.google.gson.annotations.SerializedName;
+            import\ com.google.gson.annotations.Expose;
+          )
 
-            push_import(i)
+          if (g)
+            push_import(v)
           else
-            index = @imports.index(i)
-            unless index.nil?
-              (0..5).each { @imports.delete_at(index - 1) }
-            end
+            delete_import(v)
           end
         end
 
         def parcelable=(p)
           @parcelable = p
+
+          v = 'import android.os.Parcelable;'
           if (p)
-            push_import('import android.os.Parcelable;')
+            push_implements('Parcelable')
+            push_import(v)
           else
-            index = @imports.index('import android.os.Parcelable;')
-            unless index.nil?
-              (0..2).each { @imports.delete_at(index - 1) }
-            end
+            implements.delete('Parcelable')
+            delete_import(v)
           end
         end
 
         def serializable=(s)
           @serializable = s
+
+          v = 'import java.io.Serializable;'
           if (s)
-            push_import('import java.io.Serializable;')
+            push_implements('Serializable')
+            push_import(v)
           else
-            index = @imports.index('import java.io.Serializable;')
-            unless index.nil?
-              (0..2).each { @imports.delete_at(index - 1) }
-            end
+            implements.delete('Serializable')
+            delete_import(v)
           end
         end
 

@@ -4,6 +4,8 @@
 */
 package ;
 
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import java.io.Serializable;
 
 import org.json.*;
 
-public class Underscore implements Serializable
+public class Underscore implements Parcelable, Serializable
 {
     private static final String FIELD__ = "_";
 
@@ -60,7 +62,29 @@ public class Underscore implements Serializable
 
     @Override
     public String toString() {
-      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-      return gson.toJson(this);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(this);
     }
+
+    private Underscore(Parcel in) {
+        _ = in.readString();
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(_);
+    }
+
+    public static final Parcelable.Creator<Underscore> CREATOR = new Parcelable.Creator<Underscore>() {
+        public Underscore createFromParcel(Parcel in) {
+            return new Underscore(in);
+        }
+
+        public Underscore[] newArray(int size) {
+            return new Underscore[size];
+        }
+    };
 }

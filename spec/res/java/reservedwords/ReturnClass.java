@@ -4,6 +4,8 @@
 */
 package ;
 
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import java.io.Serializable;
 
 import org.json.*;
 
-public class ReturnClass implements Serializable
+public class ReturnClass implements Parcelable, Serializable
 {
     private static final String FIELD_ID = "id";
 
@@ -71,7 +73,29 @@ public class ReturnClass implements Serializable
 
     @Override
     public String toString() {
-      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-      return gson.toJson(this);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(this);
     }
+
+    private ReturnClass(Parcel in) {
+        id = in.readLong();
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeLong(id);
+    }
+
+    public static final Parcelable.Creator<ReturnClass> CREATOR = new Parcelable.Creator<ReturnClass>() {
+        public ReturnClass createFromParcel(Parcel in) {
+            return new ReturnClass(in);
+        }
+
+        public ReturnClass[] newArray(int size) {
+            return new ReturnClass[size];
+        }
+    };
 }

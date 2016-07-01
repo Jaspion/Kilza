@@ -6,7 +6,6 @@ require 'fileutils'
 require 'erubis'
 require 'jaspion/kilza'
 
-
 describe Jaspion::Kilza do
   let(:res_path) { File.join(File.dirname(__FILE__), '..', 'spec', 'res') }
   let(:res_java) { File.join(res_path, 'java') }

@@ -8,7 +8,7 @@ package <%= @package %>;
 <%= @import %>
 <% end %>
 
-public class <%= @name %> implements Serializable
+public class <%= @name %><% if @implements.length > 0 %> implements <%= implements.join(', ') %><% end %>
 {
 <% for @property in @properties %>
 <%= @property.constants %>
@@ -87,7 +87,35 @@ end
 
     @Override
     public String toString() {
-      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-      return gson.toJson(this);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(this);
     }
+<% if parcelable %>
+
+    private <%= @name %>(Parcel in) {
+<% for @property in @properties %>
+        <%= @property.read_parcel %>
+<% end %>
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+<% for @property in @properties %>
+        <%= @property.write_parcel %>
+<% end %>
+    }
+
+    public static final Parcelable.Creator<<%= @name %>> CREATOR = new Parcelable.Creator<<%= @name %>>() {
+        public <%= @name %> createFromParcel(Parcel in) {
+            return new <%= @name %>(in);
+        }
+
+        public <%= @name %>[] newArray(int size) {
+            return new <%= @name %>[size];
+        }
+    };
+<% end %>
 }

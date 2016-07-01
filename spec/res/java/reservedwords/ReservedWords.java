@@ -4,6 +4,8 @@
 */
 package ;
 
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import java.io.Serializable;
 
 import org.json.*;
 
-public class ReservedWords implements Serializable
+public class ReservedWords implements Parcelable, Serializable
 {
     private static final String FIELD__IF = "if";
     private static final String FIELD__RETURN = "return";
@@ -72,7 +74,31 @@ public class ReservedWords implements Serializable
 
     @Override
     public String toString() {
-      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-      return gson.toJson(this);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(this);
     }
+
+    private ReservedWords(Parcel in) {
+        _if = in.readString();
+        _return = in.readParcelable(ReturnClass.class.getClassLoader());
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(_if);
+        out.writeParcelable(_return, flags);
+    }
+
+    public static final Parcelable.Creator<ReservedWords> CREATOR = new Parcelable.Creator<ReservedWords>() {
+        public ReservedWords createFromParcel(Parcel in) {
+            return new ReservedWords(in);
+        }
+
+        public ReservedWords[] newArray(int size) {
+            return new ReservedWords[size];
+        }
+    };
 }

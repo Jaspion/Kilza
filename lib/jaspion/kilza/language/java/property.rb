@@ -3,6 +3,14 @@ module Jaspion
     class Java
       class Property < Jaspion::Kilza::Property
 
+        attr_accessor :gson
+        alias :gson? :gson
+
+        def initialize(name, type, array, key)
+          super(name, type, array, key)
+          @serializable = true
+        end
+
         def class_name
           class_name = super
           class_name = class_name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(class_name.downcase).nil?
@@ -14,11 +22,46 @@ module Jaspion
           @name.upcase + ' = "' + @original_name + '";'
         end
 
-        def declaration
-          r = %(    @Expose
-    @SerializedName(FIELD_#{@name.upcase})
-)
+        def read_parcel
+          r = ''
+          if array?
+            if object?
+              r = "in.readTypedList(#{@name}, #{class_name}.CREATOR);"
+            else
+              r = "#{@name} = in.readArrayList(null);"
+            end
+          elsif object?
+            r = "#{@name} = in.readParcelable(#{class_name}.class.getClassLoader());"
+          elsif boolean?
+            r = "#{@name} = in.readByte() != 0;"
+          else
+            r = "#{@name} = in.read#{type}();"
+          end
+          r
+        end
 
+        def write_parcel
+          r = ''
+          if array?
+            if object?
+              r = "out.writeTypedList(#{@name});"
+            else
+              r = "out.writeList(#{@name});"
+            end
+          elsif object?
+            r = "out.writeParcelable(#{@name}, flags);"
+          elsif boolean?
+            r = "out.writeByte((byte) (#{name} ? 1 : 0));"
+          else
+            r = "out.write#{type}(#{name});"
+          end
+          r
+        end
+
+        def declaration
+          r = ''
+          r << "    @Expose\n" if gson?
+          r << "    @SerializedName(FIELD_#{@name.upcase})\n" if gson?
           if array?
             r + "    private ArrayList<#{@type}> #{@name};"
           else

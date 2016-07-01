@@ -4,6 +4,8 @@
 */
 package ;
 
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 
 import org.json.*;
 
-public class BaseArray implements Serializable
+public class BaseArray implements Parcelable, Serializable
 {
     private static final String FIELD_BASEARRAYOBJECT = "BaseArrayObject";
 
@@ -70,7 +72,29 @@ public class BaseArray implements Serializable
 
     @Override
     public String toString() {
-      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-      return gson.toJson(this);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(this);
     }
+
+    private BaseArray(Parcel in) {
+        basearrayobject = in.readArrayList(null);
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeList(basearrayobject);
+    }
+
+    public static final Parcelable.Creator<BaseArray> CREATOR = new Parcelable.Creator<BaseArray>() {
+        public BaseArray createFromParcel(Parcel in) {
+            return new BaseArray(in);
+        }
+
+        public BaseArray[] newArray(int size) {
+            return new BaseArray[size];
+        }
+    };
 }

@@ -20,10 +20,20 @@ module Jaspion
 
       # Adds an new import statement
       #
-      # @param import [String] The whole statement that has to be printted
+      # @param import [String|Array] The whole statement that has to be printted
+      #                              It can be an Array
       def push_import(import)
         import = [import] if import.is_a? String
         @imports.push(import)
+      end
+
+      # Removes an new import statement
+      #
+      # @param import [String|Array] The statement to be removed
+      def delete_import(import)
+        import = [import] if import.is_a? String
+        i = @imports.index(import)
+        @imports.delete_at(i) unless i.nil?
       end
 
       def imports
@@ -35,7 +45,7 @@ module Jaspion
       # @param property [Kilza::Property] Property to include
       def push(property)
         index = @properties.index(property)
-        if !index.nil?
+        unless index.nil?
           current = @properties[index]
           @properties[index] = update(current, property)
         else

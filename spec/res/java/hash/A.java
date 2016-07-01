@@ -4,6 +4,8 @@
 */
 package ;
 
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import java.io.Serializable;
 
 import org.json.*;
 
-public class A implements Serializable
+public class A implements Parcelable, Serializable
 {
 
     public A() {
@@ -44,7 +46,27 @@ public class A implements Serializable
 
     @Override
     public String toString() {
-      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-      return gson.toJson(this);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(this);
     }
+
+    private A(Parcel in) {
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+    }
+
+    public static final Parcelable.Creator<A> CREATOR = new Parcelable.Creator<A>() {
+        public A createFromParcel(Parcel in) {
+            return new A(in);
+        }
+
+        public A[] newArray(int size) {
+            return new A[size];
+        }
+    };
 }

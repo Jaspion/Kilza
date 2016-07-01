@@ -4,6 +4,8 @@
 */
 package ;
 
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import java.io.Serializable;
 
 import org.json.*;
 
-public class Special implements Serializable
+public class Special implements Parcelable, Serializable
 {
     private static final String FIELD_A = "A";
     private static final String FIELD__B______ = "[B]""&^ ";
@@ -100,7 +102,35 @@ public class Special implements Serializable
 
     @Override
     public String toString() {
-      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-      return gson.toJson(this);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(this);
     }
+
+    private Special(Parcel in) {
+        a = in.readObject();
+        _b______ = in.readString();
+        with_some_spaces = in.readString();
+        _new = in.readLong();
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeObject(a);
+        out.writeString(_b______);
+        out.writeString(with_some_spaces);
+        out.writeLong(_new);
+    }
+
+    public static final Parcelable.Creator<Special> CREATOR = new Parcelable.Creator<Special>() {
+        public Special createFromParcel(Parcel in) {
+            return new Special(in);
+        }
+
+        public Special[] newArray(int size) {
+            return new Special[size];
+        }
+    };
 }

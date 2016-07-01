@@ -4,6 +4,8 @@
 */
 package ;
 
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import java.io.Serializable;
 
 import org.json.*;
 
-public class Space implements Serializable
+public class Space implements Parcelable, Serializable
 {
     private static final String FIELD__1ONE = "1one";
 
@@ -60,7 +62,29 @@ public class Space implements Serializable
 
     @Override
     public String toString() {
-      Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-      return gson.toJson(this);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(this);
     }
+
+    private Space(Parcel in) {
+        _1one = in.readString();
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(_1one);
+    }
+
+    public static final Parcelable.Creator<Space> CREATOR = new Parcelable.Creator<Space>() {
+        public Space createFromParcel(Parcel in) {
+            return new Space(in);
+        }
+
+        public Space[] newArray(int size) {
+            return new Space[size];
+        }
+    };
 }
