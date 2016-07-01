@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class Spa_ce;
+@class Space;
 @class Special;
 @class Obj;
 @class Underscore;
@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSNumber * num;
 @property (nonatomic, strong) NSNumber * flo;
 @property (nonatomic, strong) NSNumber * boo;
-@property (nonatomic, strong) Spa_ce * spa_ce;
+@property (nonatomic, strong) Space * spa_ce;
 @property (nonatomic, strong) Special * special;
 @property (nonatomic, strong) NSMutableArray * arrdouble;
 @property (nonatomic, strong) NSMutableArray * arrnum;

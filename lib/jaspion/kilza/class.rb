@@ -5,10 +5,6 @@ module Jaspion
       # Class name
       attr_accessor :name
 
-      # Array with all class dependecies
-      # Specific for each language
-      attr_accessor :imports
-
       # Array with all class properties
       attr_accessor :properties
 
@@ -20,6 +16,18 @@ module Jaspion
         # @name[0] = @name[0].capitalize
         @properties = []
         @imports = []
+      end
+
+      # Adds an new import statement
+      #
+      # @param import [String] The whole statement that has to be printted
+      def push_import(import)
+        import = [import] if import.is_a? String
+        @imports.push(import)
+      end
+
+      def imports
+        @imports.sort.separate.flatten
       end
 
       # Adds a new property
@@ -85,7 +93,7 @@ module Jaspion
         src
       end
 
-      # Removes everything except numbers and letters replacing with _
+      # Removes everything except numbers and letters
       # and removes all _ at the beginning and capitalizes the first character
       #
       # @param str [String] string to be cleaned
@@ -94,7 +102,7 @@ module Jaspion
       def self.normalize(str)
         return if str.nil?
         str = '_' + str if str[0].number?
-        str = str.gsub(/[^a-zA-Z0-9]/, '_')
+        str = str.gsub(/[^a-zA-Z0-9]/, '')
         str = str.gsub(/_*(.+)/) { $1 }
         str[0] = str[0].capitalize
         str

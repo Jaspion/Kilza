@@ -4,14 +4,16 @@
 */
 package ;
 
-import org.json.*;
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Expose;
+
+import java.io.Serializable;
+
+import java.util.ArrayList;
+
+import org.json.*;
 
 public class Base implements Serializable
 {
@@ -53,7 +55,7 @@ public class Base implements Serializable
 
     @Expose
     @SerializedName(FIELD_SPA_CE)
-    private Spa_ce spa_ce;
+    private Space spa_ce;
 
     @Expose
     @SerializedName(FIELD_SPECIAL)
@@ -119,7 +121,7 @@ public class Base implements Serializable
         this.num = object.optLong(FIELD_NUM);
         this.flo = object.optDouble(FIELD_FLO);
         this.boo = object.optBoolean(FIELD_BOO);
-        this.spa_ce = new Spa_ce(object.optJSONObject(FIELD_SPA_CE));
+        this.spa_ce = new Space(object.optJSONObject(FIELD_SPA_CE));
         this.special = new Special(object.optJSONObject(FIELD_SPECIAL));
         if (object.optJSONArray(FIELD_ARRDOUBLE) != null)
         {
@@ -219,11 +221,11 @@ public class Base implements Serializable
         return this.boo;
     }
 
-    public void setSpa_ce(Spa_ce value) {
+    public void setSpa_ce(Space value) {
         this.spa_ce = value;
     }
 
-    public Spa_ce getSpa_ce() {
+    public Space getSpa_ce() {
         return this.spa_ce;
     }
 

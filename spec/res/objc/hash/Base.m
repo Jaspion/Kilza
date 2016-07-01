@@ -7,11 +7,11 @@
 //
 
 #import "Base.h"
-#import "Spa_ce.h"
-#import "Special.h"
 #import "Arrnull.h"
-#import "Obj.h"
 #import "Arrobj.h"
+#import "Obj.h"
+#import "Space.h"
+#import "Special.h"
 #import "Underscore.h"
 
 // Original names
@@ -71,9 +71,9 @@ NSString *const kBase_underscore = @"_underscore";
         self.num = [self objectOrNilForKey:kBaseNum fromDictionary:dict];
         self.flo = [self objectOrNilForKey:kBaseFlo fromDictionary:dict];
         self.boo = [self objectOrNilForKey:kBaseBoo fromDictionary:dict];
-        NSObject *objSpa_ce = [self objectOrNilForKey:kBaseSpa_ce fromDictionary:dict];
-        if (objSpa_ce) {
-            self.spa_ce = [Spa_ce modelWithDictionary:(NSDictionary *)objSpa_ce];
+        NSObject *objSpace = [self objectOrNilForKey:kBaseSpa_ce fromDictionary:dict];
+        if (objSpace) {
+            self.spa_ce = [Space modelWithDictionary:(NSDictionary *)objSpace];
         }
         NSObject *objSpecial = [self objectOrNilForKey:kBaseSpecial fromDictionary:dict];
         if (objSpecial) {

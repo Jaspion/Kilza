@@ -5,7 +5,11 @@ require 'jaspion/kilza/class'
 require 'jaspion/kilza/property'
 require 'jaspion/kilza/language'
 require 'jaspion/kilza/language/objc'
+require 'jaspion/kilza/language/objc/class'
+require 'jaspion/kilza/language/objc/property'
 require 'jaspion/kilza/language/java'
+require 'jaspion/kilza/language/java/class'
+require 'jaspion/kilza/language/java/property'
 require 'jaspion/kilza/language/swift'
 require 'jaspion/kilza/language/swift/class'
 require 'jaspion/kilza/language/swift/property'
@@ -22,28 +26,32 @@ class String
   end
 end
 
+# Ruby class
+class Array
+  # Inserts an separator between each element
+  #
+  # @param sep [String] string to be used as separator
+  #
+  # @return [Array] the new array
+  def separate(sep = '')
+    a = self
+    l = a.length - 2
+    (0..l).each { |i| a.insert(((2 * i) + 1), sep) }
+    a
+  end
+
+  # Inserts an separator between each element
+  #
+  # @param sep [String] string to be used as separator
+  def separate!(sep = '')
+    l = length - 2
+    (0..l).each { |i| insert(((2 * i) + 1), sep) }
+  end
+end
+
 # Tranforms a JSON string into Objects
 module Jaspion
   module Kilza
-    # Removes everything except numbers and letters.
-    #
-    # @param str [String] string to be cleaned
-    #
-    # @return [String] cleaned string
-    def self.clean(str)
-      return if str.nil?
-      str = '_' + str if str[0].number?
-      str.gsub(/[^a-zA-Z0-9]/, '_')
-    end
 
-    # Cleans the string and make it lowercase.
-    #
-    # @param str [String] string to be cleaned
-    #
-    # @return [String] cleaned string
-    def self.normalize(str)
-      return if str.nil?
-      Jaspion::Kilza.clean(str).downcase
-    end
   end
 end

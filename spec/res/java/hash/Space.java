@@ -4,15 +4,16 @@
 */
 package ;
 
-import org.json.*;
-import java.io.Serializable;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Expose;
 
-public class Spa_ce implements Serializable
+import java.io.Serializable;
+
+import org.json.*;
+
+public class Space implements Serializable
 {
     private static final String FIELD__1ONE = "1one";
 
@@ -20,15 +21,15 @@ public class Spa_ce implements Serializable
     @SerializedName(FIELD__1ONE)
     private String _1one;
 
-    public Spa_ce() {
+    public Space() {
 
     }
 
-    public Spa_ce(JSONObject jsonObject) {
+    public Space(JSONObject jsonObject) {
         parseObject(jsonObject);
     }
 
-    public Spa_ce(String jsonString) {
+    public Space(String jsonString) {
         try {
             parseString(jsonString);
         } catch (JSONException e) {

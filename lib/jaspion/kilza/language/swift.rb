@@ -56,7 +56,7 @@ module Jaspion
           cl.properties.each do |pr|
             if pr.object? || (pr.array? && pr.null?)
               pr.type = pr.class_name
-              cl.imports.push("import #{pr.class_name}")
+              cl.push_import("import #{pr.class_name}")
             end
 
             pr.type = @types[pr.type] unless @types[pr.type].nil?

@@ -1,5 +1,5 @@
 //
-//  Spa_ce.swift
+//  Space.swift
 //
 //  Created on <%= Time.now.strftime("%Y-%m-%d") %>
 //  Copyright (c) <%= Time.now.strftime("%Y") %>. All rights reserved.
@@ -8,18 +8,18 @@
 
 import Foundation
 
-public class Spa_ce: NSObject, NSCoding {
+public class Space: NSObject, NSCoding {
     // Original names
-    static let kSpa_ce_1one: String = "1one"
+    static let kSpace_1one: String = "1one"
 
     public var _1one: String?
 
-    public class func model(obj: AnyObject) -> Spa_ce? {
-        var instance: Spa_ce?
+    public class func model(obj: AnyObject) -> Space? {
+        var instance: Space?
         if (obj is String) {
-            instance = Spa_ce.init(str: obj as! String)
+            instance = Space.init(str: obj as! String)
         } else if (obj is Dictionary<String, AnyObject>) {
-            instance = Spa_ce.init(dict: obj as! Dictionary)
+            instance = Space.init(dict: obj as! Dictionary)
         }
         return instance
     }
@@ -28,7 +28,7 @@ public class Spa_ce: NSObject, NSCoding {
         var nStr: String = str
         if let trimmed: String = str.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) {
             if !trimmed.hasPrefix("{") {
-                nStr = "{ \"\(Spa_ce.kSpa_ce_1one)\" : \(str) }"
+                nStr = "{ \"\(Space.kSpace_1one)\" : \(str) }"
             }
         }
 
@@ -46,12 +46,12 @@ public class Spa_ce: NSObject, NSCoding {
 
     public init?(dict: Dictionary<String, AnyObject>) {
         super.init()
-        self._1one = objectOrNil(forKey: Spa_ce.kSpa_ce_1one, fromDictionary:dict) as? String
+        self._1one = objectOrNil(forKey: Space.kSpace_1one, fromDictionary:dict) as? String
     }
 
     public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var mutableDict: Dictionary = [String: AnyObject]()
-        mutableDict[Spa_ce.kSpa_ce_1one] = self._1one
+        mutableDict[Space.kSpace_1one] = self._1one
         return NSDictionary.init(dictionary: mutableDict) as! Dictionary<String, AnyObject>
     }
 
@@ -66,11 +66,11 @@ public class Spa_ce: NSObject, NSCoding {
     }
 
     required public init(coder aDecoder: NSCoder) {
-        self._1one = aDecoder.decodeObjectForKey(Spa_ce.kSpa_ce_1one)! as? String
+        self._1one = aDecoder.decodeObjectForKey(Space.kSpace_1one)! as? String
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(_1one, forKey:Spa_ce.kSpa_ce_1one)
+        aCoder.encodeObject(_1one, forKey:Space.kSpace_1one)
     }
 
     override public var description: String {

@@ -27,7 +27,7 @@ module Jaspion
       alias_method :key?, :key
 
       def initialize(name, type, array, key)
-        @name = Kilza.normalize(name)
+        @name = Jaspion::Kilza::Property.normalize(name)
         @original_name = name
         @type = type
         @array = array
@@ -72,6 +72,29 @@ module Jaspion
           type: @type,
           array?: @array
         }.to_s
+      end
+
+      # Removes everything except numbers and letters.
+      #
+      # @param str [String] string to be cleaned
+      #
+      # @return [String] cleaned string
+      def self.clean(str)
+        return if str.nil?
+        str.gsub(/[^a-zA-Z0-9]/, '')
+      end
+
+      # Cleans the string and make it lowercase.
+      #
+      # @param str [String] string to be cleaned
+      #
+      # @return [String] cleaned string
+      def self.normalize(str)
+        return if str.nil?
+        str = str.gsub(/[^a-zA-Z0-9]/, '_')
+        str = '_' if str.length == 0
+        str = '_' + str if str[0].number?
+        str.downcase
       end
     end
   end

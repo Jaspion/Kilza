@@ -31,7 +31,7 @@ public class Base: NSObject, NSCoding {
     public var num: Int?
     public var flo: Double?
     public var boo: Bool?
-    public var spa_ce: Spa_ce?
+    public var spa_ce: Space?
     public var special: Special?
     public var arrdouble: [Double]?
     public var arrnum: [Int]?
@@ -72,7 +72,7 @@ public class Base: NSObject, NSCoding {
         self.num = objectOrNil(forKey: Base.kBaseNum, fromDictionary:dict) as? Int
         self.flo = objectOrNil(forKey: Base.kBaseFlo, fromDictionary:dict) as? Double
         self.boo = objectOrNil(forKey: Base.kBaseBoo, fromDictionary:dict) as? Bool
-        self.spa_ce = Spa_ce.model(dict[Base.kBaseSpa_ce]!)
+        self.spa_ce = Space.model(dict[Base.kBaseSpa_ce]!)
         self.special = Special.model(dict[Base.kBaseSpecial]!)
         self.arrdouble = objectOrNil(forKey: Base.kBaseArrdouble, fromDictionary:dict) as? [Double]
         self.arrnum = objectOrNil(forKey: Base.kBaseArrnum, fromDictionary:dict) as? [Int]
@@ -168,7 +168,7 @@ public class Base: NSObject, NSCoding {
         self.num = aDecoder.decodeObjectForKey(Base.kBaseNum)! as? Int
         self.flo = aDecoder.decodeObjectForKey(Base.kBaseFlo)! as? Double
         self.boo = aDecoder.decodeObjectForKey(Base.kBaseBoo)! as? Bool
-        self.spa_ce = aDecoder.decodeObjectForKey(Base.kBaseSpa_ce)! as? Spa_ce
+        self.spa_ce = aDecoder.decodeObjectForKey(Base.kBaseSpa_ce)! as? Space
         self.special = aDecoder.decodeObjectForKey(Base.kBaseSpecial)! as? Special
         self.arrdouble = aDecoder.decodeObjectForKey(Base.kBaseArrdouble)! as? [Double]
         self.arrnum = aDecoder.decodeObjectForKey(Base.kBaseArrnum)! as? [Int]

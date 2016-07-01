@@ -2,70 +2,6 @@ require 'date'
 
 module Jaspion
   module Kilza
-    class Objc
-      class Class
-        include Jaspion::Kilza::Class
-
-        def initialize(name)
-          super(name)
-          @name = @name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
-        end
-
-        def equals
-          r = StringIO.new
-          r << '- (BOOL)isEqual:(id)anObject {'
-          fields = []
-          for pr in @properties
-              fields.push("[((#{@name}) anObject).#{pr.name} isEqual:#{pr.name}]") if pr.key?
-          end
-          r << "\n    if (anObject instanceof #{@name}) {"
-          r << "        return (" + fields.join(" &&\n            ") + "});"
-          r << "\n    }"
-          r << "\n    return false;"
-          r << "\n}"
-          r.string
-        end
-
-        def sources
-          [code('objc', 'h'), code('objc', 'm')]
-        end
-      end
-    end
-  end
-end
-
-module Jaspion
-  module Kilza
-    class Objc
-      class Property < Jaspion::Kilza::Property
-
-        def class_name
-          return if !(object? || (array? && null?))
-
-          class_name = super
-          class_name = class_name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(class_name.downcase).nil?
-          class_name
-        end
-
-        def class_reference
-          return "@class #{class_name};" unless class_name.nil? || array?
-        end
-
-        def declaration
-          "@property (nonatomic, strong) #{@type} #{@name};"
-        end
-
-        def constants(cl_name)
-          "NSString *const k#{cl_name}#{@name.capitalize} = @\"#{@original_name}\";"
-        end
-
-      end
-    end
-  end
-end
-
-module Jaspion
-  module Kilza
     # Objective-C Language parser
     class Objc
       include Jaspion::Kilza::Language
@@ -120,7 +56,7 @@ module Jaspion
           cl.properties.each do |pr|
             if pr.object? || (pr.array? && pr.null?)
               pr.type = pr.class_name + ' *'
-              cl.imports.push("#import \"#{pr.class_name}.h\"")
+              cl.push_import("#import \"#{pr.class_name}.h\"")
             end
 
             pr.type = 'NSMutableArray *' if pr.array?

@@ -1,5 +1,5 @@
 //
-//  Spa_ce.h
+//  Space.h
 //
 //  Created on <%= Time.now.strftime("%Y-%m-%d") %>
 //  Copyright (c) <%= Time.now.strftime("%Y") %>. All rights reserved.
@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 
 
-@interface Spa_ce : NSObject <NSCoding, NSCopying>
+@interface Space : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, strong) NSString * _1one;
 
-+ (Spa_ce *)modelWithDictionary:(NSDictionary *)dict;
-+ (Spa_ce *)modelWithString:(NSString *)json;
++ (Space *)modelWithDictionary:(NSDictionary *)dict;
++ (Space *)modelWithString:(NSString *)json;
 
 - (instancetype)initWithString:(NSString *)json;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
