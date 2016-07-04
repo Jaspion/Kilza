@@ -24,7 +24,7 @@ module Jaspion
           push_import('import org.json.*;')
 
           self.serializable = true
-          self.parcelable = true
+          self.parcelable = false
           self.gson = true
         end
 

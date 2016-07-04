@@ -327,16 +327,16 @@ public class Base implements Parcelable, Serializable
         num = in.readLong();
         flo = in.readDouble();
         boo = in.readByte() != 0;
-        spa_ce = in.readParcelable(Space.class.getClassLoader());
-        special = in.readParcelable(Special.class.getClassLoader());
+        spa_ce = (Space) in.readParcelable(Space.class.getClassLoader());
+        special = (Special) in.readParcelable(Special.class.getClassLoader());
         arrdouble = in.readArrayList(null);
         arrnum = in.readArrayList(null);
         arrstr = in.readArrayList(null);
         arrboo = in.readArrayList(null);
         arrnull = in.readArrayList(null);
-        obj = in.readParcelable(Obj.class.getClassLoader());
+        obj = (Obj) in.readParcelable(Obj.class.getClassLoader());
         in.readTypedList(arrobj, Arrobj.CREATOR);
-        _underscore = in.readParcelable(Underscore.class.getClassLoader());
+        _underscore = (Underscore) in.readParcelable(Underscore.class.getClassLoader());
     }
 
     public int describeContents() {

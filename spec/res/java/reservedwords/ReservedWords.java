@@ -80,7 +80,7 @@ public class ReservedWords implements Parcelable, Serializable
 
     private ReservedWords(Parcel in) {
         _if = in.readString();
-        _return = in.readParcelable(ReturnClass.class.getClassLoader());
+        _return = (ReturnClass) in.readParcelable(ReturnClass.class.getClassLoader());
     }
 
     public int describeContents() {

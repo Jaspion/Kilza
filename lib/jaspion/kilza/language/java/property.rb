@@ -31,7 +31,7 @@ module Jaspion
               r = "#{@name} = in.readArrayList(null);"
             end
           elsif object?
-            r = "#{@name} = in.readParcelable(#{class_name}.class.getClassLoader());"
+            r = "#{@name} = (#{class_name}) in.readParcelable(#{class_name}.class.getClassLoader());"
           elsif boolean?
             r = "#{@name} = in.readByte() != 0;"
           else

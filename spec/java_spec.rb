@@ -23,6 +23,8 @@ describe Jaspion::Kilza do
 
       it 'compares the source codes' do
         java.classes('ReservedWords').each do |c|
+          c.parcelable = true
+
           c.sources.each do |s|
             res_spec = File.join(res_java, 'reservedwords', s.file_name)
             test_source = File.read(res_spec)
@@ -44,6 +46,8 @@ describe Jaspion::Kilza do
 
       it 'compares the source codes' do
         java.classes('BaseArray').each do |c|
+          c.parcelable = true
+
           c.sources.each do |s|
             test_source = File.read(File.join(res_java, 'array', s.file_name))
             eruby = Erubis::Eruby.new(test_source)
@@ -65,6 +69,8 @@ describe Jaspion::Kilza do
 
       it 'compares the source codes' do
         java.classes('Base').each do |c|
+          c.parcelable = true
+
           c.sources.each do |s|
             test_source = File.read(File.join(res_java, 'hash', s.file_name))
             eruby = Erubis::Eruby.new(test_source)
