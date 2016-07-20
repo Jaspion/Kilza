@@ -24,7 +24,8 @@ module Jaspion
       #                              It can be an Array
       def push_import(import)
         import = [import] if import.is_a? String
-        @imports.push(import)
+        index = @imports.index(import)
+        @imports.push(import) if index.nil?
       end
 
       # Removes an new import statement

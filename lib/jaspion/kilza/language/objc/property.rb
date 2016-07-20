@@ -3,6 +3,15 @@ module Jaspion
     class Objc
       class Property < Jaspion::Kilza::Property
 
+        def initialize(name, type, array, key = '')
+          original_name = name
+          unless RESERVED_WORDS.index(name.downcase).nil?
+            name = RESERVED_PROPERTY_PREFIX + name
+          end
+          super(name, type, array, key)
+          @original_name = original_name
+        end
+
         def class_name
           return if !(object? || (array? && null?))
 

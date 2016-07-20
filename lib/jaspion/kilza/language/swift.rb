@@ -19,50 +19,28 @@ module Jaspion
         typealias precedence var prefix required right set
         type unowned weak id description
       )
+      TYPES = {
+        'nilclass'    => 'AnyObject',
+        'string'      => 'String',
+        'fixnum'      => 'Int',
+        'float'       => 'Double',
+        'falseclass'  => 'Bool',
+        'trueclass'   => 'Bool',
+        'hash'        => 'Dictionary'
+      }
 
       def initialize(json_string)
         super(json_string)
-
-        @types = {
-          'nilclass' => 'AnyObject',
-          'string'  => 'String',
-          'fixnum' => 'Int',
-          'float' => 'Double',
-          'falseclass' => 'Bool',
-          'trueclass' => 'Bool',
-          'hash' => 'Dictionary'
-        }
 
         @equal_keys = 'id identifier uid'
       end
 
       def clazz(name)
-        name = name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
         Jaspion::Kilza::Swift::Class.new(name)
       end
 
       def property(name, type, array, key)
-        original_name = name
-        name = RESERVED_PROPERTY_PREFIX + name unless RESERVED_WORDS.index(name.downcase).nil?
-        prop = Jaspion::Kilza::Swift::Property.new(name , type, array, key)
-        prop.original_name = original_name
-        prop
-      end
-
-      def classes(class_name)
-        super(class_name)
-
-        @classes.each do |cl|
-          cl.properties.each do |pr|
-            if pr.object? || (pr.array? && pr.null?)
-              pr.type = pr.class_name
-              cl.push_import("import #{pr.class_name}")
-            end
-
-            pr.type = @types[pr.type] unless @types[pr.type].nil?
-            pr.type = "[#{pr.type}]" if pr.array?
-          end
-        end
+        Jaspion::Kilza::Swift::Property.new(name , type, array, key)
       end
     end
   end

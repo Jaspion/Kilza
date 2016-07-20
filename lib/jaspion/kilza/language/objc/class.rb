@@ -5,8 +5,22 @@ module Jaspion
         include Jaspion::Kilza::Class
 
         def initialize(name)
+          name = name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
           super(name)
-          @name = @name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
+        end
+
+        def push(pr)
+          if pr.object? || (pr.array? && pr.null?)
+            pr.type = pr.class_name + ' *'
+            push_import("#import \"#{pr.class_name}.h\"")
+          end
+
+          pr.type = 'NSMutableArray *' if pr.array?
+          unless Jaspion::Kilza::Objc::TYPES[pr.type].nil?
+            pr.type = Jaspion::Kilza::Objc::TYPES[pr.type]
+          end
+
+          super(pr)
         end
 
         def imports

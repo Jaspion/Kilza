@@ -26,7 +26,7 @@ module Jaspion
       attr_accessor :key
       alias_method :key?, :key
 
-      def initialize(name, type, array, key)
+      def initialize(name, type, array, key = '')
         @name = Jaspion::Kilza::Property.normalize(name)
         @original_name = name
         @type = type

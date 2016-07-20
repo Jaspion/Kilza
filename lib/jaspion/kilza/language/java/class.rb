@@ -16,8 +16,9 @@ module Jaspion
         alias_method :parcelable?, :parcelable
 
         def initialize(name, package = nil)
+          name = name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
           super(name)
-          @name = @name + RESERVED_CLASS_POSFIX unless RESERVED_WORDS.index(name.downcase).nil?
+
           @package = package
           @implements = []
 
@@ -28,9 +29,14 @@ module Jaspion
           self.gson = true
         end
 
-        def push(property)
-          super(property)
-          property.gson = gson?
+        def push(pr)
+          pr.gson = gson?
+
+          pr.type = pr.class_name if pr.object? || (pr.array? && pr.null?)
+          push_import('import java.util.ArrayList;') if pr.array?
+          pr.type = Jaspion::Kilza::Java::TYPES[pr.type] unless Jaspion::Kilza::Java::TYPES[pr.type].nil?
+
+          super(pr)
         end
 
         def push_implements(implement)

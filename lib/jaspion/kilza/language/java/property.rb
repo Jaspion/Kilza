@@ -7,7 +7,11 @@ module Jaspion
         alias :gson? :gson
 
         def initialize(name, type, array, key)
+          original_name = name
+          name = RESERVED_PROPERTY_PREFIX + name unless RESERVED_WORDS.index(name).nil?
           super(name, type, array, key)
+
+          @original_name = original_name
           @serializable = true
         end
 
