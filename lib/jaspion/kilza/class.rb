@@ -18,25 +18,6 @@ module Jaspion
         @imports = []
       end
 
-      # Adds an new import statement
-      #
-      # @param import [String|Array] The whole statement that has to be printted
-      #                              It can be an Array
-      def push_import(import)
-        import = [import] if import.is_a? String
-        index = @imports.index(import)
-        @imports.push(import) if index.nil?
-      end
-
-      # Removes an new import statement
-      #
-      # @param import [String|Array] The statement to be removed
-      def delete_import(import)
-        import = [import] if import.is_a? String
-        i = @imports.index(import)
-        @imports.delete_at(i) unless i.nil?
-      end
-
       def imports
         @imports.sort.separate.flatten
       end
@@ -85,6 +66,25 @@ module Jaspion
           imports: @imports,
           properties: properties
         }.to_s
+      end
+
+      # Adds an new import statement
+      #
+      # @param import [String|Array] The whole statement that has to be printted
+      #                              It can be an Array
+      def push_import(import)
+        import = [import] if import.is_a? String
+        index = @imports.index(import)
+        @imports.push(import) if index.nil?
+      end
+
+      # Removes an new import statement
+      #
+      # @param import [String|Array] The statement to be removed
+      def delete_import(import)
+        import = [import] if import.is_a? String
+        i = @imports.index(import)
+        @imports.delete_at(i) unless i.nil?
       end
 
       protected

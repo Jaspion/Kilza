@@ -76,4 +76,31 @@ describe Jaspion::Kilza do
       end
     end
   end
+
+  context 'specifing the class without JSON' do
+    let(:prop) { Jaspion::Kilza::Objc::Property.new('name', 'string', false) }
+    let(:clazz) do
+      cl = Jaspion::Kilza::Objc::Class.new('MyClass')
+      cl.push(prop)
+      cl
+    end
+
+    describe '#properties.size' do
+      it { expect(clazz.properties.size).to eq(1) }
+    end
+
+    describe '#sources' do
+      it do
+        test_source = File.read(File.join(res_objc, 'MyClass.h'))
+        eruby = Erubis::Eruby.new(test_source)
+        expect(clazz.sources.first.source).to eq(eruby.result)
+      end
+
+      it do
+        test_source = File.read(File.join(res_objc, 'MyClass.m'))
+        eruby = Erubis::Eruby.new(test_source)
+        expect(clazz.sources[1].source).to eq(eruby.result)
+      end
+    end
+  end
 end
