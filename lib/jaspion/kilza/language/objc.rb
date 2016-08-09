@@ -17,7 +17,7 @@ module Jaspion
         struct switch typedef union unsafe_unretained unsigned void,
         volatile weak while _bool _complex _imaginary sel imp,
         bool nil yes no self super __strong __weak oneway,
-        in out inout bycopy byref
+        in out inout bycopy byref description
       )
       TYPES = {
         'nilclass'    => 'id',

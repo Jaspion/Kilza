@@ -59,6 +59,10 @@ module Jaspion
       #
       # @return [Kilza::Class] new class
       def clazz(name)
+        # cl_name = self.class.name.split('::').last
+        # cl = Jaspion::Kilza.const_get("#{cl_name}::Class")
+        # return cl.new(name) unless cl.nil?
+        #
         Class.new(name)
       end
 
