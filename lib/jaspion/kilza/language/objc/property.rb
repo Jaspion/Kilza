@@ -25,7 +25,7 @@ module Jaspion
         end
 
         def declaration
-          "@property (nonatomic, strong) #{@type} #{@name};"
+          "@property (nonatomic, strong, nullable) #{@type} #{@name};"
         end
 
         def constants(cl_name)
