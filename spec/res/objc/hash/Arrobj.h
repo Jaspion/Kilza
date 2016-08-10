@@ -11,17 +11,17 @@
 
 @interface Arrobj : NSObject <NSCoding, NSCopying>
 
-@property (nonatomic, strong) NSString * str;
-@property (nonatomic, strong) NSNumber * num;
-@property (nonatomic, strong) NSNumber * flo;
-@property (nonatomic, strong) NSNumber * boo;
-@property (nonatomic, strong) id null;
+@property (nonatomic, strong, nullable) NSString * str;
+@property (nonatomic, strong, nullable) NSNumber * num;
+@property (nonatomic, strong, nullable) NSNumber * flo;
+@property (nonatomic, strong, nullable) NSNumber * boo;
+@property (nonatomic, strong, nullable) id null;
 
-+ (Arrobj *)modelWithDictionary:(NSDictionary *)dict;
-+ (Arrobj *)modelWithString:(NSString *)json;
++ (Arrobj * _Nonnull)modelWithDictionary:(NSDictionary * _Nonnull)dict;
++ (Arrobj * _Nonnull)modelWithString:(NSString * _Nonnull)json;
 
-- (instancetype)initWithString:(NSString *)json;
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *)dictionaryRepresentation;
+- (instancetype _Nonnull)initWithString:(NSString * _Nonnull)json;
+- (instancetype _Nonnull)initWithDictionary:(NSDictionary * _Nonnull)dict;
+- (NSDictionary * _Nonnull)dictionaryRepresentation;
 
 @end

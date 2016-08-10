@@ -15,27 +15,27 @@
 
 @interface Base : NSObject <NSCoding, NSCopying>
 
-@property (nonatomic, strong) NSString * _id;
-@property (nonatomic, strong) NSString * str;
-@property (nonatomic, strong) NSNumber * num;
-@property (nonatomic, strong) NSNumber * flo;
-@property (nonatomic, strong) NSNumber * boo;
-@property (nonatomic, strong) Space * spa_ce;
-@property (nonatomic, strong) Special * special;
-@property (nonatomic, strong) NSMutableArray * arrdouble;
-@property (nonatomic, strong) NSMutableArray * arrnum;
-@property (nonatomic, strong) NSMutableArray * arrstr;
-@property (nonatomic, strong) NSMutableArray * arrboo;
-@property (nonatomic, strong) NSMutableArray * arrnull;
-@property (nonatomic, strong) Obj * obj;
-@property (nonatomic, strong) NSMutableArray * arrobj;
-@property (nonatomic, strong) Underscore * _underscore;
+@property (nonatomic, strong, nullable) NSString * _id;
+@property (nonatomic, strong, nullable) NSString * str;
+@property (nonatomic, strong, nullable) NSNumber * num;
+@property (nonatomic, strong, nullable) NSNumber * flo;
+@property (nonatomic, strong, nullable) NSNumber * boo;
+@property (nonatomic, strong, nullable) Space * spa_ce;
+@property (nonatomic, strong, nullable) Special * special;
+@property (nonatomic, strong, nullable) NSMutableArray * arrdouble;
+@property (nonatomic, strong, nullable) NSMutableArray * arrnum;
+@property (nonatomic, strong, nullable) NSMutableArray * arrstr;
+@property (nonatomic, strong, nullable) NSMutableArray * arrboo;
+@property (nonatomic, strong, nullable) NSMutableArray * arrnull;
+@property (nonatomic, strong, nullable) Obj * obj;
+@property (nonatomic, strong, nullable) NSMutableArray * arrobj;
+@property (nonatomic, strong, nullable) Underscore * _underscore;
 
-+ (Base *)modelWithDictionary:(NSDictionary *)dict;
-+ (Base *)modelWithString:(NSString *)json;
++ (Base * _Nonnull)modelWithDictionary:(NSDictionary * _Nonnull)dict;
++ (Base * _Nonnull)modelWithString:(NSString * _Nonnull)json;
 
-- (instancetype)initWithString:(NSString *)json;
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *)dictionaryRepresentation;
+- (instancetype _Nonnull)initWithString:(NSString * _Nonnull)json;
+- (instancetype _Nonnull)initWithDictionary:(NSDictionary * _Nonnull)dict;
+- (NSDictionary * _Nonnull)dictionaryRepresentation;
 
 @end

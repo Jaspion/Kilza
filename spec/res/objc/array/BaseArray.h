@@ -11,13 +11,13 @@
 
 @interface BaseArray : NSObject <NSCoding, NSCopying>
 
-@property (nonatomic, strong) NSMutableArray * basearrayobject;
+@property (nonatomic, strong, nullable) NSMutableArray * basearrayobject;
 
-+ (BaseArray *)modelWithDictionary:(NSDictionary *)dict;
-+ (BaseArray *)modelWithString:(NSString *)json;
++ (BaseArray * _Nonnull)modelWithDictionary:(NSDictionary * _Nonnull)dict;
++ (BaseArray * _Nonnull)modelWithString:(NSString * _Nonnull)json;
 
-- (instancetype)initWithString:(NSString *)json;
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *)dictionaryRepresentation;
+- (instancetype _Nonnull)initWithString:(NSString * _Nonnull)json;
+- (instancetype _Nonnull)initWithDictionary:(NSDictionary * _Nonnull)dict;
+- (NSDictionary * _Nonnull)dictionaryRepresentation;
 
 @end

@@ -11,16 +11,16 @@
 
 @interface Special : NSObject <NSCoding, NSCopying>
 
-@property (nonatomic, strong) id a;
-@property (nonatomic, strong) NSString * _b______;
-@property (nonatomic, strong) NSString * with_some_spaces;
-@property (nonatomic, strong) NSNumber * _new;
+@property (nonatomic, strong, nullable) id a;
+@property (nonatomic, strong, nullable) NSString * _b______;
+@property (nonatomic, strong, nullable) NSString * with_some_spaces;
+@property (nonatomic, strong, nullable) NSNumber * _new;
 
-+ (Special *)modelWithDictionary:(NSDictionary *)dict;
-+ (Special *)modelWithString:(NSString *)json;
++ (Special * _Nonnull)modelWithDictionary:(NSDictionary * _Nonnull)dict;
++ (Special * _Nonnull)modelWithString:(NSString * _Nonnull)json;
 
-- (instancetype)initWithString:(NSString *)json;
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *)dictionaryRepresentation;
+- (instancetype _Nonnull)initWithString:(NSString * _Nonnull)json;
+- (instancetype _Nonnull)initWithDictionary:(NSDictionary * _Nonnull)dict;
+- (NSDictionary * _Nonnull)dictionaryRepresentation;
 
 @end

@@ -11,13 +11,13 @@
 
 @interface Space : NSObject <NSCoding, NSCopying>
 
-@property (nonatomic, strong) NSString * _1one;
+@property (nonatomic, strong, nullable) NSString * _1one;
 
-+ (Space *)modelWithDictionary:(NSDictionary *)dict;
-+ (Space *)modelWithString:(NSString *)json;
++ (Space * _Nonnull)modelWithDictionary:(NSDictionary * _Nonnull)dict;
++ (Space * _Nonnull)modelWithString:(NSString * _Nonnull)json;
 
-- (instancetype)initWithString:(NSString *)json;
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *)dictionaryRepresentation;
+- (instancetype _Nonnull)initWithString:(NSString * _Nonnull)json;
+- (instancetype _Nonnull)initWithDictionary:(NSDictionary * _Nonnull)dict;
+- (NSDictionary * _Nonnull)dictionaryRepresentation;
 
 @end

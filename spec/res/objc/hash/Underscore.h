@@ -11,13 +11,13 @@
 
 @interface Underscore : NSObject <NSCoding, NSCopying>
 
-@property (nonatomic, strong) NSString * _;
+@property (nonatomic, strong, nullable) NSString * _;
 
-+ (Underscore *)modelWithDictionary:(NSDictionary *)dict;
-+ (Underscore *)modelWithString:(NSString *)json;
++ (Underscore * _Nonnull)modelWithDictionary:(NSDictionary * _Nonnull)dict;
++ (Underscore * _Nonnull)modelWithString:(NSString * _Nonnull)json;
 
-- (instancetype)initWithString:(NSString *)json;
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *)dictionaryRepresentation;
+- (instancetype _Nonnull)initWithString:(NSString * _Nonnull)json;
+- (instancetype _Nonnull)initWithDictionary:(NSDictionary * _Nonnull)dict;
+- (NSDictionary * _Nonnull)dictionaryRepresentation;
 
 @end

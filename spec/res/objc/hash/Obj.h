@@ -11,16 +11,16 @@
 
 @interface Obj : NSObject <NSCoding, NSCopying>
 
-@property (nonatomic, strong) NSString * str;
-@property (nonatomic, strong) NSNumber * num;
-@property (nonatomic, strong) NSNumber * flo;
-@property (nonatomic, strong) NSNumber * boo;
+@property (nonatomic, strong, nullable) NSString * str;
+@property (nonatomic, strong, nullable) NSNumber * num;
+@property (nonatomic, strong, nullable) NSNumber * flo;
+@property (nonatomic, strong, nullable) NSNumber * boo;
 
-+ (Obj *)modelWithDictionary:(NSDictionary *)dict;
-+ (Obj *)modelWithString:(NSString *)json;
++ (Obj * _Nonnull)modelWithDictionary:(NSDictionary * _Nonnull)dict;
++ (Obj * _Nonnull)modelWithString:(NSString * _Nonnull)json;
 
-- (instancetype)initWithString:(NSString *)json;
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *)dictionaryRepresentation;
+- (instancetype _Nonnull)initWithString:(NSString * _Nonnull)json;
+- (instancetype _Nonnull)initWithDictionary:(NSDictionary * _Nonnull)dict;
+- (NSDictionary * _Nonnull)dictionaryRepresentation;
 
 @end

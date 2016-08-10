@@ -12,11 +12,11 @@
 @interface Null : NSObject <NSCoding, NSCopying>
 
 
-+ (Null *)modelWithDictionary:(NSDictionary *)dict;
-+ (Null *)modelWithString:(NSString *)json;
++ (Null * _Nonnull)modelWithDictionary:(NSDictionary * _Nonnull)dict;
++ (Null * _Nonnull)modelWithString:(NSString * _Nonnull)json;
 
-- (instancetype)initWithString:(NSString *)json;
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
-- (NSDictionary *)dictionaryRepresentation;
+- (instancetype _Nonnull)initWithString:(NSString * _Nonnull)json;
+- (instancetype _Nonnull)initWithDictionary:(NSDictionary * _Nonnull)dict;
+- (NSDictionary * _Nonnull)dictionaryRepresentation;
 
 @end
