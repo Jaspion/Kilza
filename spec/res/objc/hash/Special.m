@@ -23,11 +23,13 @@ NSString *const kSpecial_new = @"new";
 @implementation Special
 
 + (Special *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     Special *instance = [[Special alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (Special *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     Special *instance = [[Special alloc] initWithString:json];
     return instance;
 }

@@ -40,11 +40,13 @@ NSString *const kBase_underscore = @"_underscore";
 @implementation Base
 
 + (Base *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     Base *instance = [[Base alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (Base *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     Base *instance = [[Base alloc] initWithString:json];
     return instance;
 }

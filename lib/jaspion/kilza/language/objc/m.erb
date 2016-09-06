@@ -25,11 +25,13 @@
 @implementation <%= @name %>
 
 + (<%= @name %> *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     <%= @name %> *instance = [[<%= @name %> alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (<%= @name %> *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     <%= @name %> *instance = [[<%= @name %> alloc] initWithString:json];
     return instance;
 }

@@ -19,11 +19,13 @@
 @implementation Null
 
 + (Null *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     Null *instance = [[Null alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (Null *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     Null *instance = [[Null alloc] initWithString:json];
     return instance;
 }

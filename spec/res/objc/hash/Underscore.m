@@ -20,11 +20,13 @@ NSString *const kUnderscore_ = @"_";
 @implementation Underscore
 
 + (Underscore *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     Underscore *instance = [[Underscore alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (Underscore *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     Underscore *instance = [[Underscore alloc] initWithString:json];
     return instance;
 }

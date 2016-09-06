@@ -23,11 +23,13 @@ NSString *const kObjBoo = @"boo";
 @implementation Obj
 
 + (Obj *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     Obj *instance = [[Obj alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (Obj *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     Obj *instance = [[Obj alloc] initWithString:json];
     return instance;
 }

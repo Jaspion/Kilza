@@ -19,11 +19,13 @@
 @implementation Arrnull
 
 + (Arrnull *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     Arrnull *instance = [[Arrnull alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (Arrnull *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     Arrnull *instance = [[Arrnull alloc] initWithString:json];
     return instance;
 }

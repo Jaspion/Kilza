@@ -22,11 +22,13 @@ NSString *const kReservedWords_return = @"return";
 @implementation ReservedWords
 
 + (ReservedWords *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     ReservedWords *instance = [[ReservedWords alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (ReservedWords *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     ReservedWords *instance = [[ReservedWords alloc] initWithString:json];
     return instance;
 }

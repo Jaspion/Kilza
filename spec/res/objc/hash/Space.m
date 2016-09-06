@@ -20,11 +20,13 @@ NSString *const kSpace_1one = @"1one";
 @implementation Space
 
 + (Space *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     Space *instance = [[Space alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (Space *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     Space *instance = [[Space alloc] initWithString:json];
     return instance;
 }

@@ -20,11 +20,13 @@ NSString *const kMyClassName = @"name";
 @implementation MyClass
 
 + (MyClass *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     MyClass *instance = [[MyClass alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (MyClass *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     MyClass *instance = [[MyClass alloc] initWithString:json];
     return instance;
 }

@@ -20,11 +20,13 @@ NSString *const kReturnClass_id = @"id";
 @implementation ReturnClass
 
 + (ReturnClass *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     ReturnClass *instance = [[ReturnClass alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (ReturnClass *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     ReturnClass *instance = [[ReturnClass alloc] initWithString:json];
     return instance;
 }

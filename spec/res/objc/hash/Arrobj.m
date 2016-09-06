@@ -24,11 +24,13 @@ NSString *const kArrobjNull = @"null";
 @implementation Arrobj
 
 + (Arrobj *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     Arrobj *instance = [[Arrobj alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (Arrobj *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     Arrobj *instance = [[Arrobj alloc] initWithString:json];
     return instance;
 }

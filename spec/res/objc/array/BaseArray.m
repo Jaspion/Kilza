@@ -20,11 +20,13 @@ NSString *const kBaseArrayBasearrayobject = @"BaseArrayObject";
 @implementation BaseArray
 
 + (BaseArray *)modelWithDictionary:(NSDictionary *)dict {
+    if (!dict) return nil;
     BaseArray *instance = [[BaseArray alloc] initWithDictionary:dict];
     return instance;
 }
 
 + (BaseArray *)modelWithString:(NSString *)json {
+    if (!json) return nil;
     BaseArray *instance = [[BaseArray alloc] initWithString:json];
     return instance;
 }
